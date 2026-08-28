@@ -1,0 +1,390 @@
+:root {
+  --bg: #f3f1eb;
+  --ink: #17201c;
+  --muted: #607068;
+  --panel: #fffdf8;
+  --line: #d8d3c8;
+  --green: #1f7a4d;
+  --green-dark: #145c3a;
+  --blue: #245f8f;
+  --yellow: #c5841f;
+  --red: #9d3d32;
+  --shadow: 0 18px 50px rgba(23, 32, 28, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    linear-gradient(135deg, rgba(31, 122, 77, 0.11), transparent 32%),
+    linear-gradient(315deg, rgba(36, 95, 143, 0.12), transparent 34%),
+    var(--bg);
+  color: var(--ink);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.app-shell {
+  width: min(760px, 100%);
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+
+.hero {
+  display: grid;
+  gap: 18px;
+  min-height: 34vh;
+  align-content: end;
+  padding: 34px 0 20px;
+}
+
+.eyebrow,
+.step-label,
+.field-label {
+  display: block;
+  margin: 0 0 8px;
+  color: var(--green-dark);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  max-width: 10ch;
+  margin-bottom: 14px;
+  font-size: clamp(2.45rem, 14vw, 5rem);
+  line-height: 0.94;
+  letter-spacing: 0;
+}
+
+h2 {
+  margin-bottom: 10px;
+  font-size: 1.55rem;
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+h3 {
+  margin-bottom: 10px;
+  font-size: 1.22rem;
+}
+
+.lede {
+  max-width: 52ch;
+  margin-bottom: 0;
+  color: #405149;
+  font-size: 1.03rem;
+  line-height: 1.55;
+}
+
+.principle {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.principle span {
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(31, 122, 77, 0.24);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, 0.72);
+  color: var(--green-dark);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.panel {
+  margin-top: 14px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, 0.92);
+  box-shadow: var(--shadow);
+}
+
+.muted {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.status-message {
+  margin: 12px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.status-message.error {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.drop-zone {
+  min-height: 190px;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  margin: 18px 0;
+  padding: 24px;
+  border: 2px dashed rgba(31, 122, 77, 0.34);
+  border-radius: 8px;
+  background: #f8f6ef;
+  text-align: center;
+  cursor: pointer;
+}
+
+.drop-zone input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  opacity: 0;
+}
+
+.drop-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.drop-title {
+  font-size: 1.08rem;
+  font-weight: 850;
+}
+
+.drop-copy {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.preview-wrap {
+  overflow: hidden;
+  margin: 16px 0;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #e7e2d7;
+}
+
+.preview-wrap img {
+  width: 100%;
+  max-height: 320px;
+  display: block;
+  object-fit: cover;
+}
+
+.primary-button,
+.secondary-button {
+  width: 100%;
+  min-height: 52px;
+  border: 0;
+  border-radius: 8px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.primary-button {
+  background: var(--green);
+  color: #fff;
+}
+
+.primary-button:disabled {
+  background: #a8b2ad;
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  margin-top: 16px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+}
+
+.analysis-grid {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.analysis-grid > div,
+.notice,
+.waste-box,
+.source-box,
+.option,
+.question {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.analysis-grid > div {
+  padding: 14px;
+}
+
+.analysis-grid strong {
+  font-size: 1.04rem;
+}
+
+.notice,
+.waste-box,
+.source-box {
+  padding: 14px;
+}
+
+.notice p,
+.waste-box p,
+.source-box p {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.question-form {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.question {
+  padding: 14px;
+}
+
+.question legend {
+  margin-bottom: 10px;
+  font-weight: 850;
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.choice-grid label {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfaf6;
+  color: #2d3933;
+  font-weight: 700;
+}
+
+.choice-grid input {
+  accent-color: var(--green);
+}
+
+.recommendation {
+  margin: 16px 0;
+  padding: 18px;
+  border-radius: 8px;
+  background: #173125;
+  color: #fff;
+}
+
+.recommendation p {
+  margin-bottom: 0;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.5;
+}
+
+.action-badge {
+  display: inline-flex;
+  margin-bottom: 14px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #d9f2df;
+  color: #173125;
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.action-badge.sell {
+  background: #dbeafe;
+  color: var(--blue);
+}
+
+.action-badge.donate {
+  background: #fff1cc;
+  color: #7b520f;
+}
+
+.action-badge.waste {
+  background: #ffe0dc;
+  color: var(--red);
+}
+
+.options-list {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.option {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  padding: 14px;
+}
+
+.option-number {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #ecf5ee;
+  color: var(--green-dark);
+  font-weight: 900;
+}
+
+.option p {
+  margin: 3px 0 0;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (min-width: 680px) {
+  .app-shell {
+    padding-top: 36px;
+  }
+
+  .hero {
+    min-height: 30vh;
+  }
+
+  .analysis-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

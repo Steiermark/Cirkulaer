@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="da">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cirkulær assistent</title>
+    <meta
+      name="description"
+      content="En enkel prototype, der hjælper med at vurdere om en genstand bør repareres, sælges, bortgives eller sorteres som affald."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Cirkulær assistent</p>
+          <h1 id="page-title">Kan genstanden stadig skabe værdi?</h1>
+          <p class="lede">
+            Tag eller upload et foto, svar på få spørgsmål, og få en enkel anbefaling:
+            reparér, sælg, bortgiv eller sorter.
+          </p>
+        </div>
+        <div class="principle" aria-label="Prioriteret beslutningsflow">
+          <span>Reparér</span>
+          <span>Sælg</span>
+          <span>Bortgiv</span>
+          <span>Affald</span>
+        </div>
+      </section>
+
+      <section class="panel" id="capture-screen" aria-labelledby="capture-title">
+        <div class="step-label">1 af 4</div>
+        <h2 id="capture-title">Foto af genstanden</h2>
+        <p class="muted">
+          Billedet analyseres af AI via et lokalt backend-endpoint. Dine svar bruges
+          derefter af beslutningsmotoren.
+        </p>
+
+        <label class="drop-zone" for="image-input">
+          <input id="image-input" type="file" accept="image/*" capture="environment" />
+          <span class="drop-icon" aria-hidden="true">+</span>
+          <span class="drop-title">Tag eller upload foto</span>
+          <span class="drop-copy">JPG, PNG eller HEIC fra telefonen</span>
+        </label>
+
+        <div class="preview-wrap hidden" id="preview-wrap">
+          <img id="image-preview" alt="Uploadet genstand" />
+        </div>
+
+        <button class="primary-button" id="analyze-button" disabled>
+          Analysér genstand
+        </button>
+        <p class="status-message hidden" id="analysis-status" role="status"></p>
+      </section>
+
+      <section class="panel hidden" id="identify-screen" aria-labelledby="identify-title">
+        <div class="step-label">2 af 4</div>
+        <h2 id="identify-title">Foreløbig identifikation</h2>
+        <div class="analysis-grid">
+          <div>
+            <span class="field-label">Genstand</span>
+            <strong id="object-name">Ukendt genstand</strong>
+          </div>
+          <div>
+            <span class="field-label">Kategori</span>
+            <strong id="object-category">Ukendt</strong>
+          </div>
+          <div>
+            <span class="field-label">Sikkerhed</span>
+            <strong id="object-confidence">Lav</strong>
+          </div>
+        </div>
+        <div class="notice">
+          <strong>AI-vurdering</strong>
+          <p id="uncertainty-note">
+            Usikre antagelser vises som usikre og bruges ikke som verificerede regler.
+          </p>
+        </div>
+      </section>
+
+      <section class="panel hidden" id="questions-screen" aria-labelledby="questions-title">
+        <div class="step-label">3 af 4</div>
+        <h2 id="questions-title">Et par hurtige spørgsmål</h2>
+        <form id="question-form" class="question-form"></form>
+        <button class="primary-button" id="recommend-button">Få anbefaling</button>
+      </section>
+
+      <section class="panel hidden" id="result-screen" aria-labelledby="result-title">
+        <div class="step-label">4 af 4</div>
+        <h2 id="result-title">Anbefaling</h2>
+
+        <div class="recommendation">
+          <span class="action-badge" id="action-badge">Reparér</span>
+          <h3 id="result-object">Genstand</h3>
+          <p id="result-reasoning"></p>
+        </div>
+
+        <div class="options-list" id="options-list" aria-label="Dine muligheder"></div>
+
+        <div class="waste-box hidden" id="waste-box">
+          <span class="field-label">Hvis den ender som affald</span>
+          <strong id="waste-category">Generel fraktion</strong>
+          <p id="waste-note"></p>
+        </div>
+
+        <div class="source-box">
+          <strong>Kildeklarhed</strong>
+          <p>
+            Produktvurderingen er AI-/prototypebaseret. Affaldsvejledning i denne
+            version er generel dansk vejledning, ikke kommunespecifik regeldata.
+          </p>
+        </div>
+
+        <button class="secondary-button" id="restart-button">Start forfra</button>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
