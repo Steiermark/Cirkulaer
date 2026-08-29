@@ -2,6 +2,7 @@ import base64
 import json
 import os
 import re
+import socket
 import urllib.error
 import urllib.request
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -9,6 +10,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from decision_engine import build_recommendation
 
 
+HOST = os.environ.get("HOST", "0.0.0.0")
 PORT = int(os.environ.get("PORT", "4173"))
 MODEL = os.environ.get("OPENAI_MODEL", "gpt-5")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
@@ -87,26 +89,28 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_json({"error": str(exc)}, status=500)
 
     def handle_analyze(self):
-        if not OPENAI_API_KEY:
-            self.send_json(
-                {
-                    "error": (
-                        "OPENAI_API_KEY mangler. Start serveren med en OpenAI API-nøgle "
-                        "for at bruge rigtig billedgenkendelse."
-                    )
-                },
-                status=503,
-            )
-            return
-
         try:
             payload = self.read_json_body()
             image_data_url = payload.get("imageDataUrl", "")
+            filename = payload.get("filename", "")
             if not image_data_url.startswith("data:image/"):
                 raise ValueError("Upload et gyldigt billede.")
 
+            if not OPENAI_API_KEY:
+                self.send_json(
+                    {
+                        "assessment": build_test_assessment(filename),
+                        "mode": "test",
+                        "message": (
+                            "Testversion: billedet er modtaget og vist, men objektet "
+                            "er vurderet med lokal testlogik, fordi OPENAI_API_KEY mangler."
+                        ),
+                    }
+                )
+                return
+
             assessment = analyze_with_openai(image_data_url)
-            self.send_json({"assessment": assessment})
+            self.send_json({"assessment": assessment, "mode": "ai"})
         except ValueError as exc:
             self.send_json({"error": str(exc)}, status=400)
         except urllib.error.HTTPError as exc:
@@ -133,6 +137,84 @@ class Handler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(data)
 
+
+def build_test_assessment(filename):
+    normalized = filename.lower()
+    hints = [
+        {
+            "keywords": ["billy", "reol", "stol", "bord", "ikea", "skab", "moebel", "møbel"],
+            "object_name": "Møbel",
+            "category": "Møbler og indbo",
+            "subcategory": "Møbel",
+            "brand": "IKEA" if "ikea" in normalized or "billy" in normalized else None,
+            "materials": ["træ", "metal"],
+            "waste_category": "Storskrald eller genbrugsplads",
+            "confidence": 0.42,
+        },
+        {
+            "keywords": ["boremaskine", "drill", "bosch", "makita", "dewalt"],
+            "object_name": "Akkuboremaskine",
+            "category": "Elektronik og værktøj",
+            "subcategory": "Elværktøj",
+            "brand": None,
+            "materials": ["plast", "metal", "batteri"],
+            "waste_category": "Småt elektronik",
+            "confidence": 0.44,
+        },
+        {
+            "keywords": ["telefon", "iphone", "samsung", "mobil"],
+            "object_name": "Mobiltelefon",
+            "category": "Elektronik",
+            "subcategory": "Telefon",
+            "brand": None,
+            "materials": ["glas", "metal", "batteri"],
+            "waste_category": "Småt elektronik",
+            "confidence": 0.44,
+        },
+        {
+            "keywords": ["jakke", "bukser", "troeje", "trøje", "sko", "tekstil"],
+            "object_name": "Tekstil eller tøj",
+            "category": "Tekstiler",
+            "subcategory": "Tøj",
+            "brand": None,
+            "materials": ["tekstil"],
+            "waste_category": "Tekstilaffald",
+            "confidence": 0.4,
+        },
+    ]
+
+    match = next(
+        (item for item in hints if any(keyword in normalized for keyword in item["keywords"])),
+        None,
+    )
+    if not match:
+        match = {
+            "object_name": "Ukendt testgenstand",
+            "category": "Blandet genstand",
+            "subcategory": None,
+            "brand": None,
+            "materials": [],
+            "waste_category": "Afhænger af materiale og lokal ordning",
+            "confidence": 0.25,
+        }
+
+    return {
+        "object_name": match["object_name"],
+        "category": match["category"],
+        "subcategory": match["subcategory"],
+        "brand": match["brand"],
+        "model": None,
+        "materials": match["materials"],
+        "visible_damage": [],
+        "condition_estimate": "unknown",
+        "confidence": match["confidence"],
+        "waste_category": match["waste_category"],
+        "uncertainty_notes": [
+            "Testversion: billedet er uploadet, men der er ikke brugt rigtig AI-genkendelse endnu.",
+            "Genstanden er kun groft foreslået ud fra filnavn, så bekræft oplysningerne i spørgsmålene.",
+        ],
+        "analysis_mode": "test",
+    }
 
 def analyze_with_openai(image_data_url):
     prompt = (
@@ -233,10 +315,39 @@ def normalize_assessment(data):
 
 
 def main():
-    server = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
-    print(f"Serving Cirkulær assistent on http://127.0.0.1:{PORT}")
+    server = ThreadingHTTPServer((HOST, PORT), Handler)
+    print("Serving Cirkulær assistent", flush=True)
+    print(f"  Local:   http://127.0.0.1:{PORT}", flush=True)
+    for url in get_lan_urls(PORT):
+        print(f"  Mobile:  {url}", flush=True)
+    if HOST in ("", "0.0.0.0"):
+        print("Open one of the Mobile URLs from a phone on the same Wi-Fi.", flush=True)
     server.serve_forever()
+
+
+def get_lan_urls(port):
+    urls = []
+    seen = set()
+    hostnames = {socket.gethostname(), socket.getfqdn()}
+
+    for hostname in hostnames:
+        try:
+            addresses = socket.getaddrinfo(hostname, port, type=socket.SOCK_STREAM)
+        except socket.gaierror:
+            continue
+
+        for family, _, _, _, sockaddr in addresses:
+            if family != socket.AF_INET:
+                continue
+            ip = sockaddr[0]
+            if ip.startswith("127.") or ip in seen:
+                continue
+            seen.add(ip)
+            urls.append(f"http://{ip}:{port}")
+
+    return urls
 
 
 if __name__ == "__main__":
     main()
+
