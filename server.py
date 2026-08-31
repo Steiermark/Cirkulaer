@@ -1,20 +1,22 @@
 import base64
+import html
 import json
 import os
 import re
 import socket
 import urllib.error
+import urllib.parse
 import urllib.request
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
 from decision_engine import build_recommendation
 
 
+
 HOST = os.environ.get("HOST", "0.0.0.0")
 PORT = int(os.environ.get("PORT", "4173"))
 MODEL = os.environ.get("OPENAI_MODEL", "gpt-5")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
-
 
 ASSESSMENT_SCHEMA = {
     "type": "object",
@@ -68,6 +70,10 @@ class Handler(SimpleHTTPRequestHandler):
             self.handle_recommend()
             return
 
+        if self.path == "/api/sale-assist":
+            self.handle_sale_assist()
+            return
+
         if self.path != "/api/analyze":
             self.send_json({"error": "Not found"}, status=404)
             return
@@ -87,29 +93,60 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_json({"error": str(exc)}, status=400)
         except Exception as exc:
             self.send_json({"error": str(exc)}, status=500)
+    def handle_sale_assist(self):
+        try:
+            payload = self.read_json_body()
+            assessment = payload.get("assessment")
+            answers = payload.get("answers") or {}
+            recommendation = payload.get("recommendation") or {}
+            if not isinstance(assessment, dict):
+                raise ValueError("Assessment skal sendes som objekt.")
+            if not isinstance(answers, dict) or not isinstance(recommendation, dict):
+                raise ValueError("Svar og anbefaling skal sendes som objekter.")
+
+            self.send_json({"sale": build_sale_assist(assessment, answers, recommendation)})
+        except ValueError as exc:
+            self.send_json({"error": str(exc)}, status=400)
+        except Exception as exc:
+            self.send_json({"error": str(exc)}, status=500)
 
     def handle_analyze(self):
         try:
             payload = self.read_json_body()
-            image_data_url = payload.get("imageDataUrl", "")
-            filename = payload.get("filename", "")
-            if not image_data_url.startswith("data:image/"):
-                raise ValueError("Upload et gyldigt billede.")
+            images = payload.get("images")
+            if isinstance(images, list):
+                image_items = images
+            else:
+                image_items = [
+                    {
+                        "filename": payload.get("filename", ""),
+                        "imageDataUrl": payload.get("imageDataUrl", ""),
+                    }
+                ]
+
+            image_items = image_items[:4]
+            image_data_urls = [item.get("imageDataUrl", "") for item in image_items]
+            filenames = [item.get("filename", "") for item in image_items]
+            if not image_data_urls or any(
+                not image_data_url.startswith("data:image/")
+                for image_data_url in image_data_urls
+            ):
+                raise ValueError("Upload 1-4 gyldige billeder.")
 
             if not OPENAI_API_KEY:
                 self.send_json(
                     {
-                        "assessment": build_test_assessment(filename),
+                        "assessment": build_test_assessment(" ".join(filenames)),
                         "mode": "test",
                         "message": (
-                            "Testversion: billedet er modtaget og vist, men objektet "
+                            "Testversion: billederne er modtaget og vist, men objektet "
                             "er vurderet med lokal testlogik, fordi OPENAI_API_KEY mangler."
                         ),
                     }
                 )
                 return
 
-            assessment = analyze_with_openai(image_data_url)
+            assessment = analyze_with_openai(image_data_urls)
             self.send_json({"assessment": assessment, "mode": "ai"})
         except ValueError as exc:
             self.send_json({"error": str(exc)}, status=400)
@@ -123,8 +160,8 @@ class Handler(SimpleHTTPRequestHandler):
 
     def read_json_body(self):
         length = int(self.headers.get("Content-Length", "0"))
-        if length > 9_000_000:
-            raise ValueError("Billedet er for stort til denne prototype.")
+        if length > 24_000_000:
+            raise ValueError("Billederne er for store til denne prototype.")
         raw = self.rfile.read(length)
         return json.loads(raw.decode("utf-8"))
 
@@ -180,6 +217,15 @@ def build_test_assessment(filename):
             "materials": ["tekstil"],
             "waste_category": "Tekstilaffald",
             "confidence": 0.4,
+        },        {
+            "keywords": ["cykel", "bike", "bicycle", "mountainbike", "racercykel", "elcykel"],
+            "object_name": "Cykel",
+            "category": "Cykel og fritid",
+            "subcategory": "Cykel",
+            "brand": None,
+            "materials": ["metal", "gummi", "plast"],
+            "waste_category": "Jern og metal eller storskrald",
+            "confidence": 0.46,
         },
     ]
 
@@ -216,10 +262,11 @@ def build_test_assessment(filename):
         "analysis_mode": "test",
     }
 
-def analyze_with_openai(image_data_url):
+def analyze_with_openai(image_data_urls):
     prompt = (
-        "Du analyserer et foto af en fysisk genstand for en dansk cirkulær "
-        "økonomi-assistent. "
+        "Du analyserer 1-4 fotos af den samme fysiske genstand for en dansk cirkulær "
+        "økonomi-assistent. Brug alle vinkler samlet. Hvis et foto viser en mærkeplade, "
+        "etiket eller original mærkning, skal du bruge den til at identificere producent, mærke og model. "
         "Gæt ikke på mærke eller model, hvis det ikke tydeligt fremgår. "
         "Kommunale affaldsregler må ikke opfindes. Brug kun en generel dansk "
         "affaldsfraktion, og skriv usikkerheder eksplicit. "
@@ -233,7 +280,10 @@ def analyze_with_openai(image_data_url):
                 "role": "user",
                 "content": [
                     {"type": "input_text", "text": prompt},
-                    {"type": "input_image", "image_url": image_data_url},
+                    *[
+                        {"type": "input_image", "image_url": image_data_url}
+                        for image_data_url in image_data_urls[:4]
+                    ],
                 ],
             }
         ],
@@ -313,6 +363,433 @@ def normalize_assessment(data):
         ),
     }
 
+def build_sale_assist(assessment, answers, recommendation):
+    query = build_sale_query(assessment, answers)
+    marketplace_url = build_marketplace_search_url(query)
+    search = search_price_signals(query)
+    estimate = estimate_sale_price(assessment, answers, search["prices"])
+    object_name = build_sale_object_name(assessment, answers)
+
+    return {
+        "object_name": object_name,
+        "details": build_sale_details(assessment, answers),
+        "price": estimate["label"],
+        "price_note": estimate["note"],
+        "search_note": search["note"],
+        "search_url": search["url"],
+        "marketplace_search_url": marketplace_url,
+        "ad_text": build_ad_text(object_name, assessment, answers, estimate),
+        "marketplace_note": (
+            "Direkte oprettelse på Facebook Marketplace kræver officiel adgang. "
+            "Facebook Marketplace bruges her som manuel priskontrol via søgelink. "
+            "I denne prototype kan annoncen kopieres og Marketplace åbnes manuelt."
+        ),
+        "signals": search["signals"],
+    }
+
+
+def build_sale_query(assessment, answers):
+    parts = [
+        producer_search_name(answers),
+        answers.get("model_name"),
+        assessment.get("brand"),
+        assessment.get("model"),
+        assessment.get("object_name"),
+        assessment.get("subcategory"),
+    ]
+    clean_parts = []
+    seen = set()
+    for part in parts:
+        value = normalize_search_terms(str(part or "").strip())
+        key = value.lower()
+        if value and key not in seen:
+            seen.add(key)
+            clean_parts.append(value)
+    query = " ".join(clean_parts)
+    return f"{query} brugt pris Danmark".strip()
+
+
+def normalize_search_terms(value):
+    replacements = {
+        "mardone": "Madone",
+        "Mardone": "Madone",
+        "etep": "eTap",
+        "Etep": "eTap",
+        "ETEP": "eTap",
+        "trek": "Trek",
+        "slr": "SLR",
+    }
+    for old, new in replacements.items():
+        value = value.replace(old, new)
+    return value
+
+def producer_search_name(answers):
+    producer_name = str(answers.get("producer_name") or "").strip()
+    if producer_name:
+        return producer_name
+
+    producer = str(answers.get("producer") or "").strip()
+    if producer == "ikea":
+        return "IKEA"
+    if producer and producer not in ("unknown", "other", "ved ikke", "anden"):
+        return producer
+    return ""
+
+def build_marketplace_search_url(query):
+    encoded_path = urllib.parse.quote(str(query or "").strip())
+    return f"https://www.facebook.com/marketplace/search/?query={encoded_path}"
+
+def build_sale_object_name(assessment, answers):
+    parts = [
+        producer_search_name(answers),
+        answers.get("model_name"),
+        assessment.get("brand"),
+        assessment.get("model"),
+        assessment.get("object_name"),
+    ]
+    seen = set()
+    clean_parts = []
+    for part in parts:
+        value = normalize_search_terms(str(part or "").strip())
+        key = value.lower()
+        if value and key not in seen:
+            seen.add(key)
+            clean_parts.append(value)
+    return " ".join(clean_parts) or "Genstand"
+
+
+def build_sale_details(assessment, answers):
+    details = []
+    category = assessment.get("category")
+    condition = answers.get("damage")
+    works = answers.get("works")
+    if category:
+        details.append(str(category))
+    if works == "yes":
+        details.append("virker")
+    elif works == "partly":
+        details.append("virker delvist")
+    elif works == "no":
+        details.append("virker ikke")
+    if condition == "no":
+        details.append("ingen kendte skader")
+    elif condition == "minor":
+        details.append("mindre skader/slitage")
+    elif condition == "major":
+        details.append("store skader")
+    return " · ".join(details)
+
+
+def search_price_signals(query):
+    encoded = urllib.parse.quote_plus(query)
+    url = f"https://duckduckgo.com/html/?q={encoded}"
+    request = urllib.request.Request(
+        url,
+        headers={"User-Agent": "Mozilla/5.0 CirkulaerPrototype/1.0"},
+        method="GET",
+    )
+
+    try:
+        with urllib.request.urlopen(request, timeout=12) as response:
+            page = response.read().decode("utf-8", errors="replace")
+    except Exception:
+        return {
+            "url": f"https://www.google.com/search?q={encoded}",
+            "prices": [],
+            "signals": [],
+            "note": "Net-søgningen kunne ikke gennemføres fra prototypen. Linket åbner en manuel søgning efter lignende genstande.",
+        }
+
+    signals = extract_search_signals(page)
+    prices = extract_prices(page)
+    note = (
+        f"Prisforslaget er baseret på en web-søgning efter: {query}. Brug også Facebook Marketplace-linket til at sammenligne lokale annoncer. "
+        if prices
+        else "Der blev ikke fundet tydelige danske prisangivelser i web-søgningen. Brug web-linket og Facebook Marketplace-linket til manuel priskontrol. "
+    )
+    return {"url": url, "prices": prices, "signals": signals, "note": note}
+
+
+def extract_search_signals(page):
+    titles = re.findall(r'class="result__a"[^>]*>(.*?)</a>', page, flags=re.DOTALL)
+    clean = []
+    for title in titles[:5]:
+        text = re.sub(r"<.*?>", " ", title)
+        text = html.unescape(re.sub(r"\s+", " ", text)).strip()
+        if text:
+            clean.append(text)
+    return clean
+
+
+def extract_prices(text):
+    prices = []
+    for match in re.findall(r"(?<!\d)(\d{2,6}(?:[\.,]\d{3})?)\s*(?:kr\.?|dkk|,-)", text, flags=re.IGNORECASE):
+        value = int(re.sub(r"\D", "", match))
+        if 25 <= value <= 50000:
+            prices.append(value)
+
+    for match in re.findall(r"(?<!\d)(\d{1,3})\s*(?:tusind|t\.kr\.?|k)\b", text, flags=re.IGNORECASE):
+        value = int(match) * 1000
+        if 1000 <= value <= 100000:
+            prices.append(value)
+
+    return sorted(prices[:30])
+
+
+def estimate_sale_price(assessment, answers, prices):
+    category = str(assessment.get("category") or "").lower()
+    object_name = str(assessment.get("object_name") or "").lower()
+    text = " ".join(
+        str(value or "").lower()
+        for value in [
+            category,
+            object_name,
+            assessment.get("subcategory"),
+            answers.get("producer_name"),
+            answers.get("model_name"),
+        ]
+    )
+    is_bicycle = "cykel" in text or "bike" in text
+
+    if is_bicycle:
+        return estimate_bicycle_price(answers, prices)
+
+    if prices:
+        filtered = trim_price_outliers(prices, minimum=50, maximum=20000)
+        midpoint = filtered[len(filtered) // 2]
+        low = round_to_nearest_25(midpoint * 0.8)
+        high = round_to_nearest_25(midpoint * 1.15)
+        quick = round_to_nearest_25(midpoint * 0.7)
+        return {
+            "label": f"Sæt prisen til {round_to_nearest_50(midpoint)} kr.",
+            "note": f"Pris sat ud fra medianen af lignende webfund. Realistisk spænd: {low}-{high} kr. Hurtigt salg kan fx ligge omkring {quick} kr. Kontrollér aktive annoncer og stand før publicering.",
+        }
+
+    if "møbel" in category or "møbler" in category:
+        low, high = 200, 900
+    elif "elektronik" in category:
+        low, high = 150, 700
+    else:
+        low, high = 100, 500
+
+    if answers.get("damage") == "minor":
+        low, high = round_to_nearest_25(low * 0.75), round_to_nearest_25(high * 0.75)
+    if answers.get("damage") == "major" or answers.get("works") == "partly":
+        low, high = round_to_nearest_25(low * 0.5), round_to_nearest_25(high * 0.55)
+
+    return {
+        "label": f"Sæt prisen til {round_to_nearest_50((low + high) / 2)} kr.",
+        "note": f"Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: {low}-{high} kr.",
+    }
+
+
+def estimate_bicycle_price(answers, prices):
+    if is_premium_bicycle(answers):
+        return estimate_premium_bicycle_price(answers, prices)
+
+    filtered = trim_price_outliers(prices, minimum=450, maximum=15000)
+    working = answers.get("works") == "yes"
+    minor_or_better = answers.get("damage") in ("no", "minor", None, "unknown")
+    complete = answers.get("accessories") in ("complete", "irrelevant", None)
+    known_model = bool(str(producer_search_name(answers) or "").strip() or str(answers.get("model_name") or "").strip())
+
+    if filtered:
+        midpoint = filtered[len(filtered) // 2]
+        low_factor, high_factor, quick_factor = 0.82, 1.28, 0.72
+        if working and minor_or_better and complete:
+            midpoint = max(midpoint, 1900 if known_model else 1500)
+            low_factor, high_factor, quick_factor = 0.8, 1.35, 0.68
+        low = round_to_nearest_50(midpoint * low_factor)
+        high = round_to_nearest_50(midpoint * high_factor)
+        quick = round_to_nearest_50(midpoint * quick_factor)
+        return {
+            "label": f"Sæt prisen til {round_to_nearest_50(midpoint)} kr.",
+            "note": f"Pris sat ud fra medianen af lignende cykelpriser og justeret efter stand, komplethed og modeloplysninger. Realistisk spænd: {low}-{high} kr. Hurtigt salg kan fx ligge omkring {quick} kr.; meget slidte cykler kan ligge lavere.",
+        }
+
+    if working and minor_or_better and complete:
+        low, high, quick = (1500, 3000, 1200) if known_model else (1200, 2400, 900)
+    elif answers.get("works") == "partly" or answers.get("damage") == "major":
+        low, high, quick = 400, 1100, 300
+    else:
+        low, high, quick = 800, 1800, 600
+
+    return {
+        "label": f"Sæt prisen til {round_to_nearest_50((low + high) / 2)} kr.",
+        "note": f"Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: {low}-{high} kr. Hurtigt salg kan fx ligge omkring {quick} kr.",
+    }
+
+
+def is_premium_bicycle(answers):
+    text = " ".join(
+        str(value or "").lower()
+        for value in [
+            answers.get("producer"),
+            answers.get("producer_name"),
+            answers.get("model_name"),
+        ]
+    )
+    text = text.replace("mardone", "madone").replace("etep", "etap")
+    producer_hit = any(brand in text for brand in ("trek", "specialized", "cannondale", "pinarello", "cervelo", "bmc", "canyon"))
+    premium_hit = any(term in text for term in ("madone", "slr", "etap", "axs", "di2", "dura ace", "ultegra", "carbon", "racercykel"))
+    return producer_hit and premium_hit
+
+
+def estimate_premium_bicycle_price(answers, prices):
+    filtered = trim_price_outliers(prices, minimum=12000, maximum=80000)
+    working = answers.get("works") == "yes"
+    major_issue = answers.get("damage") == "major" or answers.get("works") == "partly"
+
+    if filtered:
+        midpoint = filtered[len(filtered) // 2]
+        low = round_to_nearest_500(midpoint * (0.75 if major_issue else 0.85))
+        high = round_to_nearest_500(midpoint * (1.1 if major_issue else 1.25))
+        quick = round_to_nearest_500(midpoint * (0.65 if major_issue else 0.75))
+        return {
+            "label": f"Sæt prisen til {round_to_nearest_500(midpoint)} kr.",
+            "note": f"Pris sat ud fra medianen af lignende premium-racercykler fundet online. Realistisk spænd: {low}-{high} kr. Hurtigt salg kan fx ligge omkring {quick} kr.; årgang, størrelse, hjul, geargruppe og dokumentation betyder meget.",
+        }
+
+    if major_issue:
+        low, high, quick = 12000, 22000, 10000
+    elif working:
+        low, high, quick = 24000, 45000, 22000
+    else:
+        low, high, quick = 18000, 35000, 16000
+
+    return {
+        "label": f"Sæt prisen til {round_to_nearest_500((low + high) / 2)} kr.",
+        "note": f"Premium-racercykelestimat baseret på producent/model, fordi der ikke blev fundet nok brugbare webpriser. Realistisk spænd: {low}-{high} kr. Kontrollér især årgang, stelstørrelse, hjulsæt, SRAM/Shimano-gruppe og stand. Hurtigt salg kan fx ligge omkring {quick} kr.",
+    }
+
+
+def round_to_nearest_500(value):
+    return int(round(float(value) / 500) * 500)
+
+def trim_price_outliers(prices, minimum, maximum):
+    filtered = sorted(price for price in prices if minimum <= price <= maximum)
+    if len(filtered) >= 5:
+        return filtered[1:-1]
+    return filtered
+
+
+def round_to_nearest_25(value):
+    return int(round(float(value) / 25) * 25)
+
+def round_to_nearest_50(value):
+    return int(round(float(value) / 50) * 50)
+
+
+def build_ad_text(object_name, assessment, answers, estimate):
+    title = build_ad_title(object_name, answers)
+    details = build_sale_details(assessment, answers)
+    feature_lines = build_ad_feature_lines(assessment, answers)
+    condition_lines = build_ad_condition_lines(answers)
+    sales_points = build_ad_sales_points(assessment, answers)
+
+    lines = [
+        title,
+        "",
+        f"Pris: {estimate['label']}",
+        "",
+        f"Jeg sælger {object_name}. Den er vurderet i appen ud fra billeder, producent/model og de oplysninger, der er indtastet.",
+    ]
+
+    if sales_points:
+        lines.extend(["", "Kort fortalt:"])
+        lines.extend([f"- {point}" for point in sales_points])
+
+    if feature_lines:
+        lines.extend(["", "Oplysninger:"])
+        lines.extend([f"- {line}" for line in feature_lines])
+
+    if details or condition_lines:
+        lines.extend(["", "Stand:"])
+        if details:
+            lines.append(f"- {details}.")
+        lines.extend([f"- {line}" for line in condition_lines])
+
+    lines.extend(
+        [
+            "",
+            "Prisforslaget er sat ud fra lignende annoncer og bør sammenholdes med aktuel stand, alder, kvittering, servicehistorik og markedet lige nu.",
+            "",
+            "Kan afhentes efter aftale. Skriv gerne ved spørgsmål, hvis du vil se flere billeder, eller hvis du ønsker at aftale besigtigelse.",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def build_ad_title(object_name, answers):
+    if is_premium_bicycle(answers):
+        return f"{object_name} - high-end racercykel sælges"
+    return f"{object_name} sælges"
+
+
+def build_ad_feature_lines(assessment, answers):
+    lines = []
+    producer = producer_search_name(answers) or assessment.get("brand")
+    model = answers.get("model_name") or assessment.get("model")
+    category = assessment.get("category")
+    materials = assessment.get("materials") or []
+
+    if producer:
+        lines.append(f"Producent/mærke: {normalize_search_terms(str(producer))}")
+    if model:
+        lines.append(f"Model/serie: {normalize_search_terms(str(model))}")
+    if category:
+        lines.append(f"Kategori: {category}")
+    if materials:
+        lines.append(f"Synlige/materialemæssige oplysninger: {', '.join(str(item) for item in materials)}")
+
+    if is_premium_bicycle(answers):
+        text = " ".join(str(value or "").lower() for value in [producer, model, answers.get("producer_name")])
+        text = text.replace("mardone", "madone").replace("etep", "etap")
+        if "madone" in text:
+            lines.append("Modeltype: Trek Madone aero-racercykel")
+        if "slr" in text:
+            lines.append("SLR-serien indikerer Treks lette carbon-topplatform")
+        if "etap" in text or "axs" in text:
+            lines.append("Geargruppe: elektronisk SRAM eTap/AXS skal kontrolleres og nævnes i annoncen")
+        lines.append("Angiv gerne årgang, stelstørrelse, hjulsæt, servicehistorik og kvittering for at styrke annoncen")
+
+    return lines
+
+
+def build_ad_condition_lines(answers):
+    lines = []
+    if answers.get("accessories") == "complete":
+        lines.append("Tilbehør: komplet ifølge sælgers oplysninger.")
+    elif answers.get("accessories") == "partial":
+        lines.append("Tilbehør: noget følger med; skriv præcist hvad der er inkluderet.")
+    elif answers.get("accessories") == "missing":
+        lines.append("Tilbehør: noget mangler; nævn manglerne tydeligt.")
+
+    if answers.get("damage") == "minor":
+        lines.append("Der er mindre brugsspor/slitage; tag gerne nærbilleder af de steder, køber bør se.")
+    elif answers.get("damage") == "major":
+        lines.append("Der er større fejl eller skader; beskriv dem tydeligt og justér prisen derefter.")
+    elif answers.get("damage") == "no":
+        lines.append("Ingen kendte skader oplyst.")
+
+    return lines
+
+
+def build_ad_sales_points(assessment, answers):
+    if is_premium_bicycle(answers):
+        return [
+            "Relevant for købere, der søger en let og hurtig landevejs-/aero-racercykel",
+            "Producent og model er vigtige for prisen og bør stå tydeligt i titel og første linje",
+            "Prisniveau afhænger især af årgang, stelstørrelse, hjul, geargruppe, stand og dokumentation",
+        ]
+
+    category = str(assessment.get("category") or "").lower()
+    if "cykel" in category:
+        return [
+            "God til købere, der leder efter en brugbar cykel frem for et reparationsprojekt",
+            "Nævn størrelse, gear, bremser og eventuelt service, hvis du kender det",
+        ]
+    return []
 
 def main():
     server = ThreadingHTTPServer((HOST, PORT), Handler)
@@ -350,4 +827,18 @@ def get_lan_urls(port):
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

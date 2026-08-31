@@ -1,6 +1,9 @@
 const state = {
-  imageFile: null,
+  imageFiles: [],
+  previewUrls: [],
   assessment: null,
+  recommendation: null,
+  saleDraft: null,
   answers: {},
 };
 
@@ -44,6 +47,105 @@ const categoryHints = [
     materials: ["plast", "metal", "elektronik"],
     waste_category: "Småt elektronik",
     confidence: 0.66,
+  },  {
+    keywords: ["cykel", "bike", "bicycle", "mountainbike", "racercykel", "elcykel"],
+    object_name: "Cykel",
+    category: "Cykel og fritid",
+    materials: ["metal", "gummi", "plast"],
+    waste_category: "Jern og metal eller storskrald",
+    confidence: 0.58,
+  },
+];
+const wasteSortingItems = [
+  {
+    key: "electronics",
+    keywords: ["elektronik", "telefon", "mobil", "boremaskine", "akku", "apparat", "batteri", "ledning"],
+    title: "Elektronik",
+    type: "Elektronik / elværktøj",
+    recommendation: "Aflever som elektronik",
+    fraction: "Elektronik",
+    container: "Elektronikbur",
+    placement: "Zone C, række 4",
+    note: "Må ikke i restaffald. Batterier, lader og kabler afleveres sammen med eller separat efter lokal anvisning.",
+    impact: "Korrekt aflevering gør det muligt at genanvende metaller og håndtere batterier sikkert.",
+    steps: ["Fjern personlige data hvis relevant", "Tag løse batterier ud hvis det kan gøres sikkert", "Aflever i elektronikområdet"],
+    actions: [
+      { label: "Aflever", detail: "Elektronik på genbrugspladsen" },
+      { label: "Fjern batteri", detail: "Kun hvis det er let og sikkert" },
+      { label: "Spørg personalet", detail: "Ved store eller beskadigede batterier" },
+    ],
+  },
+  {
+    key: "furniture",
+    keywords: ["møbel", "møbler", "stol", "bord", "sofa", "reol", "skab", "træ", "inventar"],
+    title: "Møbel eller indbo",
+    type: "Møbel / inventar",
+    recommendation: "Vælg direkte genbrug hvis den kan bruges, ellers storskrald",
+    fraction: "Direkte genbrug eller storskrald",
+    container: "Genbrugscontainer / storskrald",
+    placement: "Zone A ved byttepunkt eller storskraldsområdet",
+    note: "Brug direkte genbrug, hvis andre kan bruge genstanden. Vælg storskrald, når den er defekt eller ikke kan genbruges.",
+    impact: "Genbrug bevarer mest værdi; korrekt sortering reducerer fejlaflevering.",
+    steps: ["Vurder om møblet kan bruges af andre", "Fjern løse dele og glas hvis nødvendigt", "Spørg personalet ved blandede materialer"],
+    actions: [
+      { label: "Direkte genbrug", detail: "Hvis den stadig kan bruges" },
+      { label: "Storskrald", detail: "Hvis den er defekt eller ødelagt" },
+      { label: "Adskil dele", detail: "Metal, glas eller træ kan høre til egne fraktioner" },
+    ],
+  },
+  {
+    key: "bicycle",
+    keywords: ["cykel", "bike", "racercykel", "mountainbike", "elcykel"],
+    title: "Cykel",
+    type: "Cykel / metal og dele",
+    recommendation: "Aflever som metal eller direkte genbrug afhængigt af stand",
+    fraction: "Jern og metal eller direkte genbrug",
+    container: "Metalcontainer / byttepunkt",
+    placement: "Metalområdet eller byttepunktet",
+    note: "En cykel, der ikke kan repareres eller sælges, afleveres typisk som metal. Elcykler og batterier skal håndteres som elektronik/batteri.",
+    impact: "Metal kan genanvendes, og brugbare cykler bør først forsøges givet videre.",
+    steps: ["Fjern lås og personlige dele", "Tag batteri af elcykel hvis relevant", "Aflever stel og metaldele i metalområdet"],
+    actions: [
+      { label: "Metal", detail: "Defekt cykel uden realistisk genbrug" },
+      { label: "Direkte genbrug", detail: "Hvis nogen kan bruge eller reparere den" },
+      { label: "Batteri separat", detail: "Gælder elcykler" },
+    ],
+  },
+  {
+    key: "textile",
+    keywords: ["tekstil", "tøj", "jakke", "bukser", "trøje", "sko"],
+    title: "Tekstil eller tøj",
+    type: "Tekstil",
+    recommendation: "Sorter efter om det er brugbart eller ødelagt",
+    fraction: "Tekstil",
+    container: "Tekstilcontainer",
+    placement: "Zone B ved indkørsel",
+    note: "Rent brugbart tøj doneres. Ødelagt tekstil afleveres som tekstilaffald efter lokal ordning.",
+    impact: "Korrekt tekstilsortering kan give genbrug eller materialegenanvendelse.",
+    steps: ["Sørg for at tekstilet er rent og tørt", "Pak det i pose hvis krævet", "Hold vådt eller forurenet tekstil adskilt"],
+    actions: [
+      { label: "Donér", detail: "Kun rent og brugbart" },
+      { label: "Tekstilaffald", detail: "Ødelagt men rent og tørt" },
+      { label: "Restaffald", detail: "Kun stærkt forurenet tekstil" },
+    ],
+  },
+  {
+    key: "hazardous",
+    keywords: ["maling", "kemi", "olie", "spray", "lak", "farligt"],
+    title: "Farligt affald",
+    type: "Kemi / farligt affald",
+    recommendation: "Aflever sikkert",
+    fraction: "Farligt affald",
+    container: "Miljøstation",
+    placement: "Zone D, bemandet modtagelse",
+    note: "Farligt affald må ikke hældes i afløb eller lægges i restaffald. Bevar original mærkning, hvis muligt.",
+    impact: "Sikker aflevering beskytter jord, vand og restaffaldssystemet.",
+    steps: ["Hold emballagen lukket", "Bevar mærkningen", "Aflever ved farligt affald eller spørg personalet"],
+    actions: [
+      { label: "Aflever", detail: "Farligt affald i lukket emballage" },
+      { label: "Spørg personalet", detail: "Hvis indholdet er ukendt" },
+      { label: "Bland ikke", detail: "Kemikalier må ikke blandes" },
+    ],
   },
 ];
 
@@ -51,37 +153,85 @@ const imageInput = document.querySelector("#image-input");
 const analyzeButton = document.querySelector("#analyze-button");
 const recommendButton = document.querySelector("#recommend-button");
 const restartButton = document.querySelector("#restart-button");
+const openSaleButton = document.querySelector("#open-sale-button");
+const openWasteButton = document.querySelector("#open-waste-button");
+const copyAdButton = document.querySelector("#copy-ad-button");
+const backToResultButton = document.querySelector("#back-to-result-button");
+const recommendationPanel = document.querySelector(".recommendation");
+const openSitePanelButton = document.querySelector("#open-site-panel-button");
+const openSortingSearchButton = document.querySelector("#open-sorting-search-button");
+const backFromWasteButton = document.querySelector("#back-from-waste-button");
+const closeSitePanelButton = document.querySelector("#close-site-panel-button");
+const closeSortingSearchButton = document.querySelector("#close-sorting-search-button");
+const sortingSiteSelect = document.querySelector("#sorting-site-select");
+const sortingSearchInput = document.querySelector("#sorting-search-input");
 
 imageInput.addEventListener("change", handleImage);
 analyzeButton.addEventListener("click", analyzeImage);
 recommendButton.addEventListener("click", recommend);
 restartButton.addEventListener("click", restart);
+openSaleButton.addEventListener("click", openSalePage);
+openWasteButton.addEventListener("click", openWasteSortingPage);
+copyAdButton.addEventListener("click", copyAdText);
+openSitePanelButton.addEventListener("click", () => toggleSortingPanel("site", true));
+openSortingSearchButton.addEventListener("click", () => toggleSortingPanel("search", true));
+backFromWasteButton.addEventListener("click", () => {
+  document.querySelector("#waste-sorting-screen").classList.add("hidden");
+  document.querySelector("#result-screen").scrollIntoView({ behavior: "smooth" });
+});
+closeSitePanelButton.addEventListener("click", () => toggleSortingPanel("site", false));
+closeSortingSearchButton.addEventListener("click", () => toggleSortingPanel("search", false));
+sortingSiteSelect.addEventListener("change", () => {
+  document.querySelector("#sorting-selected-site").textContent = sortingSiteSelect.value;
+});
+sortingSearchInput.addEventListener("input", () => renderSortingSuggestions(sortingSearchInput.value));
+recommendationPanel.addEventListener("click", () => {
+  if (state.recommendation?.recommended_action === "sell") {
+    openSalePage();
+  }
+});
+backToResultButton.addEventListener("click", () => {
+  document.querySelector("#sale-screen").classList.add("hidden");
+  document.querySelector("#result-screen").scrollIntoView({ behavior: "smooth" });
+});
 
 function handleImage(event) {
-  const [file] = event.target.files;
-  if (!file) return;
+  const files = Array.from(event.target.files || [])
+    .filter((file) => file.type.startsWith("image/"))
+    .slice(0, 4);
 
-  state.imageFile = file;
-  const preview = document.querySelector("#image-preview");
-  preview.src = URL.createObjectURL(file);
-  document.querySelector("#preview-wrap").classList.remove("hidden");
-  analyzeButton.disabled = false;
+  clearPreviewUrls();
+  state.imageFiles = files;
+  renderImagePreviews(files);
+  analyzeButton.disabled = files.length === 0;
+
+  if (event.target.files.length > 4) {
+    setStatus("Der bruges højst 4 billeder i analysen.");
+  } else {
+    hideStatus();
+  }
 }
 
 async function analyzeImage() {
-  if (!state.imageFile) return;
+  if (!state.imageFiles.length) return;
 
-  setStatus("Analyserer billedet...");
+  setStatus(`Analyserer ${state.imageFiles.length} billede${state.imageFiles.length === 1 ? "" : "r"}...`);
   analyzeButton.disabled = true;
 
   try {
-    const imageDataUrl = await fileToDataUrl(state.imageFile);
+    const images = await Promise.all(
+      state.imageFiles.map(async (file) => ({
+        filename: file.name,
+        imageDataUrl: await fileToDataUrl(file),
+      })),
+    );
     const response = await fetch(new URL("/api/analyze", window.location.href), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        filename: state.imageFile.name,
-        imageDataUrl,
+        filename: state.imageFiles.map((file) => file.name).join(", "),
+        images,
+        imageDataUrls: images.map((image) => image.imageDataUrl),
       }),
     });
 
@@ -165,6 +315,8 @@ function renderQuestions(assessment) {
       const id = `${question.id}-${option.value}`;
       const label = document.createElement("label");
       label.setAttribute("for", id);
+      label.dataset.question = question.id;
+      label.dataset.value = option.value;
 
       const input = document.createElement("input");
       input.type = "radio";
@@ -175,6 +327,12 @@ function renderQuestions(assessment) {
       state.answers[question.id] = state.answers[question.id] || option.value;
       input.addEventListener("change", () => {
         state.answers[question.id] = option.value;
+        if (question.id === "reason") {
+          syncWorksOptions();
+        }
+        if (question.id === "producer") {
+          syncProducerDetails();
+        }
       });
 
       const span = document.createElement("span");
@@ -185,12 +343,122 @@ function renderQuestions(assessment) {
     });
 
     fieldset.appendChild(choices);
+
+    if (question.id === "producer" && shouldAskForProducerDetails(assessment)) {
+      fieldset.appendChild(buildProducerDetailsFields());
+    }
+
     form.appendChild(fieldset);
   });
+
+  syncWorksOptions();
+  syncProducerDetails();
 }
 
+function shouldAskForProducerDetails(assessment) {
+  return !String(assessment?.brand || "").trim() && !String(assessment?.model || "").trim();
+}
+
+function buildProducerDetailsFields() {
+  const container = document.createElement("div");
+  container.className = "producer-details hidden";
+  container.id = "producer-details";
+
+  const producerLabel = document.createElement("label");
+  producerLabel.textContent = "Producent";
+  const producerInput = document.createElement("input");
+  producerInput.type = "text";
+  producerInput.name = "producer_name";
+  producerInput.id = "producer-name";
+  producerInput.autocomplete = "organization";
+  producerInput.placeholder = "Fx Kildemoes, Trek eller andet mærke";
+  producerInput.addEventListener("input", () => {
+    state.answers.producer_name = producerInput.value.trim();
+  });
+  producerLabel.appendChild(producerInput);
+
+  const modelLabel = document.createElement("label");
+  modelLabel.textContent = "Model";
+  const modelInput = document.createElement("input");
+  modelInput.type = "text";
+  modelInput.name = "model_name";
+  modelInput.id = "model-name";
+  modelInput.autocomplete = "off";
+  modelInput.placeholder = "Model, serie eller typenavn hvis du kender det";
+  modelInput.addEventListener("input", () => {
+    state.answers.model_name = modelInput.value.trim();
+  });
+  modelLabel.appendChild(modelInput);
+
+  container.append(producerLabel, modelLabel);
+  return container;
+}
+
+function syncProducerDetails() {
+  const container = document.querySelector("#producer-details");
+  if (!container) return;
+
+  const showDetails = state.answers.producer === "other";
+  container.classList.toggle("hidden", !showDetails);
+  container.hidden = !showDetails;
+  container.querySelectorAll("input").forEach((input) => {
+    input.disabled = !showDetails;
+    if (!showDetails) {
+      input.value = "";
+      state.answers[input.name] = "";
+    }
+  });
+}
+function syncWorksOptions() {
+  const reason = state.answers.reason;
+  const yesChoice = document.querySelector('label[data-question="works"][data-value="yes"]');
+  const yesInput = document.querySelector('input[name="works"][value="yes"]');
+  const noInput = document.querySelector('input[name="works"][value="no"]');
+  const hideWorkingYes = reason === "defect";
+
+  if (!yesChoice || !yesInput) return;
+
+  yesChoice.classList.toggle("hidden", hideWorkingYes);
+  yesChoice.hidden = hideWorkingYes;
+  yesInput.disabled = hideWorkingYes;
+
+  if (hideWorkingYes && yesInput.checked) {
+    yesInput.checked = false;
+    if (noInput) {
+      noInput.checked = true;
+      state.answers.works = "no";
+    }
+  }
+}
+
+function questionObjectLabel(assessment) {
+  const name = String(assessment?.object_name || "").trim();
+  if (!name || /^ukendt/i.test(name)) return "genstanden";
+
+  const normalized = name.toLowerCase();
+  const knownDefiniteForms = {
+    "akkuboremaskine": "akkuboremaskinen",
+    "boremaskine": "boremaskinen",
+    "cykel": "cyklen",
+    "kaffemaskine": "kaffemaskinen",
+    "mobiltelefon": "mobiltelefonen",
+    "mindre elektrisk apparat": "det mindre elektriske apparat",
+    "møbel": "møblet",
+    "sofa": "sofaen",
+    "tekstil eller tøj": "tekstilet eller tøjet",
+  };
+
+  if (knownDefiniteForms[normalized]) return knownDefiniteForms[normalized];
+  if (normalized.includes(" eller ")) return "genstanden";
+  if (normalized.endsWith("el")) return `${normalized.slice(0, -2)}len`;
+  if (normalized.endsWith("e")) return `${normalized}n`;
+  if (normalized.endsWith("a")) return `${normalized}en`;
+  return `${normalized}en`;
+}
 function buildQuestions(assessment) {
+  const objectLabel = questionObjectLabel(assessment);
   const isElectronics = assessment.category.includes("Elektronik");
+  const isFurniture = /Møbler|Møbel|Moebler|Mobler/i.test(assessment.category);
   const producerOptions = assessment.brand?.toLowerCase().includes("ikea")
     ? [{ value: "ikea", label: "IKEA" }, { value: "unknown", label: "Ved ikke" }]
     : [
@@ -202,7 +470,7 @@ function buildQuestions(assessment) {
   const questions = [
     {
       id: "reason",
-      label: "Hvorfor vil du af med genstanden?",
+      label: `Hvorfor vil du af med ${objectLabel}?`,
       options: [
         { value: "defect", label: "Defekt" },
         { value: "no_need", label: "Bruger den ikke" },
@@ -219,7 +487,7 @@ function buildQuestions(assessment) {
     },
     {
       id: "works",
-      label: "Virker genstanden?",
+      label: `Virker ${objectLabel}?`,
       options: [
         { value: "yes", label: "Ja" },
         { value: "partly", label: "Delvist" },
@@ -229,7 +497,7 @@ function buildQuestions(assessment) {
     },
     {
       id: "age",
-      label: "Hvor gammel virker den?",
+      label: `Hvor gammel er ${objectLabel}?`,
       options: [
         { value: "newer", label: "Nyere" },
         { value: "mid", label: "Mellem" },
@@ -259,6 +527,19 @@ function buildQuestions(assessment) {
     },
   ];
 
+  if (isFurniture) {
+    questions.push({
+      id: "cleaning",
+      label: "Kan rensning eller klargøring løfte standen?",
+      options: [
+        { value: "light", label: "Let rens" },
+        { value: "deep", label: "Grundig rens" },
+        { value: "no", label: "Nej" },
+        { value: "unknown", label: "Ved ikke" },
+      ],
+    });
+  }
+
   if (isElectronics) {
     questions.push({
       id: "battery",
@@ -272,15 +553,12 @@ function buildQuestions(assessment) {
     });
   }
 
-  return questions.slice(0, isElectronics ? 7 : 6);
+  return questions.slice(0, isElectronics ? 7 : isFurniture ? 7 : 6);
 }
 
 async function recommend() {
   const assessment = state.assessment;
-  const answers = new FormData(document.querySelector("#question-form"));
-  answers.forEach((value, key) => {
-    state.answers[key] = value;
-  });
+  collectAnswersFromForm();
 
   recommendButton.disabled = true;
   recommendButton.textContent = "Finder anbefaling...";
@@ -308,6 +586,7 @@ async function recommend() {
 }
 
 function renderResult(result) {
+  state.recommendation = result;
   const badge = document.querySelector("#action-badge");
   badge.textContent = result.options.find(
     (option) => option.key === result.recommended_action,
@@ -318,30 +597,312 @@ function renderResult(result) {
   document.querySelector("#result-reasoning").textContent = result.reasoning;
 
   renderDecisionPath(result.decision_path || []);
-  renderChecks(result.checks || []);
+  renderChecks(result.checks || [], result.recommended_action);
   renderImpact(result.impact, result.confidence);
   renderProducerProgram(result.producer_program);
 
-  const options = document.querySelector("#options-list");
-  options.innerHTML = "";
-  result.options.forEach((option, index) => {
-    const item = document.createElement("div");
-    item.className = "option";
-    item.innerHTML = `
-      <span class="option-number">${index + 1}</span>
-      <div>
-        <strong>${option.label}</strong>
-        <p>${option.description}</p>
-      </div>
-    `;
-    options.appendChild(item);
-  });
+  openSaleButton.classList.toggle("hidden", result.recommended_action !== "sell");
+  openWasteButton.classList.toggle("hidden", !["sell", "donate"].includes(result.recommended_action));
+  recommendationPanel.classList.toggle("clickable", result.recommended_action === "sell");
+  recommendationPanel.title = result.recommended_action === "sell" ? "Åbn salgsforslag" : "";
 
   document.querySelector("#waste-category").textContent = result.waste.general_fraction;
   document.querySelector("#waste-note").textContent = result.waste.note;
-  document.querySelector("#waste-box").classList.remove("hidden");
+  document.querySelector("#waste-box").classList.add("hidden");
+  if (result.recommended_action === "waste") {
+    openWasteSortingPage();
+  } else {
+    document.querySelector("#waste-sorting-screen").classList.add("hidden");
+  }
 }
 
+function openWasteSortingPage(item = null) {
+  const sortingItem = item || buildWasteSortingItem(state.assessment, state.recommendation);
+  renderWasteSortingPage(sortingItem);
+  renderSortingSuggestions("");
+  show("#waste-sorting-screen");
+  document.querySelector("#waste-sorting-screen").scrollIntoView({ behavior: "smooth" });
+}
+
+function buildWasteSortingItem(assessment, recommendation) {
+  const sourceText = [
+    assessment?.object_name,
+    assessment?.category,
+    assessment?.subcategory,
+    assessment?.waste_category,
+    ...(Array.isArray(assessment?.materials) ? assessment.materials : []),
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  const match = wasteSortingItems.find((item) =>
+    item.keywords.some((keyword) => sourceText.includes(keyword)),
+  );
+  const base = match || {
+    key: "general",
+    title: assessment?.object_name || recommendation?.object_name || "Genstand",
+    type: assessment?.category || "Ukendt kategori",
+    recommendation: "Sortér efter materiale og lokal anvisning",
+    fraction: assessment?.waste_category || "Afhænger af materiale og lokal ordning",
+    container: "Spørg personalet eller brug kommunens sorteringsguide",
+    placement: "Bemandet modtagelse eller relevant container",
+    note: "Dette er generel vejledning. Kommunespecifik sortering skal verificeres lokalt.",
+    impact: "Korrekt sortering reducerer fejlaflevering og øger mulighed for genanvendelse.",
+    steps: ["Tjek materialer", "Fjern batterier eller farlige dele", "Spørg personalet ved tvivl"],
+    actions: [
+      { label: "Spørg personalet", detail: "Ved uklar fraktion" },
+      { label: "Tjek lokal guide", detail: "Kommuneregler kan variere" },
+      { label: "Hold farligt affald separat", detail: "Batterier, kemi og elektronik" },
+    ],
+  };
+
+  return {
+    ...base,
+    title: assessment?.object_name && !/^ukendt/i.test(assessment.object_name) ? assessment.object_name : base.title,
+    type: assessment?.category || base.type,
+    confidence: Math.round((assessment?.confidence || 0.45) * 100),
+  };
+}
+
+function renderWasteSortingPage(item) {
+  document.querySelector("#sorting-object-name").textContent = item.title;
+  document.querySelector("#sorting-object-type").textContent = `${item.type}. ${item.recommendation}. ${item.impact}`;
+  document.querySelector("#sorting-confidence-meter").value = item.confidence;
+  document.querySelector("#sorting-confidence-label").textContent = `${item.confidence}%`;
+  document.querySelector("#sorting-container").textContent = item.container;
+  document.querySelector("#sorting-placement").textContent = item.placement;
+  document.querySelector("#sorting-fraction").textContent = item.fraction;
+  document.querySelector("#sorting-note").textContent = item.note;
+
+  const actions = document.querySelector("#sorting-actions");
+  actions.innerHTML = "";
+  item.actions.forEach((action) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.innerHTML = `
+      <span class="sorting-action-icon" aria-hidden="true">${sortingActionIcon(action.label)}</span>
+      <span>
+        <strong>${action.label}</strong>
+        <small>${action.detail}</small>
+      </span>
+    `;
+    actions.appendChild(button);
+  });
+
+  const steps = document.querySelector("#sorting-steps");
+  steps.innerHTML = "";
+  item.steps.forEach((step) => {
+    const row = document.createElement("div");
+    row.innerHTML = `<span aria-hidden="true">✓</span><span>${step}</span>`;
+    steps.appendChild(row);
+  });
+}
+
+function sortingActionIcon(label) {
+  const normalized = label.toLowerCase();
+  if (normalized.includes("genbrug") || normalized.includes("don")) return "↻";
+  if (normalized.includes("spørg")) return "?";
+  if (normalized.includes("batteri")) return "⚡";
+  if (normalized.includes("metal")) return "▣";
+  return "♻";
+}
+
+function toggleSortingPanel(panel, visible) {
+  const sitePanel = document.querySelector("#sorting-site-panel");
+  const searchPanel = document.querySelector("#sorting-search-panel");
+  if (panel === "site") sitePanel.classList.toggle("hidden", !visible);
+  if (panel === "search") searchPanel.classList.toggle("hidden", !visible);
+  if (visible && panel === "site") searchPanel.classList.add("hidden");
+  if (visible && panel === "search") sitePanel.classList.add("hidden");
+}
+
+function renderSortingSuggestions(query) {
+  const normalizedQuery = String(query || "").trim().toLowerCase();
+  const suggestions = document.querySelector("#sorting-suggestions");
+  suggestions.innerHTML = "";
+  wasteSortingItems
+    .filter((item) => !normalizedQuery || item.keywords.some((keyword) => keyword.includes(normalizedQuery)) || item.title.toLowerCase().includes(normalizedQuery))
+    .forEach((item) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.innerHTML = `
+        <span class="sorting-icon" aria-hidden="true">♻</span>
+        <span>
+          <strong>${item.title}</strong>
+          <small>${item.fraction}</small>
+        </span>
+      `;
+      button.addEventListener("click", () => {
+        renderWasteSortingPage({ ...item, confidence: 100 });
+        toggleSortingPanel("search", false);
+      });
+      suggestions.appendChild(button);
+    });
+}
+
+async function openSalePage() {
+  if (!state.assessment || !state.recommendation) return;
+  collectAnswersFromForm();
+
+  show("#sale-screen");
+  document.querySelector("#sale-screen").scrollIntoView({ behavior: "smooth" });
+  setSaleLoading();
+
+  try {
+    const response = await fetch(new URL("/api/sale-assist", window.location.href), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        assessment: state.assessment,
+        answers: state.answers,
+        recommendation: state.recommendation,
+      }),
+    });
+    const payload = await parseJsonResponse(response);
+    if (!response.ok) {
+      throw new Error(payload.error || "Salgsforslaget kunne ikke beregnes.");
+    }
+
+    state.saleDraft = payload.sale;
+    renderSalePage(payload.sale);
+  } catch (error) {
+    renderSalePage({
+      object_name: state.recommendation.object_name,
+      details: "Prisforslaget kunne ikke hentes lige nu.",
+      price: "Ukendt pris",
+      price_note: error.message,
+      search_note: "Prøv igen, eller søg manuelt efter lignende genstande.",
+      search_url: buildFallbackSearchUrl(state.assessment, state.answers),
+      marketplace_search_url: buildMarketplaceSearchUrl(state.assessment, state.answers),
+      ad_text: buildFallbackAdText(state.assessment, state.answers),
+      marketplace_note: marketplaceApiNote(),
+    });
+  }
+}
+
+function setSaleLoading() {
+  document.querySelector("#sale-object-name").textContent = state.recommendation?.object_name || "Genstand";
+  document.querySelector("#sale-object-details").textContent = "Henter søgegrundlag og laver annoncekladde...";
+  document.querySelector("#sale-price").textContent = "Finder pris...";
+  document.querySelector("#sale-price-note").textContent = "";
+  document.querySelector("#sale-search-note").textContent = "";
+  document.querySelector("#sale-search-link").href = "#";
+  document.querySelector("#marketplace-search-link").href = "#";
+  document.querySelector("#sale-ad-text").value = "";
+  document.querySelector("#marketplace-note").textContent = marketplaceApiNote();
+}
+
+function renderSalePage(sale) {
+  document.querySelector("#sale-object-name").textContent = sale.object_name || "Genstand";
+  document.querySelector("#sale-object-details").textContent = sale.details || "";
+  document.querySelector("#sale-price").textContent = sale.price || "Ukendt pris";
+  document.querySelector("#sale-price-note").textContent = sale.price_note || "";
+  document.querySelector("#sale-search-note").textContent = sale.search_note || "";
+  document.querySelector("#sale-search-link").href = sale.search_url || buildFallbackSearchUrl(state.assessment, state.answers);
+  document.querySelector("#marketplace-search-link").href = sale.marketplace_search_url || buildMarketplaceSearchUrl(state.assessment, state.answers);
+  document.querySelector("#sale-ad-text").value = sale.ad_text || buildFallbackAdText(state.assessment, state.answers);
+  document.querySelector("#marketplace-note").textContent = sale.marketplace_note || marketplaceApiNote();
+}
+
+async function copyAdText() {
+  const text = document.querySelector("#sale-ad-text").value;
+  if (!text) return;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    copyAdButton.textContent = "Annoncetekst kopieret";
+  } catch {
+    copyAdButton.textContent = "Markér teksten og kopiér";
+  }
+
+  setTimeout(() => {
+    copyAdButton.textContent = "Kopiér annoncetekst";
+  }, 2200);
+}
+
+function collectAnswersFromForm() {
+  const form = document.querySelector("#question-form");
+  if (!form) return;
+
+  const answers = new FormData(form);
+  answers.forEach((value, key) => {
+    state.answers[key] = String(value).trim();
+  });
+}
+
+function buildSaleSearchQuery(assessment, answers) {
+  return uniqueTextParts([
+    producerSearchName(answers),
+    answers?.model_name,
+    assessment?.brand,
+    assessment?.model,
+    assessment?.object_name,
+  ]).join(" ");
+}
+
+function producerSearchName(answers) {
+  if (answers?.producer_name) return answers.producer_name;
+  if (answers?.producer === "ikea") return "IKEA";
+  if (answers?.producer && !["unknown", "other"].includes(answers.producer)) {
+    return answers.producer;
+  }
+  return "";
+}
+
+function uniqueTextParts(parts) {
+  const seen = new Set();
+  return parts
+    .map((part) => String(part || "").trim())
+    .filter((part) => {
+      const key = part.toLowerCase();
+      if (!part || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+}
+function buildFallbackSearchUrl(assessment, answers) {
+  const query = buildSaleSearchQuery(assessment, answers);
+  return `https://www.google.com/search?q=${encodeURIComponent(`${query} brugt pris Danmark`)}`;
+}
+function buildMarketplaceSearchUrl(assessment, answers) {
+  const query = buildSaleSearchQuery(assessment, answers);
+  return `https://www.facebook.com/marketplace/search/?query=${encodeURIComponent(`${query} brugt pris Danmark`)}`;
+}
+
+function buildFallbackAdText(assessment, answers) {
+  const name = uniqueTextParts([
+    producerSearchName(answers),
+    answers?.model_name,
+    assessment?.model,
+    assessment?.object_name,
+  ]).join(" ") || "Genstand";
+  const lines = [
+    `${name} sælges`,
+    "",
+    "Sælges på baggrund af billeder og oplysninger om stand, funktion, producent og model.",
+    "",
+    "Oplysninger:",
+    `- Genstand: ${assessment?.object_name || "ikke angivet"}`,
+  ];
+
+  if (producerSearchName(answers)) lines.push(`- Producent/mærke: ${producerSearchName(answers)}`);
+  if (answers?.model_name || assessment?.model) lines.push(`- Model/serie: ${answers?.model_name || assessment?.model}`);
+  if (assessment?.category) lines.push(`- Kategori: ${assessment.category}`);
+  if (answers?.works) lines.push(`- Funktion: ${answers.works === "yes" ? "virker" : answers.works === "partly" ? "virker delvist" : "skal kontrolleres"}`);
+  if (answers?.damage) lines.push(`- Stand/skader: ${answers.damage}`);
+
+  lines.push(
+    "",
+    "Pris bør fastsættes efter lignende annoncer, aktuel stand, alder, dokumentation og efterspørgsel.",
+    "",
+    "Kan afhentes efter aftale. Skriv gerne ved spørgsmål eller hvis du vil se flere billeder.",
+  );
+  return lines.join("\n");
+}
+
+function marketplaceApiNote() {
+  return "Facebook Marketplace bruges som manuel priskontrol via søgelink. Der er ikke tilgængelig direkte oprettelse via en almindelig offentlig Facebook Marketplace API i denne prototype, så annoncen skal oprettes manuelt.";
+}
 function renderDecisionPath(path) {
   const container = document.querySelector("#decision-path");
   container.innerHTML = "";
@@ -360,10 +921,13 @@ function renderDecisionPath(path) {
   });
 }
 
-function renderChecks(checks) {
+function renderChecks(checks, recommendedAction) {
   const container = document.querySelector("#check-grid");
+  const visibleChecks = ["sell", "donate"].includes(recommendedAction)
+    ? checks.filter((check) => check.status === "realistisk")
+    : checks;
   container.innerHTML = "";
-  checks.forEach((check) => {
+  visibleChecks.forEach((check) => {
     const item = document.createElement("div");
     const isRealistic = check.status === "realistisk";
     item.className = "check-item";
@@ -459,18 +1023,52 @@ function show(selector) {
 }
 
 function restart() {
-  state.imageFile = null;
+  clearPreviewUrls();
+  state.imageFiles = [];
   state.assessment = null;
+  state.recommendation = null;
+  state.saleDraft = null;
   state.answers = {};
   imageInput.value = "";
   analyzeButton.disabled = true;
-  document.querySelector("#preview-wrap").classList.add("hidden");
-  ["#identify-screen", "#questions-screen", "#result-screen"].forEach((selector) => {
+  const previewWrap = document.querySelector("#preview-wrap");
+  previewWrap.innerHTML = "";
+  previewWrap.classList.add("hidden");
+  ["#identify-screen", "#questions-screen", "#result-screen", "#sale-screen", "#waste-sorting-screen"].forEach((selector) => {
     document.querySelector(selector).classList.add("hidden");
   });
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+function renderImagePreviews(files) {
+  const previewWrap = document.querySelector("#preview-wrap");
+  previewWrap.innerHTML = "";
+
+  files.forEach((file, index) => {
+    const url = URL.createObjectURL(file);
+    state.previewUrls.push(url);
+
+    const figure = document.createElement("figure");
+    figure.className = "preview-item";
+
+    const image = document.createElement("img");
+    image.src = url;
+    image.alt = `Billede ${index + 1} af genstanden`;
+
+    const caption = document.createElement("figcaption");
+    caption.textContent = index === 0 ? "Hovedbillede" : `Ekstra vinkel ${index + 1}`;
+
+    figure.append(image, caption);
+    previewWrap.appendChild(figure);
+  });
+
+  previewWrap.classList.toggle("hidden", files.length === 0);
+}
+
+function clearPreviewUrls() {
+  state.previewUrls.forEach((url) => URL.revokeObjectURL(url));
+  state.previewUrls = [];
+}
 async function fileToDataUrl(file) {
   const compressed = await compressImage(file);
   if (compressed) return compressed;
@@ -533,7 +1131,7 @@ async function parseJsonResponse(response) {
 }
 
 function normalizeAssessment(assessment) {
-  const fallback = inferObjectFromFilename(state.imageFile?.name || "");
+  const fallback = inferObjectFromFilename(state.imageFiles.map((file) => file.name).join(" "));
   return {
     object_name: assessment?.object_name || fallback.object_name,
     category: assessment?.category || fallback.category,
@@ -571,6 +1169,24 @@ function hideStatus() {
   status.classList.remove("error");
   status.classList.add("hidden");
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

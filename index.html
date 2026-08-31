@@ -6,7 +6,7 @@
     <title>Cirkulær assistent</title>
     <meta
       name="description"
-      content="En enkel prototype, der hjælper med at vurdere om en genstand bør repareres, sælges, bortgives eller sorteres som affald."
+      content="En enkel prototype, der hjælper med at vurdere om en genstand bør repareres, renses, sælges, bortgives eller sorteres som affald."
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -17,8 +17,8 @@
           <p class="eyebrow">Cirkulær assistent</p>
           <h1 id="page-title">Kan genstanden stadig skabe værdi?</h1>
           <p class="lede">
-            Tag eller upload et foto, svar på få spørgsmål, og få en enkel anbefaling:
-            reparér, sælg, bortgiv eller sorter.
+            Tag eller upload op til 4 billeder, svar på få spørgsmål, og få en enkel anbefaling:
+            reparér, rens/klargør, sælg, bortgiv eller sorter.
           </p>
         </div>
         <div class="principle" aria-label="Prioriteret beslutningsflow">
@@ -31,22 +31,20 @@
 
       <section class="panel" id="capture-screen" aria-labelledby="capture-title">
         <div class="step-label">1 af 4</div>
-        <h2 id="capture-title">Foto af genstanden</h2>
+        <h2 id="capture-title">Billeder af genstanden</h2>
         <p class="muted">
-          Billedet analyseres af AI via et lokalt backend-endpoint. Dine svar bruges
+          Billederne analyseres af AI via et lokalt backend-endpoint. Dine svar bruges
           derefter af beslutningsmotoren.
         </p>
 
         <label class="drop-zone" for="image-input">
-          <input id="image-input" type="file" accept="image/*" capture="environment" />
+          <input id="image-input" type="file" accept="image/*" capture="environment" multiple />
           <span class="drop-icon" aria-hidden="true">+</span>
-          <span class="drop-title">Tag eller upload foto</span>
-          <span class="drop-copy">JPG, PNG eller HEIC fra telefonen</span>
+          <span class="drop-title">Tag eller upload op til 4 billeder</span>
+          <span class="drop-copy">Tag gerne forside, bagside, detaljer og mærkeplade, hvis den findes.</span>
         </label>
 
-        <div class="preview-wrap hidden" id="preview-wrap">
-          <img id="image-preview" alt="Uploadet genstand" />
-        </div>
+        <div class="preview-wrap hidden" id="preview-wrap" aria-label="Valgte billeder"></div>
 
         <button class="primary-button" id="analyze-button" disabled>
           Analysér genstand
@@ -104,7 +102,8 @@
 
         <div class="producer-program hidden" id="producer-program" aria-label="Producentordning"></div>
 
-        <div class="options-list" id="options-list" aria-label="Dine muligheder"></div>
+        <button class="primary-button hidden" id="open-sale-button">Lav salgsforslag</button>
+        <button class="secondary-button hidden" id="open-waste-button">Gå til affaldssortering</button>
 
         <div class="waste-box hidden" id="waste-box">
           <span class="field-label">Hvis den ender som affald</span>
@@ -122,11 +121,139 @@
 
         <button class="secondary-button" id="restart-button">Start forfra</button>
       </section>
+      <section class="panel hidden" id="sale-screen" aria-labelledby="sale-title">
+        <div class="step-label">Salg</div>
+        <h2 id="sale-title">Salgsforslag</h2>
+
+        <div class="sale-hero">
+          <span class="field-label">Vi er i gang med at sælge</span>
+          <strong id="sale-object-name">Genstand</strong>
+          <p id="sale-object-details"></p>
+        </div>
+
+        <div class="sale-grid">
+          <div class="sale-card">
+            <span class="field-label">Prisforslag</span>
+            <strong id="sale-price">Finder pris...</strong>
+            <p id="sale-price-note"></p>
+          </div>
+          <div class="sale-card">
+            <span class="field-label">Søgegrundlag</span>
+            <p id="sale-search-note"></p>
+            <div class="sale-link-grid">
+              <a id="sale-search-link" class="program-link" href="#" target="_blank" rel="noopener">Åbn web-søgning</a>
+              <a id="marketplace-search-link" class="program-link" href="#" target="_blank" rel="noopener">Søg på Marketplace</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sale-card">
+          <span class="field-label">Forslag til annoncetekst</span>
+          <textarea id="sale-ad-text" rows="8" readonly></textarea>
+          <button class="secondary-button" id="copy-ad-button">Kopiér annoncetekst</button>
+        </div>
+
+        <div class="sale-card">
+          <span class="field-label">Facebook Marketplace</span>
+          <strong>Direkte oprettelse kræver officiel adgang</strong>
+          <p id="marketplace-note"></p>
+          <a class="program-link" href="https://www.facebook.com/marketplace/create/item" target="_blank" rel="noopener">Opret manuelt på Marketplace</a>
+        </div>
+
+        <button class="secondary-button" id="back-to-result-button">Tilbage til anbefaling</button>
+      </section>
+      <section class="panel hidden" id="waste-sorting-screen" aria-labelledby="waste-sorting-title">
+        <div class="step-label">Affaldssortering</div>
+        <h2 id="waste-sorting-title">Sortér genstanden</h2>
+
+        <div class="sorting-result">
+          <div>
+            <span class="field-label">Identificeret via billeder</span>
+            <strong id="sorting-object-name">Genstand</strong>
+            <p id="sorting-object-type"></p>
+          </div>
+          <div class="sorting-confidence">
+            <span>Sikkerhed</span>
+            <meter id="sorting-confidence-meter" min="0" max="100" value="0"></meter>
+            <strong id="sorting-confidence-label">0%</strong>
+          </div>
+        </div>
+
+        <div class="sorting-card location-card-static">
+          <div>
+            <span>Placering på pladsen</span>
+            <strong id="sorting-container">Container</strong>
+            <small id="sorting-placement">Placering</small>
+          </div>
+        </div>
+
+        <div class="sorting-card fraction-card-static">
+          <span class="sorting-icon" aria-hidden="true">♻</span>
+          <div>
+            <strong id="sorting-fraction">Fraktion</strong>
+            <p id="sorting-note"></p>
+          </div>
+        </div>
+
+        <div class="sorting-actions" id="sorting-actions" aria-label="Mulige handlinger"></div>
+        <div class="sorting-steps" id="sorting-steps" aria-label="Sorteringstrin"></div>
+
+        <div class="sorting-toolbox">
+          <button class="secondary-button" id="open-site-panel-button">Find genbrugsplads</button>
+          <button class="secondary-button" id="open-sorting-search-button">Søg anden genstand</button>
+          <button class="secondary-button" id="back-from-waste-button">Tilbage til anbefaling</button>
+        </div>
+
+        <div class="sorting-panel hidden" id="sorting-site-panel">
+          <div class="panel-toolbar-inline">
+            <h3>Find din genbrugsplads</h3>
+            <button type="button" id="close-site-panel-button">Luk</button>
+          </div>
+          <p>Brug placering eller vælg plads manuelt for at se lokale containerplaceringer.</p>
+          <button class="primary-button" type="button">Find nærmeste</button>
+          <select id="sorting-site-select">
+            <option>Faaborg Genbrugsplads</option>
+            <option>Broby Genbrugsplads</option>
+            <option>Ringe Genbrugsplads</option>
+            <option>Årslev Genbrugsplads</option>
+          </select>
+          <dl class="site-facts-static">
+            <div>
+              <dt>Valgt plads</dt>
+              <dd id="sorting-selected-site">Faaborg Genbrugsplads</dd>
+            </div>
+            <div>
+              <dt>Afstand</dt>
+              <dd>2,4 km</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="sorting-panel hidden" id="sorting-search-panel">
+          <div class="panel-toolbar-inline">
+            <h3>Hurtig manuel søgning</h3>
+            <button type="button" id="close-sorting-search-button">Luk</button>
+          </div>
+          <label class="search-row-static">
+            <span>Skriv f.eks. pap, batteri, maling, cykel eller elektronik</span>
+            <input id="sorting-search-input" placeholder="Hvad vil du aflevere?" />
+          </label>
+          <div class="sorting-suggestions" id="sorting-suggestions"></div>
+        </div>
+      </section>
     </main>
 
     <script src="./app.js"></script>
   </body>
 </html>
+
+
+
+
+
+
+
+
 
 
 

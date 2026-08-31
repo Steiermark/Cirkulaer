@@ -6,7 +6,7 @@ PRODUCER_PROGRAMS = [
         "scheme_types": ["buy_back", "resale"],
         "url": "https://www.ikea.com/dk/da/second-hand/sell-to-ikea/quote/",
         "reward": "IKEA tilgodebevis",
-        "source_label": "IKEA Gensalg vurderingsvaerktoej",
+        "source_label": "IKEA Gensalg vurderingsværktøj",
         "eligible_hints": [
             "kommode",
             "skaenk",
@@ -53,7 +53,7 @@ PRODUCER_PROGRAMS = [
         "checks": [
             "Originalt producentprodukt",
             "God/salgbar stand",
-            "Rent og uaendret",
+            "Rent og uændret",
             "Komplet og fuldt funktionelt",
             "Korrekt samlet",
             "Omfattet produktkategori",
@@ -78,7 +78,7 @@ def evaluate_producer_program(context):
             "title": "Producentordninger",
             "message": (
                 "Der er ikke fundet en konkret producentordning endnu. "
-                "I naeste fase kan modulet slaa op i en database med reparation, "
+                "I næste fase kan modulet slå op i en database med reparation, "
                 "reservedele, buy-back, trade-in, take-back og refurbishment."
             ),
             "programs": [],
@@ -111,22 +111,22 @@ def evaluate_single_program(program, context):
         status = "likely"
         rank = 3
         message = (
-            f"{program['title']} ser ud til potentielt at vaere relevant. "
+            f"{program['title']} ser ud til potentielt at være relevant. "
             "Hent en officiel vurdering og sammenlign med almindeligt privat salg."
         )
     elif possible:
         status = "possible"
         rank = 2
         message = (
-            f"{program['title']} kan muligvis vaere relevant, men stand, kategori, "
-            "original maerkning og komplethed skal bekraeftes hos producenten."
+            f"{program['title']} kan muligvis være relevant, men stand, kategori, "
+            "original mærkning og komplethed skal bekræftes hos producenten."
         )
     else:
         status = "unlikely"
         rank = 1
         message = (
             f"{program['title']} ligner ikke en oplagt vej ud fra svarene. "
-            "Fortsaet med almindelig salgs- eller bortgivelsesvurdering."
+            "Fortsæt med almindelig salgs- eller bortgivelsesvurdering."
         )
 
     return {
@@ -143,12 +143,12 @@ def evaluate_single_program(program, context):
         "checks": [
             {"label": "Originalt producentprodukt", "ok": True},
             {"label": "God/salgbar stand", "ok": good_condition},
-            {"label": "Rent, komplet og uaendret", "ok": complete},
+            {"label": "Rent, komplet og uændret", "ok": complete},
             {"label": "Mulig omfattet kategori", "ok": has_eligible_hint and not has_excluded_hint},
         ],
         "comparison": [
             {"label": program["title"], "value": program["reward"]},
-            {"label": "Privat salg", "value": "ofte hoejere pris, mere arbejde"},
-            {"label": "Hurtigt salg", "value": "lavere pris, hurtigere afhaendelse"},
+            {"label": "Privat salg", "value": "ofte højere pris, mere arbejde"},
+            {"label": "Hurtigt salg", "value": "lavere pris, hurtigere afhændelse"},
         ],
     }
