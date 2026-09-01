@@ -65,7 +65,19 @@
             <strong id="object-category">Ukendt</strong>
           </div>
           <div>
-            <span class="field-label">Sikkerhed</span>
+            <span class="field-label">Producent</span>
+            <strong id="object-brand">Ikke fundet</strong>
+          </div>
+          <div>
+            <span class="field-label">Model</span>
+            <strong id="object-model">Ikke fundet</strong>
+          </div>
+          <div>
+            <span class="field-label">Synlige fund</span>
+            <strong id="object-findings">Ingen sikre fund</strong>
+          </div>
+          <div>
+            <span class="field-label">AI-identifikation</span>
             <strong id="object-confidence">Lav</strong>
           </div>
         </div>
@@ -81,6 +93,7 @@
         <div class="step-label">3 af 4</div>
         <h2 id="questions-title">Et par hurtige spørgsmål</h2>
         <form id="question-form" class="question-form"></form>
+        <p class="status-message error hidden" id="question-status" role="alert"></p>
         <button class="primary-button" id="recommend-button">Få anbefaling</button>
       </section>
 
@@ -103,6 +116,7 @@
         <div class="producer-program hidden" id="producer-program" aria-label="Producentordning"></div>
 
         <button class="primary-button hidden" id="open-sale-button">Lav salgsforslag</button>
+        <button class="primary-button hidden" id="open-action-button">Fortsæt med anbefalingen</button>
         <button class="secondary-button hidden" id="open-waste-button">Gå til affaldssortering</button>
 
         <div class="waste-box hidden" id="waste-box">
@@ -120,6 +134,15 @@
         </div>
 
         <button class="secondary-button" id="restart-button">Start forfra</button>
+      </section>
+      <section class="panel hidden" id="action-screen" aria-labelledby="action-title">
+        <div class="step-label">Næste handling</div>
+        <h2 id="action-title">Fortsæt</h2>
+        <p class="muted" id="action-intro"></p>
+        <div class="sorting-steps" id="action-steps"></div>
+        <button class="primary-button" id="action-primary-button"></button>
+        <button class="secondary-button" id="action-secondary-button"></button>
+        <button class="secondary-button" id="back-from-action-button">Tilbage til anbefaling</button>
       </section>
       <section class="panel hidden" id="sale-screen" aria-labelledby="sale-title">
         <div class="step-label">Salg</div>
@@ -143,6 +166,7 @@
             <div class="sale-link-grid">
               <a id="sale-search-link" class="program-link" href="#" target="_blank" rel="noopener">Åbn web-søgning</a>
               <a id="marketplace-search-link" class="program-link" href="#" target="_blank" rel="noopener">Søg på Marketplace</a>
+              <a id="reshopper-link" class="program-link hidden" href="https://reshopper.com/da" target="_blank" rel="noopener">Åbn Reshopper</a>
             </div>
           </div>
         </div>
@@ -154,10 +178,22 @@
         </div>
 
         <div class="sale-card">
+          <span class="field-label">Sammenlignelige fund</span>
+          <div class="sale-comparables" id="sale-comparables"></div>
+        </div>
+
+        <div class="sale-card">
           <span class="field-label">Facebook Marketplace</span>
           <strong>Direkte oprettelse kræver officiel adgang</strong>
           <p id="marketplace-note"></p>
           <a class="program-link" href="https://www.facebook.com/marketplace/create/item" target="_blank" rel="noopener">Opret manuelt på Marketplace</a>
+        </div>
+
+        <div class="sale-card hidden" id="reshopper-card">
+          <span class="field-label">Reshopper</span>
+          <strong>Ekstra salgskanal for børn, mor og bolig</strong>
+          <p id="reshopper-note"></p>
+          <a id="reshopper-create-link" class="program-link" href="https://reshopper.com/da" target="_blank" rel="noopener">Åbn Reshopper</a>
         </div>
 
         <button class="secondary-button" id="back-to-result-button">Tilbage til anbefaling</button>
@@ -173,17 +209,17 @@
             <p id="sorting-object-type"></p>
           </div>
           <div class="sorting-confidence">
-            <span>Sikkerhed</span>
+            <span>Billedgenkendelse</span>
             <meter id="sorting-confidence-meter" min="0" max="100" value="0"></meter>
-            <strong id="sorting-confidence-label">0%</strong>
+            <strong id="sorting-confidence-label">Ikke beregnet</strong>
           </div>
         </div>
 
         <div class="sorting-card location-card-static">
           <div>
-            <span>Placering på pladsen</span>
+            <span>Generel afleveringsvej</span>
             <strong id="sorting-container">Container</strong>
-            <small id="sorting-placement">Placering</small>
+            <small id="sorting-placement">Kontrollér altid lokal skiltning</small>
           </div>
         </div>
 
@@ -210,23 +246,8 @@
             <button type="button" id="close-site-panel-button">Luk</button>
           </div>
           <p>Brug placering eller vælg plads manuelt for at se lokale containerplaceringer.</p>
-          <button class="primary-button" type="button">Find nærmeste</button>
-          <select id="sorting-site-select">
-            <option>Faaborg Genbrugsplads</option>
-            <option>Broby Genbrugsplads</option>
-            <option>Ringe Genbrugsplads</option>
-            <option>Årslev Genbrugsplads</option>
-          </select>
-          <dl class="site-facts-static">
-            <div>
-              <dt>Valgt plads</dt>
-              <dd id="sorting-selected-site">Faaborg Genbrugsplads</dd>
-            </div>
-            <div>
-              <dt>Afstand</dt>
-              <dd>2,4 km</dd>
-            </div>
-          </dl>
+          <p>Appen har endnu ikke verificerede kommunale data eller adgang til din placering.</p>
+          <a class="program-link" id="maps-search-link" href="https://www.google.com/maps/search/genbrugsplads" target="_blank" rel="noopener">Søg efter genbrugsplads på kort</a>
         </div>
 
         <div class="sorting-panel hidden" id="sorting-search-panel">
@@ -246,6 +267,8 @@
     <script src="./app.js"></script>
   </body>
 </html>
+
+
 
 
 

@@ -20,6 +20,14 @@ Reparér -> Rens/klargør -> Sælg -> Bortgiv -> Affald
 
 `Affald` må kun anbefales, når de øvrige realistiske muligheder er kontrolleret.
 
+Før den cirkulære prioritering kontrolleres en sikkerhedsport:
+
+```text
+Mulig akut risiko, varme, lækage, brandmærker eller beskadiget batteri?
+  ├─ Ja: stop videre brug og vælg sikker, bemandet aflevering
+  └─ Nej/ukendt: fortsæt det cirkulære beslutningsflow
+```
+
 ## 1. Foto
 
 Brugeren kan:
@@ -61,6 +69,10 @@ Identifikationen kan indeholde:
 
 AI må ikke præsentere usikre antagelser som fakta.
 
+AI-resultatet bruger et stabilt `category_id`, så beslutningsregler ikke afhænger
+af fri stavning af kategorinavne. Synlige skader og estimeret stand bruges som
+fallback, men brugeren skal stadig bekræfte eller rette afgørende oplysninger.
+
 ## 3. Supplerende spørgsmål
 
 Appen stiller korte spørgsmål, der bruges af beslutningsmotoren:
@@ -73,6 +85,11 @@ Appen stiller korte spørgsmål, der bruges af beslutningsmotoren:
 - Følger vigtigt tilbehør med?
 - Har den batteri eller ledning? Kun relevant ved elektronik.
 - Kan rensning eller klargøring løfte standen? Kun relevant ved møbler.
+- Er der tegn på en akut sikkerhedsrisiko?
+
+Der er ingen automatiske standardsvar på afgørende spørgsmål. IKEA kan være
+forvalgt som producent, når AI både identificerer IKEA og en kategori, der er
+relevant for den registrerede producentordning.
 
 ## 4. Hvorfor vil brugeren af med genstanden?
 
@@ -133,6 +150,8 @@ Rens/klargør kan dække:
 
 Rens/klargør ligger før salg, fordi det kan øge genstandens værdi og sandsynligheden for videre brug.
 
+Efter klargøring kan brugeren fortsætte direkte til salg eller vælge bortgivelse.
+
 ## 7. Sælg
 
 ```text
@@ -156,7 +175,11 @@ Resultatet kan vise:
 - almindeligt privat salg
 - hurtigt salg
 - producentordning, hvis relevant
-- prototypeestimat for økonomi og CO2
+- økonomivurdering og tydelig status for, om CO2-effekten kan beregnes
+
+Prisforslag bruger kun beløb fra søgeresultater, hvor titelteksten matcher
+væsentlige dele af producent, model og genstandsnavn. Sammenlignelige fund vises
+med titel, pris og kilde. Et svagt grundlag markeres tydeligt.
 
 ## 8. Producentordninger
 
@@ -206,6 +229,8 @@ Appen kontrollerer forsigtigt:
 - mulig omfattet produktkategori
 
 Appen må kun sige, at varen potentielt kan være relevant. Endelig godkendelse og pris afgøres af IKEA.
+Krav vises som `bekræftet`, `ikke opfyldt` eller `ukendt`; ukendte krav må
+ikke automatisk markeres som opfyldt.
 
 ## 10. Bortgiv
 
@@ -223,6 +248,9 @@ Bortgivelse kan senere kobles til:
 - lokale gratisgrupper
 - kommunale genbrugsordninger
 - materialebanker
+
+MVP'en viser et praktisk bortgivelsesflow og en generel kortsøgning, men påstår
+ikke at kende lokale modtagere eller deres aktuelle vilkår.
 
 ## 11. Affald som sidste mulighed
 
@@ -246,6 +274,8 @@ Affald -> Bortgiv -> Sælg
 Det viser brugeren de mest realistiske tilbageværende valg først. `Sælg` placeres sidst i denne case, fordi en defekt/ikke-reparerbar genstand normalt har lavere salgssandsynlighed end bortgivelse.
 Affaldsresultatet viser kun generel dansk vejledning i MVP'en.
 Kommunespecifik vejledning må først vises, når reglen kommer fra en verificeret datakilde.
+Faste containerzoner, afstande og konkrete pladser må derfor ikke vises som
+fakta i prototypen.
 
 Affaldsvurdering kan omfatte:
 
@@ -270,6 +300,18 @@ Resultatet viser:
 - producentordning, hvis relevant
 - generel affaldsfraktion, hvis genstanden ender som affald
 - kildeklarhed og forbehold
+
+CO2-besparelsen står som `Ikke beregnet`, indtil produkt-, materiale- og
+levetidsdata kan dokumenteres.
+
+Efter anbefalingen fortsætter flowet:
+
+```text
+Reparér -> lykkedes -> Sælg eller Bortgiv
+Reparér -> ikke realistisk -> sikker sortering
+Rens/klargør -> færdig -> Sælg eller Bortgiv
+Bortgiv -> ingen modtager -> Affald
+```
 
 ## 13. Hallucinationsbeskyttelse
 
@@ -303,7 +345,7 @@ Et resultat kan indeholde:
   "options": [],
   "impact": {
     "economy": "lav udgift / højere værdi",
-    "co2_saving": "5-20 kg CO2e"
+    "co2_saving": "Ikke beregnet"
   },
   "producer_program": {},
   "waste": {}

@@ -62,6 +62,25 @@ PRODUCER_PROGRAMS = [
 ]
 
 
+def find_program_candidates(assessment):
+    producer = normalize(str(assessment.get("brand") or ""))
+    text = normalize(
+        " ".join(
+            str(assessment.get(key) or "")
+            for key in ("object_name", "category", "subcategory")
+        )
+    )
+    candidates = []
+    for program in PRODUCER_PROGRAMS:
+        if producer != program["producer"]:
+            continue
+        eligible = any(hint in text for hint in program["eligible_hints"])
+        excluded = any(hint in text for hint in program["excluded_hints"])
+        if eligible and not excluded:
+            candidates.append(program["id"])
+    return candidates
+
+
 def find_producer_programs(context):
     producer = context.get("producer") or ""
     if not producer or producer in ("unknown", "ved ikke", "no", "anden"):
@@ -103,9 +122,24 @@ def evaluate_single_program(program, context):
     has_excluded_hint = any(hint in text for hint in program["excluded_hints"])
     good_condition = context.get("works") == "yes" and context.get("damage") in ("no", "minor", None)
     complete = context.get("accessories") in ("complete", "irrelevant", None)
+    original = tri_state(context.get("original_product"))
+    clean = tri_state(context.get("clean_state"))
+    unmodified = tri_state(context.get("unmodified"))
+    assembled = tri_state(context.get("assembled"))
 
-    likely = has_eligible_hint and not has_excluded_hint and good_condition and complete
-    possible = not has_excluded_hint and context.get("works") in ("yes", "unknown")
+    eligibility_checks = [original, clean, unmodified, assembled]
+    likely = (
+        has_eligible_hint
+        and not has_excluded_hint
+        and good_condition
+        and complete
+        and all(value is True for value in eligibility_checks)
+    )
+    possible = (
+        not has_excluded_hint
+        and context.get("works") in ("yes", "unknown")
+        and not any(value is False for value in eligibility_checks)
+    )
 
     if likely:
         status = "likely"
@@ -141,9 +175,12 @@ def evaluate_single_program(program, context):
         "reward": program["reward"],
         "source_label": program["source_label"],
         "checks": [
-            {"label": "Originalt producentprodukt", "ok": True},
+            {"label": "Originalt producentprodukt", "ok": original},
             {"label": "God/salgbar stand", "ok": good_condition},
-            {"label": "Rent, komplet og uændret", "ok": complete},
+            {"label": "Rent", "ok": clean},
+            {"label": "Komplet", "ok": complete},
+            {"label": "Uændret", "ok": unmodified},
+            {"label": "Korrekt samlet", "ok": assembled},
             {"label": "Mulig omfattet kategori", "ok": has_eligible_hint and not has_excluded_hint},
         ],
         "comparison": [
@@ -152,3 +189,15 @@ def evaluate_single_program(program, context):
             {"label": "Hurtigt salg", "value": "lavere pris, hurtigere afhændelse"},
         ],
     }
+
+
+def tri_state(value):
+    if value == "yes":
+        return True
+    if value == "no":
+        return False
+    return None
+
+
+def normalize(value):
+    return value.lower().replace("æ", "ae").replace("ø", "oe").replace("å", "aa")

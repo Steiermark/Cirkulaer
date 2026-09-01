@@ -10,6 +10,7 @@ import urllib.request
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
 from decision_engine import build_recommendation
+from producer_programs import find_program_candidates
 
 
 
@@ -24,6 +25,10 @@ ASSESSMENT_SCHEMA = {
     "properties": {
         "object_name": {"type": "string"},
         "category": {"type": "string"},
+        "category_id": {
+            "type": "string",
+            "enum": ["electronics", "furniture", "bicycle", "textile", "hazardous", "other"],
+        },
         "subcategory": {"type": ["string", "null"]},
         "brand": {"type": ["string", "null"]},
         "model": {"type": ["string", "null"]},
@@ -40,6 +45,7 @@ ASSESSMENT_SCHEMA = {
     "required": [
         "object_name",
         "category",
+        "category_id",
         "subcategory",
         "brand",
         "model",
@@ -179,7 +185,18 @@ def build_test_assessment(filename):
     normalized = filename.lower()
     hints = [
         {
-            "keywords": ["billy", "reol", "stol", "bord", "ikea", "skab", "moebel", "møbel"],
+            "keywords": ["billy"],
+            "object_name": "BILLY-reol",
+            "category": "Møbler og indbo",
+            "subcategory": "Bogreol",
+            "brand": "IKEA",
+            "model": "BILLY",
+            "materials": ["spånplade", "træfiberplade"],
+            "waste_category": "Storskrald eller genbrugsplads",
+            "confidence": 0.96,
+        },
+        {
+            "keywords": ["reol", "stol", "bord", "ikea", "skab", "moebel", "møbel"],
             "object_name": "Møbel",
             "category": "Møbler og indbo",
             "subcategory": "Møbel",
@@ -244,12 +261,13 @@ def build_test_assessment(filename):
             "confidence": 0.25,
         }
 
-    return {
+    assessment = {
         "object_name": match["object_name"],
         "category": match["category"],
+        "category_id": canonical_category_id(match["category"]),
         "subcategory": match["subcategory"],
         "brand": match["brand"],
-        "model": None,
+        "model": match.get("model"),
         "materials": match["materials"],
         "visible_damage": [],
         "condition_estimate": "unknown",
@@ -261,6 +279,8 @@ def build_test_assessment(filename):
         ],
         "analysis_mode": "test",
     }
+    assessment["producer_program_candidates"] = find_program_candidates(assessment)
+    return assessment
 
 def analyze_with_openai(image_data_urls):
     prompt = (
@@ -270,6 +290,7 @@ def analyze_with_openai(image_data_urls):
         "Gæt ikke på mærke eller model, hvis det ikke tydeligt fremgår. "
         "Kommunale affaldsregler må ikke opfindes. Brug kun en generel dansk "
         "affaldsfraktion, og skriv usikkerheder eksplicit. "
+        "Vælg category_id fra den faste liste i skemaet. "
         "Skriv alle tekstfelter på dansk."
     )
 
@@ -345,9 +366,10 @@ def normalize_assessment(data):
     visible_damage = data.get("visible_damage", [])
     uncertainty_notes = data.get("uncertainty_notes", [])
 
-    return {
+    assessment = {
         "object_name": str(data.get("object_name") or "Ukendt genstand"),
         "category": str(data.get("category") or "Ukendt kategori"),
+        "category_id": data.get("category_id") or canonical_category_id(data.get("category")),
         "subcategory": data.get("subcategory"),
         "brand": data.get("brand"),
         "model": data.get("model"),
@@ -362,11 +384,29 @@ def normalize_assessment(data):
             else ["AI-vurderingen indeholder usikkerhed og bør bekræftes af brugeren."]
         ),
     }
+    assessment["producer_program_candidates"] = find_program_candidates(assessment)
+    return assessment
+
+
+def canonical_category_id(category):
+    value = str(category or "").lower()
+    if "elektronik" in value or "værktøj" in value or "vaerktoej" in value:
+        return "electronics"
+    if "møbl" in value or "moebl" in value or "mobl" in value:
+        return "furniture"
+    if "cykel" in value or "bike" in value:
+        return "bicycle"
+    if "tekstil" in value or "tøj" in value or "toej" in value:
+        return "textile"
+    if "farligt" in value or "kemi" in value:
+        return "hazardous"
+    return "other"
 
 def build_sale_assist(assessment, answers, recommendation):
     query = build_sale_query(assessment, answers)
     marketplace_url = build_marketplace_search_url(query)
-    search = search_price_signals(query)
+    reshopper_relevant = is_reshopper_relevant(assessment)
+    search = search_price_signals(query, reshopper_relevant)
     estimate = estimate_sale_price(assessment, answers, search["prices"])
     object_name = build_sale_object_name(assessment, answers)
 
@@ -378,6 +418,9 @@ def build_sale_assist(assessment, answers, recommendation):
         "search_note": search["note"],
         "search_url": search["url"],
         "marketplace_search_url": marketplace_url,
+        "reshopper_relevant": reshopper_relevant,
+        "reshopper_url": build_reshopper_url(),
+        "reshopper_note": build_reshopper_note(assessment),
         "ad_text": build_ad_text(object_name, assessment, answers, estimate),
         "marketplace_note": (
             "Direkte oprettelse på Facebook Marketplace kræver officiel adgang. "
@@ -385,6 +428,8 @@ def build_sale_assist(assessment, answers, recommendation):
             "I denne prototype kan annoncen kopieres og Marketplace åbnes manuelt."
         ),
         "signals": search["signals"],
+        "comparables": search["comparables"],
+        "price_confidence": search["confidence"],
     }
 
 
@@ -405,6 +450,7 @@ def build_sale_query(assessment, answers):
         if value and key not in seen:
             seen.add(key)
             clean_parts.append(value)
+    clean_parts = compact_redundant_parts(clean_parts)
     query = " ".join(clean_parts)
     return f"{query} brugt pris Danmark".strip()
 
@@ -423,6 +469,22 @@ def normalize_search_terms(value):
         value = value.replace(old, new)
     return value
 
+
+def compact_redundant_parts(parts):
+    compact = []
+    lowered = [part.lower() for part in parts]
+    for index, part in enumerate(parts):
+        key = lowered[index]
+        contained_by_longer = any(
+            index != other_index
+            and len(other_key) > len(key)
+            and re.search(rf"(?<![a-z0-9]){re.escape(key)}(?![a-z0-9])", other_key)
+            for other_index, other_key in enumerate(lowered)
+        )
+        if not contained_by_longer:
+            compact.append(part)
+    return compact
+
 def producer_search_name(answers):
     producer_name = str(answers.get("producer_name") or "").strip()
     if producer_name:
@@ -431,13 +493,37 @@ def producer_search_name(answers):
     producer = str(answers.get("producer") or "").strip()
     if producer == "ikea":
         return "IKEA"
-    if producer and producer not in ("unknown", "other", "ved ikke", "anden"):
+    if producer and producer not in ("unknown", "other", "detected", "ved ikke", "anden"):
         return producer
     return ""
 
 def build_marketplace_search_url(query):
     encoded_path = urllib.parse.quote(str(query or "").strip())
     return f"https://www.facebook.com/marketplace/search/?query={encoded_path}"
+
+
+def build_reshopper_url():
+    return "https://reshopper.com/da"
+
+
+def is_reshopper_relevant(assessment):
+    category = str(assessment.get("category") or "").lower()
+    object_name = str(assessment.get("object_name") or "").lower()
+    subcategory = str(assessment.get("subcategory") or "").lower()
+    text = f"{category} {object_name} {subcategory}"
+    relevant_terms = (
+        "barn", "børn", "boern", "baby", "legetøj", "legetoej", "barnevogn",
+        "klapvogn", "autostol", "børnetøj", "boernetoej", "ventetøj", "ventetoej",
+        "tøj", "toej", "tekstil", "møbel", "moebel", "møbler", "moebler", "bolig",
+    )
+    excluded_terms = ("cykel", "elektronik", "værktøj", "vaerktoej", "batteri", "maling", "farligt")
+    return any(term in text for term in relevant_terms) and not any(term in text for term in excluded_terms)
+
+
+def build_reshopper_note(assessment):
+    if is_reshopper_relevant(assessment):
+        return "Reshopper vises, fordi genstanden ser ud til at passe til børn, mor eller bolig. Søg manuelt i appen med producent, model og genstandens navn."
+    return "Reshopper er skjult, fordi platformen primært er relevant for børn, mor og bolig."
 
 def build_sale_object_name(assessment, answers):
     parts = [
@@ -455,6 +541,7 @@ def build_sale_object_name(assessment, answers):
         if value and key not in seen:
             seen.add(key)
             clean_parts.append(value)
+    clean_parts = compact_redundant_parts(clean_parts)
     return " ".join(clean_parts) or "Genstand"
 
 
@@ -480,7 +567,7 @@ def build_sale_details(assessment, answers):
     return " · ".join(details)
 
 
-def search_price_signals(query):
+def search_price_signals(query, include_reshopper=False):
     encoded = urllib.parse.quote_plus(query)
     url = f"https://duckduckgo.com/html/?q={encoded}"
     request = urllib.request.Request(
@@ -497,17 +584,89 @@ def search_price_signals(query):
             "url": f"https://www.google.com/search?q={encoded}",
             "prices": [],
             "signals": [],
+            "comparables": [],
+            "confidence": "lav",
             "note": "Net-søgningen kunne ikke gennemføres fra prototypen. Linket åbner en manuel søgning efter lignende genstande.",
         }
 
-    signals = extract_search_signals(page)
-    prices = extract_prices(page)
+    comparables = extract_comparables(page, query)
+    signals = [item["title"] for item in comparables[:5]]
+    prices = [item["price"] for item in comparables]
+    confidence = "høj" if len(comparables) >= 5 else "middel" if len(comparables) >= 3 else "lav"
+    extra_platforms = "Facebook Marketplace og Reshopper" if include_reshopper else "Facebook Marketplace"
     note = (
-        f"Prisforslaget er baseret på en web-søgning efter: {query}. Brug også Facebook Marketplace-linket til at sammenligne lokale annoncer. "
+        f"Prisforslaget er baseret på en web-søgning efter: {query}. Brug også {extra_platforms} til at sammenligne relevante annoncer. "
         if prices
-        else "Der blev ikke fundet tydelige danske prisangivelser i web-søgningen. Brug web-linket og Facebook Marketplace-linket til manuel priskontrol. "
+        else f"Der blev ikke fundet tydelige danske prisangivelser i web-søgningen. Brug web-linket og {extra_platforms} til manuel priskontrol. "
     )
-    return {"url": url, "prices": prices, "signals": signals, "note": note}
+    if prices:
+        note += f"Der blev fundet {len(comparables)} prisfund med relevant titeltekst. "
+    return {
+        "url": url,
+        "prices": prices,
+        "signals": signals,
+        "comparables": comparables[:8],
+        "confidence": confidence,
+        "note": note,
+    }
+
+
+def extract_comparables(page, query):
+    title_matches = list(
+        re.finditer(
+            r'<a[^>]*class="[^"]*result__a[^"]*"[^>]*href="([^"]+)"[^>]*>(.*?)</a>',
+            page,
+            flags=re.DOTALL | re.IGNORECASE,
+        )
+    )
+    query_tokens = comparable_query_tokens(query)
+    comparables = []
+    for index, match in enumerate(title_matches[:20]):
+        segment_end = title_matches[index + 1].start() if index + 1 < len(title_matches) else min(len(page), match.end() + 2500)
+        segment = page[match.start():segment_end]
+        title = clean_html_text(match.group(2))
+        segment_text = clean_html_text(segment)
+        prices = extract_prices(segment_text)
+        if not title or not prices:
+            continue
+        title_tokens = set(re.findall(r"[a-z0-9æøå]+", title.lower()))
+        matched_tokens = [token for token in query_tokens if token in title_tokens]
+        relevance = len(matched_tokens) / max(1, len(query_tokens))
+        if relevance < 0.35:
+            continue
+        url = decode_search_result_url(html.unescape(match.group(1)))
+        comparables.append(
+            {
+                "title": title,
+                "price": prices[0],
+                "relevance": round(relevance, 2),
+                "url": url,
+            }
+        )
+    return comparables
+
+
+def comparable_query_tokens(query):
+    stop_words = {
+        "brugt", "pris", "danmark", "den", "det", "med", "og", "til",
+        "moebler", "moebel", "indbo", "kategori",
+    }
+    normalized = normalize_search_terms(str(query or "")).lower()
+    return [
+        token
+        for token in re.findall(r"[a-z0-9æøå]+", normalized)
+        if (len(token) >= 3 or token.isdigit()) and token not in stop_words
+    ]
+
+
+def clean_html_text(value):
+    return html.unescape(re.sub(r"\s+", " ", re.sub(r"<.*?>", " ", value))).strip()
+
+
+def decode_search_result_url(url):
+    parsed = urllib.parse.urlparse(url)
+    target = urllib.parse.parse_qs(parsed.query).get("uddg", [])
+    return target[0] if target else url
 
 
 def extract_search_signals(page):
@@ -525,7 +684,7 @@ def extract_prices(text):
     prices = []
     for match in re.findall(r"(?<!\d)(\d{2,6}(?:[\.,]\d{3})?)\s*(?:kr\.?|dkk|,-)", text, flags=re.IGNORECASE):
         value = int(re.sub(r"\D", "", match))
-        if 25 <= value <= 50000:
+        if 25 <= value <= 100000:
             prices.append(value)
 
     for match in re.findall(r"(?<!\d)(\d{1,3})\s*(?:tusind|t\.kr\.?|k)\b", text, flags=re.IGNORECASE):
@@ -554,9 +713,11 @@ def estimate_sale_price(assessment, answers, prices):
     if is_bicycle:
         return estimate_bicycle_price(answers, prices)
 
-    if prices:
-        filtered = trim_price_outliers(prices, minimum=50, maximum=20000)
+    filtered = trim_price_outliers(prices, minimum=50, maximum=100000)
+    if filtered:
         midpoint = filtered[len(filtered) // 2]
+        midpoint *= age_price_factor(answers.get("age"))
+        midpoint *= damage_price_factor(answers)
         low = round_to_nearest_25(midpoint * 0.8)
         high = round_to_nearest_25(midpoint * 1.15)
         quick = round_to_nearest_25(midpoint * 0.7)
@@ -577,6 +738,8 @@ def estimate_sale_price(assessment, answers, prices):
     if answers.get("damage") == "major" or answers.get("works") == "partly":
         low, high = round_to_nearest_25(low * 0.5), round_to_nearest_25(high * 0.55)
 
+    low = round_to_nearest_25(low * age_price_factor(answers.get("age")))
+    high = round_to_nearest_25(high * age_price_factor(answers.get("age")))
     return {
         "label": f"Sæt prisen til {round_to_nearest_50((low + high) / 2)} kr.",
         "note": f"Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: {low}-{high} kr.",
@@ -595,6 +758,8 @@ def estimate_bicycle_price(answers, prices):
 
     if filtered:
         midpoint = filtered[len(filtered) // 2]
+        midpoint *= age_price_factor(answers.get("age"))
+        midpoint *= damage_price_factor(answers)
         low_factor, high_factor, quick_factor = 0.82, 1.28, 0.72
         if working and minor_or_better and complete:
             midpoint = max(midpoint, 1900 if known_model else 1500)
@@ -613,6 +778,11 @@ def estimate_bicycle_price(answers, prices):
         low, high, quick = 400, 1100, 300
     else:
         low, high, quick = 800, 1800, 600
+
+    age_factor = age_price_factor(answers.get("age"))
+    low = round_to_nearest_50(low * age_factor)
+    high = round_to_nearest_50(high * age_factor)
+    quick = round_to_nearest_50(quick * age_factor)
 
     return {
         "label": f"Sæt prisen til {round_to_nearest_50((low + high) / 2)} kr.",
@@ -642,6 +812,8 @@ def estimate_premium_bicycle_price(answers, prices):
 
     if filtered:
         midpoint = filtered[len(filtered) // 2]
+        midpoint *= age_price_factor(answers.get("age"))
+        midpoint *= damage_price_factor(answers)
         low = round_to_nearest_500(midpoint * (0.75 if major_issue else 0.85))
         high = round_to_nearest_500(midpoint * (1.1 if major_issue else 1.25))
         quick = round_to_nearest_500(midpoint * (0.65 if major_issue else 0.75))
@@ -657,6 +829,11 @@ def estimate_premium_bicycle_price(answers, prices):
     else:
         low, high, quick = 18000, 35000, 16000
 
+    age_factor = age_price_factor(answers.get("age"))
+    low = round_to_nearest_500(low * age_factor)
+    high = round_to_nearest_500(high * age_factor)
+    quick = round_to_nearest_500(quick * age_factor)
+
     return {
         "label": f"Sæt prisen til {round_to_nearest_500((low + high) / 2)} kr.",
         "note": f"Premium-racercykelestimat baseret på producent/model, fordi der ikke blev fundet nok brugbare webpriser. Realistisk spænd: {low}-{high} kr. Kontrollér især årgang, stelstørrelse, hjulsæt, SRAM/Shimano-gruppe og stand. Hurtigt salg kan fx ligge omkring {quick} kr.",
@@ -665,6 +842,23 @@ def estimate_premium_bicycle_price(answers, prices):
 
 def round_to_nearest_500(value):
     return int(round(float(value) / 500) * 500)
+
+
+def age_price_factor(age):
+    return {
+        "newer": 1.05,
+        "mid": 1.0,
+        "old": 0.75,
+        "unknown": 0.9,
+    }.get(age, 1.0)
+
+
+def damage_price_factor(answers):
+    if answers.get("damage") == "major" or answers.get("works") == "partly":
+        return 0.55
+    if answers.get("damage") == "minor":
+        return 0.82
+    return 1.0
 
 def trim_price_outliers(prices, minimum, maximum):
     filtered = sorted(price for price in prices if minimum <= price <= maximum)
@@ -827,6 +1021,8 @@ def get_lan_urls(port):
 
 if __name__ == "__main__":
     main()
+
+
 
 
 

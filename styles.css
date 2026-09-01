@@ -287,6 +287,12 @@ h3 {
   padding: 14px;
 }
 
+.question.question-missing,
+.producer-details label.field-missing input {
+  border-color: var(--red);
+  outline: 2px solid rgba(157, 61, 50, 0.12);
+}
+
 .question legend {
   margin-bottom: 10px;
   font-weight: 850;
@@ -313,6 +319,16 @@ h3 {
 
 .choice-grid input {
   accent-color: var(--green);
+}
+
+.question-text-input {
+  min-height: 46px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfaf6;
+  color: var(--ink);
+  padding: 10px 12px;
 }
 
 .choice-grid label.hidden {
@@ -602,6 +618,11 @@ h3 {
   color: var(--green-dark);
 }
 
+.program-check.no {
+  background: #ffe0dc;
+  color: var(--red);
+}
+
 .program-comparison {
   display: grid;
   gap: 8px;
@@ -710,6 +731,29 @@ h3 {
   border-radius: 8px;
   background: #fff;
   padding: 14px;
+}
+
+.sale-comparables {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.sale-comparable {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.sale-comparable span {
+  color: var(--muted);
+  line-height: 1.35;
 }
 
 .sorting-result {

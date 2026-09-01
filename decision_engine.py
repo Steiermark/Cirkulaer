@@ -89,33 +89,66 @@ def build_recommendation(assessment, answers):
 
 def build_context(assessment, answers):
     category = normalize(str(assessment.get("category") or ""))
+    category_id = str(assessment.get("category_id") or "").lower()
     materials = [normalize(str(item)) for item in assessment.get("materials", [])]
     condition = answers.get("condition") or assessment.get("condition_estimate")
-    producer = answers.get("producer") or assessment.get("brand") or ""
-    if producer == "other" and answers.get("producer_name"):
+    selected_producer = answers.get("producer")
+    if selected_producer in (None, "", "detected"):
+        producer = assessment.get("brand") or ""
+    elif selected_producer == "other" and answers.get("producer_name"):
         producer = answers.get("producer_name")
+    elif selected_producer in ("unknown", "ved ikke"):
+        producer = ""
+    else:
+        producer = selected_producer
     model = answers.get("model_name") or assessment.get("model") or ""
+    damage = answers.get("damage") or infer_damage_from_assessment(assessment)
+    safety = answers.get("safety") or "unknown"
 
     return {
         "category": category,
+        "category_id": category_id,
         "materials": materials,
         "works": answers.get("works"),
         "reason": answers.get("reason"),
         "age": answers.get("age"),
         "condition": condition or "unknown",
-        "damage": answers.get("damage"),
+        "damage": damage,
         "cleaning": answers.get("cleaning"),
         "accessories": answers.get("accessories"),
         "producer": normalize(str(producer)),
         "model": normalize(str(model)),
         "object_name": normalize(str(assessment.get("object_name") or "")),
         "subcategory": normalize(str(assessment.get("subcategory") or "")),
+        "identification_confidence": assessment.get("confidence"),
+        "safety": safety,
+        "safety_risk": safety == "risk",
+        "original_product": answers.get("original_product"),
+        "clean_state": answers.get("clean_state"),
+        "unmodified": answers.get("unmodified"),
+        "assembled": answers.get("assembled"),
         "has_battery": answers.get("battery") == "battery"
         or "batteri" in " ".join(materials),
-        "is_electronics": "elektronik" in category or "batteri" in " ".join(materials),
-        "is_textile": "tekstil" in category,
-        "is_furniture": "moebler" in category or "mobler" in category or "moebel" in category,
+        "is_electronics": category_id == "electronics" or "elektronik" in category or "batteri" in " ".join(materials),
+        "is_textile": category_id == "textile" or "tekstil" in category,
+        "is_furniture": category_id == "furniture" or "moebler" in category or "mobler" in category or "moebel" in category,
     }
+
+
+def infer_damage_from_assessment(assessment):
+    visible = " ".join(str(item).lower() for item in assessment.get("visible_damage", []))
+    condition = str(assessment.get("condition_estimate") or "").lower()
+    major_terms = (
+        "knækket", "knust", "revnet", "brændt", "laekker", "lækker",
+        "deformeret", "gennemtæret", "gennemtæret",
+    )
+    if any(term in visible for term in major_terms):
+        return "major"
+    if visible or condition in ("worn", "damaged"):
+        return "minor"
+    if condition in ("new", "good"):
+        return "no"
+    return "unknown"
 
 
 def evaluate_possibilities(context):
@@ -157,27 +190,44 @@ def evaluate_possibilities(context):
     if works == "no" and repair:
         donate = False
 
-    waste = not any([repair, clean, sell, donate])
+    if context["safety_risk"]:
+        repair = clean = sell = donate = False
+
+    waste = context["safety_risk"] or not any([repair, clean, sell, donate])
+
+    age_modifier = {"newer": 8, "mid": 3, "old": -8, "unknown": -2}.get(age, -2)
+    scores = {
+        "repair": 72 + (8 if works == "partly" else 0) + age_modifier,
+        "clean": 70 + (8 if cleaning in ("light", "deep") else 0),
+        "sell": 72 + age_modifier + (8 if accessories == "complete" else 0),
+        "donate": 62 + (8 if reason == "give_away" else 0),
+        "waste": 95 if context["safety_risk"] else 70,
+    }
 
     return {
         "repair": {
             "realistic": repair,
+            "score": scores["repair"] if repair else 0,
             "why": "Reparation kontrolleres først, hvis fejl og stand gør det realistisk.",
         },
         "clean": {
             "realistic": clean,
+            "score": scores["clean"] if clean else 0,
             "why": "For møbler kan rensning eller klargøring skabe værdi før salg eller bortgivelse.",
         },
         "sell": {
             "realistic": sell,
+            "score": scores["sell"] if sell else 0,
             "why": "Salg vurderes, hvis genstanden virker eller har restværdi. Producentordninger kontrolleres her.",
         },
         "donate": {
             "realistic": donate,
+            "score": scores["donate"] if donate else 0,
             "why": "Bortgivelse vurderes, hvis andre sandsynligvis kan bruge genstanden.",
         },
         "waste": {
             "realistic": waste,
+            "score": scores["waste"] if waste else 0,
             "why": "Affald vælges kun, når reparation, rensning, salg og bortgivelse ikke er realistiske.",
         },
     }
@@ -186,6 +236,9 @@ def evaluate_possibilities(context):
 def choose_action(context, possibilities):
     reason = context["reason"]
     works = context["works"]
+
+    if context["safety_risk"]:
+        return "waste", ["Mulig sikkerhedsrisiko", "Undgå videre brug", "Sikker aflevering"]
 
     if reason in ("defect", "missing_part"):
         if possibilities["repair"]["realistic"]:
@@ -257,6 +310,7 @@ def order_actions(recommended_action, possibilities):
         for action in circular_order
         if possibilities[action]["realistic"] and action != recommended_action
     ]
+    realistic.sort(key=lambda action: (-possibilities[action]["score"], circular_order.index(action)))
     not_realistic = [action for action in circular_order if not possibilities[action]["realistic"]]
     return [recommended_action] + realistic + not_realistic
 
@@ -285,6 +339,11 @@ def build_reasoning(action, context):
             "Lokale sorteringsregler skal stadig verificeres."
         ),
     }
+    if context["safety_risk"]:
+        return (
+            "Svarene tyder på en mulig sikkerhedsrisiko. Genstanden bør ikke sælges, "
+            "bortgives eller forsøges repareret uden faglig vurdering; vælg sikker aflevering."
+        )
     return templates[action]
 
 
@@ -302,14 +361,6 @@ def build_checks(possibilities, ordered_actions, recommended_action):
 
 
 def build_impact(action, context):
-    repair_estimate = "20-45 kg CO2e" if context["is_electronics"] else "8-25 kg CO2e"
-    estimates = {
-        "repair": repair_estimate,
-        "clean": "5-20 kg CO2e",
-        "sell": "15-35 kg CO2e",
-        "donate": "10-30 kg CO2e",
-        "waste": "reference",
-    }
     money = {
         "repair": "mulig udgift",
         "clean": "lav udgift / højere værdi",
@@ -319,18 +370,32 @@ def build_impact(action, context):
     }
     return {
         "economy": money[action],
-        "co2_saving": estimates[action],
-        "note": "Prototypeestimat. Rigtige CO2-tal kræver produkt- og materialedata.",
+        "co2_saving": "Ikke beregnet",
+        "note": "CO2-effekten vises først, når produkt-, materiale- og levetidsdata kan dokumenteres.",
     }
 
 
 def confidence_label(context, possibilities):
+    required_values = [
+        context["reason"],
+        context["works"],
+        context["damage"],
+        context["age"],
+        context["accessories"],
+        context["safety"],
+    ]
+    if any(value in (None, "", "unknown") for value in required_values):
+        return "Lav"
+    identification_confidence = context.get("identification_confidence")
+    if isinstance(identification_confidence, (int, float)):
+        if identification_confidence < 0.5:
+            return "Lav"
+        if identification_confidence < 0.75:
+            return "Middel"
     realistic_count = sum(1 for item in possibilities.values() if item["realistic"])
-    if context["works"] in ("unknown", None) or context["damage"] == "unknown":
-        return "Lav-middel"
     if realistic_count > 2:
         return "Middel"
-    return "Middel-høj"
+    return "Høj"
 
 
 def normalize(value):
