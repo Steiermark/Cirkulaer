@@ -27,14 +27,14 @@
 ### Task 1: Repository restructure and solution scaffold
 
 **Files:**
-- Create: `src/Cirkulaer.sln`, `src/Api/Api.csproj`, `src/App/App.csproj`, `src/Api.Tests/Api.Tests.csproj`, `src/Cirkulaer.AppHost/Cirkulaer.AppHost.csproj`, `src/Cirkulaer.ServiceDefaults/Cirkulaer.ServiceDefaults.csproj`
+- Create: `src/Cirkulaer.slnx`, `src/Api/Api.csproj`, `src/App/App.csproj`, `src/Api.Tests/Api.Tests.csproj`, `src/Cirkulaer.AppHost/Cirkulaer.AppHost.csproj`, `src/Cirkulaer.ServiceDefaults/Cirkulaer.ServiceDefaults.csproj`
 - Create: `.gitignore`
 - Move: `server.py`, `decision_engine.py`, `producer_programs.py`, `test_decision_engine.py` → `legacy/`
 - Move: `index.html`, `app.js`, `styles.css` → `src/App/wwwroot/`
 
 **Interfaces:**
 - Consumes: nothing
-- Produces: a building solution at `src/Cirkulaer.sln` with five projects. Later tasks add files to `src/Api/`, `src/App/`, `src/Api.Tests/`.
+- Produces: a building solution at `src/Cirkulaer.slnx` with five projects. Later tasks add files to `src/Api/`, `src/App/`, `src/Api.Tests/`.
 
 - [ ] **Step 1: Move the Python to `legacy/` and the frontend to `wwwroot/`**
 
@@ -96,7 +96,7 @@ __pycache__/
 
 - [ ] **Step 6: Build**
 
-Run: `dotnet build src/Cirkulaer.sln`
+Run: `dotnet build src/Cirkulaer.slnx`
 Expected: build succeeds, 5 projects.
 
 - [ ] **Step 7: Commit**
@@ -1521,7 +1521,7 @@ git commit -m "ci: add azd config, generated infra and deploy workflow"
 
 - [ ] **Step 1: Confirm parity is actually green**
 
-Run: `dotnet test src/Cirkulaer.sln`
+Run: `dotnet test src/Cirkulaer.slnx`
 Expected: PASS, including `DecisionParityTests` and `SaleAssistParityTests`. Do not proceed if anything is skipped — a skipped parity test means the port is unverified.
 
 - [ ] **Step 2: Check the decision tree doc still matches**
@@ -1550,7 +1550,7 @@ The fixtures in `src/Api.Tests/fixtures/` stay — they are the committed record
 
 - [ ] **Step 5: Final build and test**
 
-Run: `dotnet build src/Cirkulaer.sln && dotnet test src/Cirkulaer.sln`
+Run: `dotnet build src/Cirkulaer.slnx && dotnet test src/Cirkulaer.slnx`
 Expected: both succeed.
 
 - [ ] **Step 6: Commit**

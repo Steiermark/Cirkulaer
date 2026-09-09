@@ -1,4 +1,7 @@
+bin/
+obj/
+.vs/
+*.user
+.azure/
 __pycache__/
-.env
-.venv/
-node_modules/
+*.pyc

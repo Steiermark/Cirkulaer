@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Api.Tests/Api.Tests.csproj" />
+  <Project Path="Api/Api.csproj" />
+  <Project Path="App/App.csproj" />
+  <Project Path="Cirkulaer.AppHost/Cirkulaer.AppHost.csproj" />
+  <Project Path="Cirkulaer.ServiceDefaults/Cirkulaer.ServiceDefaults.csproj" />
+</Solution>
