@@ -17,6 +17,16 @@ public sealed record Assessment
     [JsonPropertyName("confidence")] public double? Confidence { get; init; }
     [JsonPropertyName("waste_category")] public string? WasteCategory { get; init; }
     [JsonPropertyName("uncertainty_notes")] public IReadOnlyList<string> UncertaintyNotes { get; init; } = [];
+
+    // Only set for local test analyses; omitted for real ones, as in the Python.
+    [JsonPropertyName("analysis_mode")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? AnalysisMode { get; init; }
+
+    // Read by app.js:503 and app.js:1488 to decide whether to show producer schemes.
+    // Populated by AssessmentNormalizer, not by the model.
+    [JsonPropertyName("producer_program_candidates")]
+    public IReadOnlyList<string> ProducerProgramCandidates { get; init; } = [];
 }
 
 public sealed record DecisionContext
