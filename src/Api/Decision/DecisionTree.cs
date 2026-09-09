@@ -1,3 +1,5 @@
+using Api.Producers;
+
 namespace Api.Decision;
 
 public static partial class DecisionEngine
@@ -59,7 +61,7 @@ public static partial class DecisionEngine
                 Realistic = possibilities[action].Realistic,
             }).ToList(),
             Impact = BuildImpact(recommendedAction),
-            ProducerProgram = null,
+            ProducerProgram = ProducerPrograms.Evaluate(context),
             Waste = new WasteInfo
             {
                 GeneralFraction = string.IsNullOrEmpty(assessment.WasteCategory)

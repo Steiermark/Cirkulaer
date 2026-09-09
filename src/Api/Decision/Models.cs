@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Api.Producers;
 
 namespace Api.Decision;
 
@@ -87,6 +88,6 @@ public sealed record Recommendation
     [JsonPropertyName("checks")] public required IReadOnlyList<ActionCheck> Checks { get; init; }
     [JsonPropertyName("options")] public required IReadOnlyList<ActionOption> Options { get; init; }
     [JsonPropertyName("impact")] public required Impact Impact { get; init; }
-    [JsonPropertyName("producer_program")] public object? ProducerProgram { get; init; }
+    [JsonPropertyName("producer_program")] public required ProducerProgramResult ProducerProgram { get; init; }
     [JsonPropertyName("waste")] public required WasteInfo Waste { get; init; }
 }

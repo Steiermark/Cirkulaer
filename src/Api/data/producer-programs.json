@@ -1,0 +1,65 @@
+[
+  {
+    "id": "ikea_gensalg",
+    "producer": "ikea",
+    "title": "IKEA Gensalg",
+    "scheme_types": [
+      "buy_back",
+      "resale"
+    ],
+    "url": "https://www.ikea.com/dk/da/second-hand/sell-to-ikea/quote/",
+    "reward": "IKEA tilgodebevis",
+    "source_label": "IKEA Gensalg vurderingsværktøj",
+    "eligible_hints": [
+      "kommode",
+      "skaenk",
+      "vitrineskab",
+      "bogreol",
+      "reol",
+      "garderobeskab",
+      "multimediemoebel",
+      "spisebord",
+      "skrivebord",
+      "sofabord",
+      "sengebord",
+      "stol",
+      "kontorstol",
+      "taburet",
+      "sengestel",
+      "underseng",
+      "lamelbund",
+      "entre",
+      "hylde",
+      "opbevaring",
+      "bordlampe",
+      "gulvlampe",
+      "belysning",
+      "ovnfast",
+      "glas",
+      "porcelaen",
+      "boernemoebel",
+      "baby"
+    ],
+    "excluded_hints": [
+      "hvidevare",
+      "elektrisk",
+      "elektronik",
+      "madras",
+      "sengetekstil",
+      "havemoebel",
+      "udendoers",
+      "koekken",
+      "bordplade",
+      "front",
+      "loes del"
+    ],
+    "checks": [
+      "Originalt producentprodukt",
+      "God/salgbar stand",
+      "Rent og uændret",
+      "Komplet og fuldt funktionelt",
+      "Korrekt samlet",
+      "Omfattet produktkategori"
+    ]
+  }
+]

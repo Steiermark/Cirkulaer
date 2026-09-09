@@ -11,4 +11,8 @@
     <EnableSdkContainerSupport>true</EnableSdkContainerSupport>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Update="data\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

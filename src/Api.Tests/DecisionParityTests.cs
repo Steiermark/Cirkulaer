@@ -6,8 +6,7 @@ namespace Api.Tests;
 
 public class DecisionParityTests
 {
-    // Emptied in Task 6, once ProducerPrograms.Evaluate is wired into BuildRecommendation.
-    static readonly string[] NotPortedYet = ["producer_program"];
+    static readonly string[] NotPortedYet = [];
 
     static readonly JsonSerializerOptions Options = new() { WriteIndented = false };
 

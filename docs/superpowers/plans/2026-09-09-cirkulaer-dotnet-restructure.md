@@ -573,7 +573,9 @@ print(json.dumps(PRODUCER_PROGRAMS, ensure_ascii=False, indent=2))
 " > src/Api/data/producer-programs.json
 ```
 
-Add to `src/Api/Api.csproj`:
+Add to `src/Api/Api.csproj` — note `Update`, not `Include`: the Web SDK already
+auto-includes JSON under the project as `Content`, and `Include` fails the build with
+NETSDK1022 duplicate items.
 
 ```xml
 <ItemGroup>
