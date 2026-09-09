@@ -111,6 +111,17 @@ prices and the estimator falls back to a category heuristic with an honest Danis
 That degradation is the design — do not "fix" it. Replacing the search with a real API is
 a documented follow-up, not a bug.
 
+## Deliberate Deviations From The Python
+
+Behaviour that intentionally differs from `legacy/`. Do not "restore" these.
+
+- **Danish thousands separator in prices.** The original regex required two leading digits,
+  so `"1.250 kr."` parsed as `250` and biased every web-derived estimate downward. Fixed in
+  `PriceSearchClient.ExtractPrices` (`\d{2,6}` → `\d{1,6}`). Everything else about price
+  parsing is unchanged.
+
+## Rules That Are Not Guessable (continued)
+
 **`Content Update`, not `Content Include`.** The Web SDK already auto-includes JSON under
 the project; `Include` fails the build with NETSDK1022.
 

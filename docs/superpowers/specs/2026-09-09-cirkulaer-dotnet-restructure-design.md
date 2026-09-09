@@ -288,6 +288,15 @@ as a parameter — the search is already a clean seam, and no test crosses it. I
 `IPriceSearchProvider` interface at that point, not before; one implementation does not
 need one.
 
+## Deliberate deviations from the Python
+
+- **Danish thousands separator.** `extract_prices`' regex required two leading digits, so
+  `"1.250 kr."` parsed as `250`. Since Danish listings commonly use `.` as the thousands
+  separator, this systematically dragged web-derived price estimates down. Fixed in the
+  port at Jan's direction (2026-09-09). No parity fixture covers it — the sale fixture
+  strips every search-derived key — so the change is invisible to the parity suite and is
+  pinned by its own test instead.
+
 ## Out of scope
 
 - Converting tri-state strings to enums

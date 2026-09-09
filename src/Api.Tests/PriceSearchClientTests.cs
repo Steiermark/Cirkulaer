@@ -16,11 +16,16 @@ public class PriceSearchClientTests
     public void Extract_prices_understands_tusind_form()
         => Assert.Contains(2000, PriceSearchClient.ExtractPrices("Sælges for 2 tusind kr."));
 
-    // Preserved bug from the original: the Danish thousands separator is mishandled,
-    // so "1.250 kr." reads as 250. Verified against legacy/server.py.
-    [Fact]
-    public void Danish_thousands_separator_is_mishandled_as_in_the_original()
-        => Assert.Equal([250, 300], PriceSearchClient.ExtractPrices("Pris 1.250 kr. og 300 kr."));
+    // Deliberate deviation from the Python, which read this as 250.
+    [Theory]
+    [InlineData("Pris 1.250 kr. og 300 kr.", new[] { 300, 1250 })]
+    [InlineData("1.250 kr", new[] { 1250 })]
+    [InlineData("12.500 kr", new[] { 12500 })]
+    [InlineData("100.000 kr", new[] { 100000 })]
+    [InlineData("999 kr", new[] { 999 })]
+    [InlineData("25 kr", new[] { 25 })]
+    public void Danish_thousands_separator_is_parsed_correctly(string text, int[] expected)
+        => Assert.Equal(expected, PriceSearchClient.ExtractPrices(text));
 
     [Fact]
     public void Prices_below_the_floor_are_dropped()

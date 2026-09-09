@@ -139,8 +139,8 @@ public sealed partial class PriceSearchClient(HttpClient http, ILogger<PriceSear
         return string.IsNullOrEmpty(target) ? url : target;
     }
 
-    // Note the Danish thousands separator is mishandled: "1.250 kr" yields 250, because the
-    // leading group needs two digits. Preserved from legacy/server.py:683-696.
+    // Deliberate fix, not a port: the original required two leading digits, so the Danish
+    // thousands separator broke it and "1.250 kr" read as 250, biasing every estimate down.
     public static List<int> ExtractPrices(string text)
     {
         var prices = new List<int>();
@@ -178,7 +178,7 @@ public sealed partial class PriceSearchClient(HttpClient http, ILogger<PriceSear
     [GeneratedRegex(@"\s+")]
     private static partial Regex Whitespace();
 
-    [GeneratedRegex(@"(?<!\d)(\d{2,6}(?:[\.,]\d{3})?)\s*(?:kr\.?|dkk|,-)", RegexOptions.IgnoreCase)]
+    [GeneratedRegex(@"(?<!\d)(\d{1,6}(?:[\.,]\d{3})?)\s*(?:kr\.?|dkk|,-)", RegexOptions.IgnoreCase)]
     private static partial Regex CurrencyAmount();
 
     [GeneratedRegex(@"(?<!\d)(\d{1,3})\s*(?:tusind|t\.kr\.?|k)\b", RegexOptions.IgnoreCase)]
