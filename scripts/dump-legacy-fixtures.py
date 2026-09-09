@@ -116,8 +116,10 @@ def main():
     with open(os.path.join(out_dir, "decision-cases.json"), "w", encoding="utf-8") as handle:
         json.dump(decision, handle, ensure_ascii=False, indent=2)
 
-    volatile = ("price", "price_note", "search_note", "search_url",
-                "signals", "comparables", "price_confidence")
+    # Only strip what the live search produces. price/price_note stay: under the stub
+    # they are deterministic, and they exercise the estimator's no-web-prices path —
+    # which is also the real behaviour whenever the scrape is blocked.
+    volatile = ("search_note", "search_url", "signals", "comparables", "price_confidence")
     sale_subset = cases[::7]
     sale = {
         "assessments": ASSESSMENTS,

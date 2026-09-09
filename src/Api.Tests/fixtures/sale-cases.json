@@ -89,6 +89,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -112,6 +114,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · mindre skader/slitage",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-675 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -135,6 +139,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · store skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -158,6 +164,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -181,6 +189,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -203,6 +213,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -226,6 +238,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -248,6 +262,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · mindre skader/slitage",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-675 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -271,6 +287,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker ikke · store skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -294,6 +312,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker ikke",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -317,6 +337,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker ikke",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -339,6 +361,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker ikke",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -362,6 +386,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -385,6 +411,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker ikke · mindre skader/slitage",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-675 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -408,6 +436,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker ikke · store skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -430,6 +460,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker ikke",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -453,6 +485,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker delvist",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -475,6 +509,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker delvist",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -498,6 +534,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -521,6 +559,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker delvist · mindre skader/slitage",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -544,6 +584,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker delvist · store skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -567,6 +609,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker delvist",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -590,6 +634,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker delvist",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -611,6 +657,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker delvist",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -634,6 +682,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -657,6 +707,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · mindre skader/slitage",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-675 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -680,6 +732,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · store skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -703,6 +757,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -726,6 +782,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -748,6 +806,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -770,6 +830,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -792,6 +854,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · mindre skader/slitage",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-675 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -814,6 +878,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · store skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -836,6 +902,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -858,6 +926,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -879,6 +949,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -901,6 +973,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -923,6 +997,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · mindre skader/slitage",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-675 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -944,6 +1020,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · store skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -966,6 +1044,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 600 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-950 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -989,6 +1069,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 600 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-950 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1012,6 +1094,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1035,6 +1119,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1058,6 +1144,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-675 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1080,6 +1168,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-675 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1102,6 +1192,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-675 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1125,6 +1217,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 500 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 175-800 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1147,6 +1241,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 500 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 175-800 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1168,6 +1264,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1190,6 +1288,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1214,6 +1314,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1237,6 +1339,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1261,6 +1365,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1285,6 +1391,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1309,6 +1417,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1332,6 +1442,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1355,6 +1467,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1379,6 +1493,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1403,6 +1519,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1427,6 +1545,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1450,6 +1570,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1474,6 +1596,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1497,6 +1621,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1521,6 +1647,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1545,6 +1673,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1569,6 +1699,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1593,6 +1725,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1617,6 +1751,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1640,6 +1776,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1662,6 +1800,8 @@
       "expected": {
         "object_name": "IKEA MARKUS Kontorstol",
         "details": "Møbler og indbo · ingen kendte skader",
+        "price": "Sæt prisen til 550 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 200-900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=IKEA%20MARKUS%20Kontorstol%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -1685,6 +1825,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -1708,6 +1850,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · mindre skader/slitage",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-525 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -1731,6 +1875,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · store skader",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -1754,6 +1900,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -1777,6 +1925,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -1799,6 +1949,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -1822,6 +1974,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -1844,6 +1998,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · mindre skader/slitage",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-525 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -1867,6 +2023,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker ikke · store skader",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -1890,6 +2048,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker ikke",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -1913,6 +2073,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker ikke",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -1935,6 +2097,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker ikke",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -1958,6 +2122,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -1981,6 +2147,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker ikke · mindre skader/slitage",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-525 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2004,6 +2172,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker ikke · store skader",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2026,6 +2196,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker ikke",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2049,6 +2221,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker delvist",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2071,6 +2245,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker delvist",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2094,6 +2270,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2117,6 +2295,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker delvist · mindre skader/slitage",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2140,6 +2320,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker delvist · store skader",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2163,6 +2345,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker delvist",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2186,6 +2370,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker delvist",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2207,6 +2393,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker delvist",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2230,6 +2418,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2253,6 +2443,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · mindre skader/slitage",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-525 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2276,6 +2468,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · store skader",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2299,6 +2493,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2322,6 +2518,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2344,6 +2542,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2366,6 +2566,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2388,6 +2590,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · mindre skader/slitage",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-525 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2410,6 +2614,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · store skader",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2432,6 +2638,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2454,6 +2662,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2475,6 +2685,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2497,6 +2709,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2519,6 +2733,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · mindre skader/slitage",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-525 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2540,6 +2756,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · store skader",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2562,6 +2780,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 450 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-725 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2585,6 +2805,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 450 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-725 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2608,6 +2830,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2631,6 +2855,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2654,6 +2880,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-525 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2676,6 +2904,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-525 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2698,6 +2928,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-525 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2721,6 +2953,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 125-625 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2743,6 +2977,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 125-625 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2764,6 +3000,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2786,6 +3024,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2810,6 +3050,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2833,6 +3075,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2857,6 +3101,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2881,6 +3127,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2905,6 +3153,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2928,6 +3178,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2951,6 +3203,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2975,6 +3229,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -2999,6 +3255,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3023,6 +3281,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3046,6 +3306,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3070,6 +3332,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3093,6 +3357,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3117,6 +3383,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3141,6 +3409,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3165,6 +3435,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3189,6 +3461,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3213,6 +3487,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3236,6 +3512,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3258,6 +3536,8 @@
       "expected": {
         "object_name": "Bosch PSR 18 Akkuboremaskine",
         "details": "Elektronik og værktøj · ingen kendte skader",
+        "price": "Sæt prisen til 400 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 150-700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Bosch%20PSR%2018%20Akkuboremaskine%20Boremaskine%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3281,6 +3561,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1800 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1200-2400 kr. Hurtigt salg kan fx ligge omkring 900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3304,6 +3586,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · mindre skader/slitage",
+        "price": "Sæt prisen til 1800 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1200-2400 kr. Hurtigt salg kan fx ligge omkring 900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3327,6 +3611,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · store skader",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3350,6 +3636,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3373,6 +3661,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker",
+        "price": "Sæt prisen til 1800 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1200-2400 kr. Hurtigt salg kan fx ligge omkring 900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3395,6 +3685,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker",
+        "price": "Sæt prisen til 1800 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1200-2400 kr. Hurtigt salg kan fx ligge omkring 900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3418,6 +3710,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1800 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1200-2400 kr. Hurtigt salg kan fx ligge omkring 900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3440,6 +3734,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · mindre skader/slitage",
+        "price": "Sæt prisen til 1800 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1200-2400 kr. Hurtigt salg kan fx ligge omkring 900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3463,6 +3759,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker ikke · store skader",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3486,6 +3784,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker ikke",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3509,6 +3809,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker ikke",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3531,6 +3833,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker ikke",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3554,6 +3858,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3577,6 +3883,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker ikke · mindre skader/slitage",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3600,6 +3908,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker ikke · store skader",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3622,6 +3932,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker ikke",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3645,6 +3957,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker delvist",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3667,6 +3981,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker delvist",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3690,6 +4006,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3713,6 +4031,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker delvist · mindre skader/slitage",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3736,6 +4056,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker delvist · store skader",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3759,6 +4081,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker delvist",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3782,6 +4106,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker delvist",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3803,6 +4129,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker delvist",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3826,6 +4154,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · ingen kendte skader",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3849,6 +4179,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · mindre skader/slitage",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3872,6 +4204,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · store skader",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3895,6 +4229,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3918,6 +4254,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3940,6 +4278,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3962,6 +4302,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · ingen kendte skader",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -3984,6 +4326,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · mindre skader/slitage",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4006,6 +4350,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · store skader",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4028,6 +4374,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4050,6 +4398,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4071,6 +4421,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4093,6 +4445,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · ingen kendte skader",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4115,6 +4469,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · mindre skader/slitage",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4136,6 +4492,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · store skader",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4158,6 +4516,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1900 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1250-2500 kr. Hurtigt salg kan fx ligge omkring 950 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4181,6 +4541,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1900 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1250-2500 kr. Hurtigt salg kan fx ligge omkring 950 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4204,6 +4566,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1800 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1200-2400 kr. Hurtigt salg kan fx ligge omkring 900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4227,6 +4591,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1800 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1200-2400 kr. Hurtigt salg kan fx ligge omkring 900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4250,6 +4616,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1350 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 900-1800 kr. Hurtigt salg kan fx ligge omkring 700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4272,6 +4640,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1000 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 600-1350 kr. Hurtigt salg kan fx ligge omkring 450 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4294,6 +4664,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1350 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 900-1800 kr. Hurtigt salg kan fx ligge omkring 700 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4317,6 +4689,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1150 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 700-1600 kr. Hurtigt salg kan fx ligge omkring 550 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4339,6 +4713,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1600 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1100-2150 kr. Hurtigt salg kan fx ligge omkring 800 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4360,6 +4736,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1800 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1200-2400 kr. Hurtigt salg kan fx ligge omkring 900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4382,6 +4760,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1800 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1200-2400 kr. Hurtigt salg kan fx ligge omkring 900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4406,6 +4786,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1800 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1200-2400 kr. Hurtigt salg kan fx ligge omkring 900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4429,6 +4811,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1800 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1200-2400 kr. Hurtigt salg kan fx ligge omkring 900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4453,6 +4837,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4477,6 +4863,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4501,6 +4889,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · ingen kendte skader",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4524,6 +4914,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · ingen kendte skader",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4547,6 +4939,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · ingen kendte skader",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4571,6 +4965,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1800 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1200-2400 kr. Hurtigt salg kan fx ligge omkring 900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4595,6 +4991,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4619,6 +5017,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4642,6 +5042,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4666,6 +5068,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · ingen kendte skader",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4689,6 +5093,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · ingen kendte skader",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4713,6 +5119,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker · ingen kendte skader",
+        "price": "Sæt prisen til 1800 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 1200-2400 kr. Hurtigt salg kan fx ligge omkring 900 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4737,6 +5145,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4761,6 +5171,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4785,6 +5197,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 750 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 400-1100 kr. Hurtigt salg kan fx ligge omkring 300 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4809,6 +5223,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · ingen kendte skader",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4832,6 +5248,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · ingen kendte skader",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4854,6 +5272,8 @@
       "expected": {
         "object_name": "Trek Madone SLR Racercykel",
         "details": "Cykler · ingen kendte skader",
+        "price": "Sæt prisen til 1300 kr.",
+        "price_note": "Cykelestimat baseret på kategori, stand og om producent/model er kendt. Realistisk spænd: 800-1800 kr. Hurtigt salg kan fx ligge omkring 600 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Trek%20Madone%20SLR%20Racercykel%20brugt%20pris%20Danmark",
         "reshopper_relevant": false,
         "reshopper_url": "https://reshopper.com/da",
@@ -4877,6 +5297,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -4900,6 +5322,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · mindre skader/slitage",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -4923,6 +5347,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · store skader",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -4946,6 +5372,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -4969,6 +5397,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -4991,6 +5421,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5014,6 +5446,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5036,6 +5470,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · mindre skader/slitage",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5059,6 +5495,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker ikke · store skader",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5082,6 +5520,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker ikke",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5105,6 +5545,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker ikke",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5127,6 +5569,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker ikke",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5150,6 +5594,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5173,6 +5619,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker ikke · mindre skader/slitage",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5196,6 +5644,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker ikke · store skader",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5218,6 +5668,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker ikke",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5241,6 +5693,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker delvist",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5263,6 +5717,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker delvist",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5286,6 +5742,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5309,6 +5767,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker delvist · mindre skader/slitage",
+        "price": "Sæt prisen til 100 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-200 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5332,6 +5792,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker delvist · store skader",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5355,6 +5817,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker delvist",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5378,6 +5842,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker delvist",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5399,6 +5865,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker delvist",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5422,6 +5890,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5445,6 +5915,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · mindre skader/slitage",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5468,6 +5940,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · store skader",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5491,6 +5965,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5514,6 +5990,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5536,6 +6014,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5558,6 +6038,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5580,6 +6062,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · mindre skader/slitage",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5602,6 +6086,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · store skader",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5624,6 +6110,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5646,6 +6134,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5667,6 +6157,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5689,6 +6181,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5711,6 +6205,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · mindre skader/slitage",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5732,6 +6228,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · store skader",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5754,6 +6252,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-525 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5777,6 +6277,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-525 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5800,6 +6302,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5823,6 +6327,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5846,6 +6352,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5868,6 +6376,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5890,6 +6400,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 200 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 75-375 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5913,6 +6425,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-450 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5935,6 +6449,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-450 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5956,6 +6472,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -5978,6 +6496,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6002,6 +6522,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6025,6 +6547,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6049,6 +6573,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6073,6 +6599,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6097,6 +6625,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6120,6 +6650,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6143,6 +6675,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6167,6 +6701,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6191,6 +6727,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6215,6 +6753,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6238,6 +6778,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6262,6 +6804,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6285,6 +6829,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6309,6 +6855,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6333,6 +6881,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6357,6 +6907,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker ikke · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6381,6 +6933,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · virker delvist · ingen kendte skader",
+        "price": "Sæt prisen til 150 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 50-275 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6405,6 +6959,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6428,6 +6984,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
@@ -6450,6 +7008,8 @@
       "expected": {
         "object_name": "Barnevogn",
         "details": "Børn og baby · ingen kendte skader",
+        "price": "Sæt prisen til 300 kr.",
+        "price_note": "Foreløbigt prototypeestimat, fordi der ikke blev fundet nok tydelige priser online. Realistisk spænd: 100-500 kr.",
         "marketplace_search_url": "https://www.facebook.com/marketplace/search/?query=Barnevogn%20brugt%20pris%20Danmark",
         "reshopper_relevant": true,
         "reshopper_url": "https://reshopper.com/da",
