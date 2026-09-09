@@ -66,7 +66,13 @@ Frontend is hand-written vanilla JS — no framework, no npm, no bundler, no bui
 dotnet build src/Cirkulaer.slnx
 dotnet test src/Cirkulaer.slnx
 dotnet run --project src/Cirkulaer.AppHost     # Aspire dashboard prints both URLs
+
+node tools/static-wwwroot-server.mjs           # frontend only, no .NET needed
 ```
+
+`static-wwwroot-server.mjs` serves `src/App/wwwroot/` on port 4173 and binds `0.0.0.0`, so
+a phone on the same Wi-Fi can open it. Use it for layout and flow work; `/api/*` calls fail
+because no `Api` is running. `/config` is stubbed so `app.js` falls back to same-origin.
 
 Provider keys are optional locally — with none set, `/api/analyze` falls back to a local
 test analysis and marks the result as such:

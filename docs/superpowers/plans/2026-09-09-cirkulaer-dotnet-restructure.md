@@ -1320,16 +1320,38 @@ Call `await loadApiConfig()` in the existing startup path — find where the app
 
 At `app.js:233`, `:684`, `:996` (line numbers before this task's edits), replace `new URL("/api/x", window.location.href)` with `apiUrl("/api/x")` and the headers object with `apiHeaders()`. Keep the request bodies untouched.
 
-- [ ] **Step 5: Verify manually**
+- [ ] **Step 5: Add the frontend-only dev server**
+
+`dinenergi` works UI-only — across 18 commits in Affaldssortering he touched nothing but
+`src/App/wwwroot/**` plus his own `tools/static-wwwroot-server.mjs`. Without that tool the
+port would force him to install .NET 10 and boot the Aspire stack to adjust CSS.
+
+`tools/static-wwwroot-server.mjs` is already committed (adapted from Affaldssortering).
+Two Cirkulaer-specific changes from his original: it binds `0.0.0.0` and prints LAN URLs,
+preserving the phone-over-Wi-Fi workflow the README documents and `server.py` supported;
+and it stubs `GET /config` returning empty strings so `app.js` takes its same-origin
+fallback instead of choking on a 404 body.
+
+Verify:
+
+```bash
+node tools/static-wwwroot-server.mjs
+```
+
+Expected: prints a Local and one or more Mobile URLs, serves `index.html`, and returns
+`{"apiBaseUrl":"","apiKey":""}` from `/config`. `/api/*` calls will fail — that is expected,
+it is a layout and flow tool, not an end-to-end one.
+
+- [ ] **Step 6: Verify manually**
 
 Run: `dotnet run --project src/Cirkulaer.AppHost`
 
 Open the App URL from the Aspire dashboard, upload a photo, walk the flow to a recommendation. Expected: identical behaviour to `python legacy/server.py`. Check the browser network tab shows `X-Api-Key` on the three API calls.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 7: Commit**
 
 ```bash
-git add src/App
+git add src/App tools
 git commit -m "feat(app): serve frontend with /config bootstrap and api key header"
 ```
 
