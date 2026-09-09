@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -104,6 +105,29 @@ public static class Extensions
             .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
 
         return builder;
+    }
+
+    // Shared API key gate for Api. No-op if Auth:ApiKey isn't configured (local dev).
+    // The key is handed to every browser by App's /config, so it gates casual abuse of the
+    // bare Api URL rather than being a real secret; the per-IP rate limit is the real control.
+    public static WebApplication UseApiKeyAuth(this WebApplication app)
+    {
+        var apiKey = app.Configuration["Auth:ApiKey"];
+        if (string.IsNullOrEmpty(apiKey))
+            return app;
+
+        app.Use(async (context, next) =>
+        {
+            if (context.Request.Headers["X-Api-Key"] == apiKey)
+            {
+                await next(context);
+                return;
+            }
+
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        });
+
+        return app;
     }
 
     public static WebApplication MapDefaultEndpoints(this WebApplication app)
