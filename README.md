@@ -26,13 +26,13 @@ Det fulde beslutningstræ ligger her:
 
 Appen kan bruges med et uploadet eller taget billede.
 
-Hvis `OPENAI_API_KEY` er sat:
+Hvis en AI-nøgle er sat (OpenAI, Anthropic eller Gemini):
 
-- bruger `/api/analyze` rigtig OpenAI-billedanalyse
+- bruger `/api/analyze` rigtig billedanalyse
 - billedanalysen returnerer strukturerede data
 - beslutningsmotoren kører på backend
 
-Hvis `OPENAI_API_KEY` ikke er sat:
+Hvis ingen AI-nøgle er sat:
 
 - bruger `/api/analyze` lokal testanalyse
 - billedet bliver stadig vist og brugt i flowet
@@ -43,8 +43,11 @@ Hvis `OPENAI_API_KEY` ikke er sat:
 Producentordninger er samlet i:
 
 ```text
-producer_programs.py
+src/Api/data/producer-programs.json
 ```
+
+En ny ordning tilføjes ved at indsætte et objekt i JSON-filen med de samme felter som
+IKEA Gensalg. Det kræver ingen kodeændring.
 
 Modulet kan udvides med producenters:
 
@@ -59,48 +62,83 @@ IKEA Gensalg er første konkrete integration. Det er ikke hardcoded i kernen, me
 
 ## Kør på computer
 
-Start serveren:
+Hele stakken (Api + App) startes via Aspire:
 
 ```powershell
-python server.py
+dotnet run --project src/Cirkulaer.AppHost
 ```
 
-Med rigtig AI-billedanalyse:
+Aspire-dashboardet viser adresserne på begge services. Appen er `app`-ressourcen.
+
+AI-nøgler er valgfrie lokalt. Uden nøgler falder `/api/analyze` tilbage til lokal
+testanalyse, og svaret markeres tydeligt som testversion. Med nøgler:
 
 ```powershell
-$env:OPENAI_API_KEY="din_nøgle"
-python server.py
+cd src/Cirkulaer.AppHost
+dotnet user-secrets set "Parameters:openAiApiKey" "..."
+dotnet user-secrets set "Parameters:anthropicApiKey" "..."
+dotnet user-secrets set "Parameters:geminiApiKey" "..."
+dotnet user-secrets set "Parameters:authApiKey" "local-dev-key"
 ```
 
-Åbn derefter:
+`authApiKey` er den delte `X-Api-Key` mellem App og Api. Den udleveres til browseren af
+App'ens `/config`, så frontend kan kalde Api.
 
-```text
-http://127.0.0.1:4173
+## Kør kun frontend
+
+Til arbejde med HTML, CSS og JavaScript er der en frontend-server uden .NET:
+
+```powershell
+node tools/static-wwwroot-server.mjs
 ```
+
+Den serverer `src/App/wwwroot/` på port 4173 og lytter på alle netkort, så en telefon på
+samme Wi-Fi kan åbne den. `/api/*` fejler, fordi Api ikke kører — brug den til layout og
+flow, ikke til at teste hele kæden.
 
 ## Kør fra mobiltelefon
 
 1. Sørg for at computer og telefon er på samme Wi-Fi.
-2. Start serveren på computeren.
+2. Start `node tools/static-wwwroot-server.mjs`.
 3. Kig efter linjen `Mobile: http://...:4173` i terminalen.
 4. Åbn den adresse i browseren på telefonen.
 
-Hvis telefonen ikke kan åbne siden, skal Windows Firewall tillade indgående forbindelser til Python på port `4173`, eller serveren kan startes på en anden port:
+Hvis telefonen ikke kan åbne siden, skal Windows Firewall tillade indgående forbindelser
+på porten, eller serveren kan startes på en anden port:
 
 ```powershell
 $env:PORT="4180"
-python server.py
+node tools/static-wwwroot-server.mjs
 ```
+
+## Test
+
+```powershell
+dotnet test src/Cirkulaer.slnx
+```
+
+Testene indeholder golden-file-tests, der sammenligner output med den oprindelige
+Python-implementering. Slår en af dem fejl, er C#-koden forkert — rettelser hører hjemme
+i koden, ikke i testdata under `src/Api.Tests/fixtures/`.
+
+## Deploy
+
+Push til `main` bygger og deployer automatisk til Azure Container Apps via GitHub Actions
+og `azd`. Infrastrukturen genereres fra Aspire-AppHost'en, så ændringer hører hjemme i
+`src/Cirkulaer.AppHost/AppHost.cs` — ikke i `src/infra/`.
 
 ## Vigtige filer
 
-- `index.html` - appens struktur
-- `styles.css` - mobile-first design
-- `app.js` - billedupload, spørgsmål og UI-flow
-- `server.py` - lokal backend, AI/testanalyse og API-routes
-- `decision_engine.py` - beslutningstræ og anbefaling
-- `producer_programs.py` - producentordninger, inkl. IKEA Gensalg
-- `test_decision_engine.py` - backend-tests
+- `src/App/wwwroot/index.html` - appens struktur
+- `src/App/wwwroot/styles.css` - mobile-first design
+- `src/App/wwwroot/app.js` - billedupload, spørgsmål og UI-flow
+- `src/App/Program.cs` - statisk webserver og `/config`
+- `src/Api/Decision/DecisionTree.cs` - beslutningstræ og anbefaling
+- `src/Api/Ai/` - billedanalyse via OpenAI, Anthropic og Gemini
+- `src/Api/SaleAssist/` - prisvurdering, annoncetekst og salgslinks
+- `src/Api/data/producer-programs.json` - producentordninger, inkl. IKEA Gensalg
+- `src/Api.Tests/` - backend-tests
+- `AGENTS.md` - arkitektur og regler for udviklere og AI-assistenter
 
 ## Næste tekniske skridt
 
@@ -110,5 +148,15 @@ python server.py
 - Flytte CO2- og økonomiestimater til datakilder frem for faste prototypeværdier.
 - Udvide backend-tests med flere varetyper og edge cases.
 
+## Ændringer i forhold til Python-prototypen
 
+Porten til .NET er en 1:1-oversættelse af forretningslogikken, verificeret med
+golden-file-tests. Én bevidst rettelse:
 
+- **Tusindtalsseparator i priser.** Den oprindelige regex krævede to indledende cifre, så
+  `"1.250 kr."` blev læst som `250`. Da danske annoncer typisk bruger `.` som
+  tusindtalsseparator, trak det systematisk prisestimaterne ned. Rettet i porten.
+
+Web-søgningen efter sammenlignelige priser kan blive blokeret fra Azures IP-adresser. Sker
+det, falder prisestimatet tilbage til kategori- og standbaserede intervaller, og noten
+oplyser, at der ikke blev fundet webpriser. Det er tilsigtet — appen fejler ikke.
