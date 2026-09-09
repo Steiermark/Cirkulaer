@@ -123,105 +123,23 @@ git commit -m "refactor: scaffold .NET solution, move python to legacy/"
 
 - [ ] **Step 1: Write the fixture dumper**
 
-Create `scripts/dump-legacy-fixtures.py`:
+Write `scripts/dump-legacy-fixtures.py`. Key design points, learned the hard way:
 
-```python
-import itertools
-import json
-import os
-import sys
+- **Stub `server.search_price_signals` before importing `build_sale_assist`.** The sale
+  fixture strips every search-derived key, so live scraping is pure latency — 160 calls at
+  a 12-second timeout each. Stubbing also makes the dump reproducible.
+- **Do not generate the full cartesian product.** works x reason x damage x age x
+  accessories x safety is 21,600 cases and an 89 MB fixture. Use three targeted sweeps
+  against a fixed `BASE`, deduplicated: (A) works x reason x damage, (B) age x accessories
+  x safety, (C) cleaning x works x reason.
+- **Sweep C is not optional.** The furniture `clean` branch requires `cleaning` to be
+  answered; without it no case ever recommends `"clean"` and a documented core action goes
+  unverified.
+- **Store the assessments once** and reference them by `assessment_index`, rather than
+  repeating the full assessment in every case.
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "legacy"))
-
-from decision_engine import build_recommendation
-from server import build_sale_assist
-
-ASSESSMENTS = [
-    {"object_name": "Kontorstol", "category": "Møbler og indbo", "category_id": "furniture",
-     "waste_category": "Storskrald", "materials": ["metal", "tekstil"], "brand": "IKEA",
-     "model": "MARKUS", "subcategory": "Kontorstol", "confidence": 0.9,
-     "visible_damage": [], "condition_estimate": "good", "uncertainty_notes": []},
-    {"object_name": "Akkuboremaskine", "category": "Elektronik og værktøj", "category_id": "electronics",
-     "waste_category": "Småt elektronik", "materials": ["plast", "metal", "batteri"], "brand": "Bosch",
-     "model": "PSR 18", "subcategory": "Boremaskine", "confidence": 0.8,
-     "visible_damage": ["ridser"], "condition_estimate": "worn", "uncertainty_notes": []},
-    {"object_name": "Racercykel", "category": "Cykler", "category_id": "bicycle",
-     "waste_category": "Metal", "materials": ["carbon"], "brand": "Trek", "model": "Madone SLR",
-     "subcategory": "Racercykel", "confidence": 0.85,
-     "visible_damage": [], "condition_estimate": "good", "uncertainty_notes": []},
-    {"object_name": "Barnevogn", "category": "Børn og baby", "category_id": "other",
-     "waste_category": "Storskrald", "materials": ["plast", "tekstil"], "brand": None,
-     "model": None, "subcategory": "Barnevogn", "confidence": 0.6,
-     "visible_damage": ["knækket håndtag"], "condition_estimate": "damaged", "uncertainty_notes": []},
-]
-
-WORKS = ["yes", "no", "partly", "unknown", None]
-REASONS = ["defect", "no_need", "replace", "no_space", "give_away", "waste_assumption", "worn", "missing_part", None]
-DAMAGE = ["no", "minor", "major", "worn_out", "unknown", None]
-AGE = ["newer", "mid", "old", "unknown", None]
-ACCESSORIES = ["complete", "partial", "irrelevant", None]
-SAFETY = ["risk", "ok", "unknown", None]
-
-
-def answer_grid():
-    seen = set()
-    for works, reason in itertools.product(WORKS, REASONS):
-        for damage, age in itertools.product(DAMAGE, AGE):
-            for accessories, safety in zip(ACCESSORIES, SAFETY):
-                key = (works, reason, damage, age, accessories, safety)
-                if key in seen:
-                    continue
-                seen.add(key)
-                answers = {"works": works, "reason": reason, "damage": damage, "age": age,
-                           "accessories": accessories, "safety": safety, "producer": "detected"}
-                yield {k: v for k, v in answers.items() if v is not None}
-
-
-def main():
-    out_dir = os.path.join(os.path.dirname(__file__), "..", "src", "Api.Tests", "fixtures")
-    os.makedirs(out_dir, exist_ok=True)
-
-    decision_cases = []
-    for a_index, assessment in enumerate(ASSESSMENTS):
-        for c_index, answers in enumerate(answer_grid()):
-            decision_cases.append({
-                "name": f"a{a_index}-c{c_index}",
-                "assessment": assessment,
-                "answers": answers,
-                "expected": build_recommendation(assessment, answers),
-            })
-
-    with open(os.path.join(out_dir, "decision-cases.json"), "w", encoding="utf-8") as handle:
-        json.dump(decision_cases, handle, ensure_ascii=False, indent=2)
-
-    # Sale assist reaches the network. Only the deterministic parts are pinned here:
-    # the recorded run must be done with the network available, and the search note
-    # is stripped so the fixture does not depend on live search results.
-    sale_cases = []
-    for a_index, assessment in enumerate(ASSESSMENTS):
-        for c_index, answers in enumerate(itertools.islice(answer_grid(), 40)):
-            recommendation = build_recommendation(assessment, answers)
-            sale = build_sale_assist(assessment, answers, recommendation)
-            for volatile in ("price", "price_note", "search_note", "search_url",
-                             "signals", "comparables", "price_confidence"):
-                sale.pop(volatile, None)
-            sale_cases.append({
-                "name": f"a{a_index}-c{c_index}",
-                "assessment": assessment,
-                "answers": answers,
-                "expected": sale,
-            })
-
-    with open(os.path.join(out_dir, "sale-cases.json"), "w", encoding="utf-8") as handle:
-        json.dump(sale_cases, handle, ensure_ascii=False, indent=2)
-
-    print(f"decision cases: {len(decision_cases)}")
-    print(f"sale cases: {len(sale_cases)}")
-
-
-if __name__ == "__main__":
-    main()
-```
+Output shape for both files: `{"assessments": [...], "cases": [{"name",
+"assessment_index", "answers", "expected"}]}`.
 
 - [ ] **Step 2: Generate the fixtures**
 
@@ -229,15 +147,28 @@ if __name__ == "__main__":
 python scripts/dump-legacy-fixtures.py
 ```
 
-Expected: prints two non-zero counts, writes both JSON files. If `build_sale_assist` raises because the network is unavailable, note that its `except Exception` fallback still returns a dict — the run should not crash.
+Expected, in well under a second:
+
+```
+answer cases: 484
+decision cases: 1936
+sale cases: 280
+```
 
 - [ ] **Step 3: Sanity-check a fixture by hand**
 
 ```bash
-python -c "import json;d=json.load(open('src/Api.Tests/fixtures/decision-cases.json',encoding='utf-8'));print(len(d));print(json.dumps(d[0],ensure_ascii=False,indent=2)[:600])"
+python -c "
+import json
+from collections import Counter
+d=json.load(open('src/Api.Tests/fixtures/decision-cases.json',encoding='utf-8'))
+print(Counter(x['expected']['recommended_action'] for x in d['cases']))
+print(Counter(x['expected']['confidence'] for x in d['cases']))
+"
 ```
 
-Expected: a case with `recommended_action`, `decision_path`, `confidence`, `reasoning`, `checks`, `options`, `impact`, `producer_program`, `waste`.
+Expected: **all five** actions present and all three confidence levels. A zero count for
+`clean` means sweep C is missing or broken — stop and fix it rather than proceeding.
 
 - [ ] **Step 4: Mark the fixtures as generated**
 
