@@ -1230,6 +1230,25 @@ public partial class Program { }
 
 Endpoint validation mirrors `legacy/server.py:89-166`: a non-object `assessment` or `answers` is a 400 with the Danish message `"Assessment og svar skal sendes som objekter."` (recommend) or `"Assessment skal sendes som objekt."` (sale-assist).
 
+**Raise the request body limit.** Python's `http.server` has no body-size cap; Kestrel
+defaults to ~30 MB and ASP.NET adds its own form limit. `/api/analyze` accepts up to four
+base64 images, which inflate roughly 33% over the raw photo, so phone uploads that worked
+locally would 413 in the port. Set it explicitly:
+
+```csharp
+builder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = 100 * 1024 * 1024);
+```
+
+and on the analyze endpoint specifically:
+
+```csharp
+.WithMetadata(new RequestSizeLimitAttribute(100 * 1024 * 1024))
+```
+
+Add a test posting a ~40 MB body to `/api/analyze` and asserting the response is **not**
+413. It may be 400 or 502 depending on provider config — the point is that the request
+reaches the handler.
+
 - [ ] **Step 5: Run to verify it passes**
 
 Run: `dotnet test src/Api.Tests`
@@ -1429,7 +1448,26 @@ az containerapp logs show -n api -g rg-cirkulaer-dev --tail 200 | grep -i "price
 
 Expected: either no warning (the scrape works from Azure) or the logged warning from Task 10. **Record which.** This is the data the follow-up decision in the spec depends on.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 6: Deployed acceptance checklist**
+
+`dinenergi` keeps the Python locally as the reference, so this is a standalone check of the
+deployed app rather than a side-by-side diff. Walk the deployed URL on a **phone**, not just
+a desktop browser, and confirm each:
+
+- [ ] Page loads over HTTPS; `styles.css` applies; layout is mobile-first as before
+- [ ] Camera capture and file upload both work from the phone
+- [ ] A **large** photo straight from the camera completes — no 413. This is the request-limit fix from Task 13
+- [ ] `/api/analyze` returns a plausible assessment; with no provider key set it is clearly marked as a test analysis
+- [ ] The question flow reaches a recommendation, and `decision_path` reads as Danish prose, not placeholder text
+- [ ] All five actions are reachable across a few runs, `Rens/klargør` included
+- [ ] Sale assist returns a price and ad text even when the search is blocked — the note should say no web prices were found rather than erroring
+- [ ] Browser devtools: the three API calls carry `X-Api-Key` and return 200
+- [ ] Hitting the Api URL directly without the header returns 401
+- [ ] Rapid repeated requests return 429 with `Retry-After`
+
+Anything failing here is a port bug, not an environment quirk — fix it before Task 17.
+
+- [ ] **Step 7: Commit**
 
 ```bash
 git add src/azure.yaml src/infra .github/workflows/azure-dev.yml
