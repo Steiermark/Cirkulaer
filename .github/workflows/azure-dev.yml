@@ -1,0 +1,73 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+# Secretless deploy via Azure federated credentials (OIDC)
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src
+    env:
+      AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
+      AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install azd
+        uses: Azure/setup-azd@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            10.x
+
+      - name: Test
+        run: dotnet test Cirkulaer.slnx --configuration Release
+
+      - name: Log in with Azure (Federated Credentials)
+        run: |
+          azd auth login `
+            --client-id "$Env:AZURE_CLIENT_ID" `
+            --federated-credential-provider "github" `
+            --tenant-id "$Env:AZURE_TENANT_ID"
+        shell: pwsh
+
+      - name: Provision Infrastructure
+        run: azd provision --no-prompt
+        env:
+          AZURE_OPEN_AI_API_KEY: ${{ secrets.AZURE_OPEN_AI_API_KEY }}
+          AZURE_ANTHROPIC_API_KEY: ${{ secrets.AZURE_ANTHROPIC_API_KEY }}
+          AZURE_GEMINI_API_KEY: ${{ secrets.AZURE_GEMINI_API_KEY }}
+          AZURE_AUTH_API_KEY: ${{ secrets.AZURE_AUTH_API_KEY }}
+
+      # Deployed sequentially, not `azd deploy --no-prompt`: running both service
+      # `dotnet publish` steps concurrently OOM-kills the ubuntu-latest runner (~7GB RAM).
+      # Lesson already paid for in Affaldssortering.
+      - name: Deploy api
+        run: azd deploy api --no-prompt
+        env:
+          AZURE_OPEN_AI_API_KEY: ${{ secrets.AZURE_OPEN_AI_API_KEY }}
+          AZURE_ANTHROPIC_API_KEY: ${{ secrets.AZURE_ANTHROPIC_API_KEY }}
+          AZURE_GEMINI_API_KEY: ${{ secrets.AZURE_GEMINI_API_KEY }}
+          AZURE_AUTH_API_KEY: ${{ secrets.AZURE_AUTH_API_KEY }}
+
+      - name: Deploy app
+        run: azd deploy app --no-prompt
+        env:
+          AZURE_OPEN_AI_API_KEY: ${{ secrets.AZURE_OPEN_AI_API_KEY }}
+          AZURE_ANTHROPIC_API_KEY: ${{ secrets.AZURE_ANTHROPIC_API_KEY }}
+          AZURE_GEMINI_API_KEY: ${{ secrets.AZURE_GEMINI_API_KEY }}
+          AZURE_AUTH_API_KEY: ${{ secrets.AZURE_AUTH_API_KEY }}

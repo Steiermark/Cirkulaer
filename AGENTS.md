@@ -120,6 +120,11 @@ Behaviour that intentionally differs from `legacy/`. Do not "restore" these.
   `PriceSearchClient.ExtractPrices` (`\d{2,6}` → `\d{1,6}`). Everything else about price
   parsing is unchanged.
 
+**Every azd secure parameter needs a value, and empty via `azd env set` does not count.**
+`azd env set AZURE_GEMINI_API_KEY ""` leaves it unset and `azd up` stops with "1 required
+input is missing" while still exiting 0. Use `azd env config set infra.parameters.<name> ""`
+instead. In CI, the GitHub secret must exist for the same reason.
+
 ## Rules That Are Not Guessable (continued)
 
 **`Content Update`, not `Content Include`.** The Web SDK already auto-includes JSON under

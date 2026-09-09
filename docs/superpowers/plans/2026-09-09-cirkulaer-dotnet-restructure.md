@@ -1442,6 +1442,18 @@ services:
 
 - [ ] **Step 2: Generate the infrastructure**
 
+**Every secure parameter must have a value, and empty-via-`azd env set` does not count.**
+`azd env set AZURE_GEMINI_API_KEY ""` leaves the parameter unset and `azd up` stops with
+"1 required input is missing" (exit code 0, so it looks like success). For a provider you
+have no key for, use the config form, which accepts empty:
+
+```bash
+azd env config set infra.parameters.geminiApiKey ""
+```
+
+In CI the GitHub secret must exist for the same reason — an absent secret resolves to an
+empty string and provisioning stops.
+
 ```bash
 cd src
 azd init --environment cirkulaer-dev

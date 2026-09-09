@@ -1,0 +1,28 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "principalId": {
+        "value": "${AZURE_PRINCIPAL_ID}"
+      },
+      "anthropicApiKey": {
+        "value": "${AZURE_ANTHROPIC_API_KEY}"
+      },
+      "authApiKey": {
+        "value": "${AZURE_AUTH_API_KEY}"
+      },
+      "geminiApiKey": {
+        "value": "${AZURE_GEMINI_API_KEY}"
+      },
+      "openAiApiKey": {
+        "value": "${AZURE_OPEN_AI_API_KEY}"
+      },
+      "environmentName": {
+        "value": "${AZURE_ENV_NAME}"
+      },
+      "location": {
+        "value": "${AZURE_LOCATION}"
+      }
+    }
+  }
+  
