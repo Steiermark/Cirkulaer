@@ -1,3 +1,30 @@
+// App serves /config with the Api base URL and the shared X-Api-Key. Fetched once, lazily,
+// and falling back to same-origin with no key so the frontend-only dev server still works.
+let apiConfig = null;
+let apiConfigPromise = null;
+
+async function ensureApiConfig() {
+  if (apiConfig) return apiConfig;
+  if (!apiConfigPromise) {
+    apiConfigPromise = fetch("/config")
+      .then((response) => (response.ok ? response.json() : {}))
+      .catch(() => ({}));
+  }
+  const loaded = await apiConfigPromise;
+  apiConfig = { apiBaseUrl: loaded.apiBaseUrl || "", apiKey: loaded.apiKey || "" };
+  return apiConfig;
+}
+
+function apiUrl(path) {
+  return new URL(path, apiConfig?.apiBaseUrl || window.location.href);
+}
+
+function apiHeaders() {
+  const headers = { "Content-Type": "application/json" };
+  if (apiConfig?.apiKey) headers["X-Api-Key"] = apiConfig.apiKey;
+  return headers;
+}
+
 const state = {
   imageFiles: [],
   previewUrls: [],
@@ -230,9 +257,10 @@ async function analyzeImage() {
         imageDataUrl: await fileToDataUrl(file),
       })),
     );
-    const response = await fetch(new URL("/api/analyze", window.location.href), {
+    await ensureApiConfig();
+    const response = await fetch(apiUrl("/api/analyze"), {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: apiHeaders(),
       body: JSON.stringify({
         filename: state.imageFiles.map((file) => file.name).join(", "),
         images,
@@ -681,9 +709,10 @@ async function recommend() {
   recommendButton.textContent = "Finder anbefaling...";
 
   try {
-    const response = await fetch(new URL("/api/recommend", window.location.href), {
+    await ensureApiConfig();
+    const response = await fetch(apiUrl("/api/recommend"), {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: apiHeaders(),
       body: JSON.stringify({ assessment, answers: state.answers }),
     });
     const payload = await parseJsonResponse(response);
@@ -993,9 +1022,10 @@ async function openSalePage() {
   setSaleLoading();
 
   try {
-    const response = await fetch(new URL("/api/sale-assist", window.location.href), {
+    await ensureApiConfig();
+    const response = await fetch(apiUrl("/api/sale-assist"), {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: apiHeaders(),
       body: JSON.stringify({
         assessment: state.assessment,
         answers: state.answers,
