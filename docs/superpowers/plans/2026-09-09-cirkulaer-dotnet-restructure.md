@@ -1511,7 +1511,19 @@ Keep the existing Danish sections describing the decision flow and producer prog
 
 Update "Vigtige filer" to point at the C# paths.
 
-- [ ] **Step 4: Delete the legacy Python**
+- [ ] **Step 4: Finalise `AGENTS.md`**
+
+`AGENTS.md` was written mid-port and states "Tasks 1-6 of 17 are done". Update it:
+
+- Replace the Status section — the port is complete, `legacy/` is gone
+- Confirm every path in Key Files still exists, and add the SaleAssist and Ai files
+- Confirm the Commands section matches reality
+- Keep the "Rules That Are Not Guessable" section; add anything new the port taught
+
+`dinenergi` vibe-codes with Codex, which reads `AGENTS.md` on entry. Rules that live only
+in the spec will not be found.
+
+- [ ] **Step 5: Delete the legacy Python**
 
 ```bash
 git rm -r legacy scripts/dump-legacy-fixtures.py
@@ -1519,12 +1531,12 @@ git rm -r legacy scripts/dump-legacy-fixtures.py
 
 The fixtures in `src/Api.Tests/fixtures/` stay — they are the committed record of the behaviour that was ported.
 
-- [ ] **Step 5: Final build and test**
+- [ ] **Step 6: Final build and test**
 
 Run: `dotnet build src/Cirkulaer.slnx && dotnet test src/Cirkulaer.slnx`
 Expected: both succeed.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 7: Commit**
 
 ```bash
 git add -A
