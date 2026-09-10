@@ -81,7 +81,7 @@ test analysis and marks the result as such:
 
 ```bash
 cd src/Cirkulaer.AppHost
-dotnet user-secrets set "Parameters:openAiApiKey" "..."
+dotnet user-secrets set "Parameters:geminiApiKey" "..."
 dotnet user-secrets set "Parameters:authApiKey" "local-dev-key"
 ```
 
@@ -95,7 +95,7 @@ Do not re-open these without a new reason; they were considered and decided.
   three — but the roadmap (municipal waste rules, stored images, CO2 data sources) points at
   a database and more services, and keeping both projects the same shape matters for a
   single maintainer. Decided 2026-09-10.
-- **Three vision providers are kept** even though only OpenAI is used by default. Vendors
+- **Three vision providers are kept** even though only Gemini is used by default. Vendors
   leapfrog each other quickly and switching is now a config change, not a code change.
 
 ## Switching AI provider or model
@@ -104,7 +104,7 @@ Both are configuration, not code. Defaults live in `src/Api/appsettings.json`:
 
 ```json
 "Ai": {
-  "DefaultProvider": "openai",
+  "DefaultProvider": "gemini",
   "Providers": {
     "openai":    { "Model": "gpt-5" },
     "anthropic": { "Model": "claude-sonnet-5" },
@@ -200,7 +200,7 @@ Do not re-open these without a new reason; they were considered and decided.
   three — but the roadmap (municipal waste rules, stored images, CO2 data sources) points at
   a database and more services, and keeping both projects the same shape matters for a
   single maintainer. Decided 2026-09-10.
-- **Three vision providers are kept** even though only OpenAI is used by default. Vendors
+- **Three vision providers are kept** even though only Gemini is used by default. Vendors
   leapfrog each other quickly and switching is now a config change, not a code change.
 
 ## Switching AI provider or model
@@ -209,7 +209,7 @@ Both are configuration, not code. Defaults live in `src/Api/appsettings.json`:
 
 ```json
 "Ai": {
-  "DefaultProvider": "openai",
+  "DefaultProvider": "gemini",
   "Providers": {
     "openai":    { "Model": "gpt-5" },
     "anthropic": { "Model": "claude-sonnet-5" },
