@@ -314,6 +314,15 @@ Recorded from the first real deploy (2026-09-10), all of which passed every test
   strips every search-derived key — so the change is invisible to the parity suite and is
   pinned by its own test instead.
 
+## Settled after deployment
+
+- **The App/Api split stays.** It is the source of `/config`, the CORS requirement and the
+  browser-visible API key, none of which Cirkulaer needs today — it has no database, no
+  internal service, no second Api consumer and no service worker, which are the four things
+  that justify the same split in Affaldssortering. Kept anyway, deliberately: the roadmap
+  points at a database, and one shape across both projects is worth more to a single
+  maintainer than the lines it would save. Decided 2026-09-10.
+
 ## Out of scope
 
 - Converting tri-state strings to enums
