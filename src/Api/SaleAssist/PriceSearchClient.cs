@@ -62,6 +62,13 @@ public sealed partial class PriceSearchClient(HttpClient http, ILogger<PriceSear
         }
 
         var comparables = ExtractComparables(page, query);
+
+        // A 200 that parses to nothing is the datacenter-IP symptom: DuckDuckGo serves a
+        // different page rather than blocking, so without this it is indistinguishable
+        // from a genuine no-results search.
+        if (comparables.Count == 0)
+            logger.LogWarning("Price search returned {Bytes} bytes but no comparables for {Query}", page.Length, query);
+
         var signals = comparables.Take(5).Select(item => item.Title).ToList();
         var prices = comparables.Select(item => item.Price).ToList();
         var confidence = comparables.Count >= 5 ? "høj" : comparables.Count >= 3 ? "middel" : "lav";

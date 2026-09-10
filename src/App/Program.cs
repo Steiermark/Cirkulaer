@@ -14,9 +14,9 @@ app.UseStaticFiles(new StaticFileOptions
 
 app.MapGet("/config", async (IConfiguration config, IWebHostEnvironment env, CancellationToken ct) =>
 {
-    var apiBaseUrl = env.IsDevelopment()
-        ? config["services:api:https:0"] ?? config["services:api:http:0"]
-        : null;
+    // Aspire injects services__api__https__0 in Azure Container Apps too, not just locally,
+    // so read it in every environment. wwwroot/config.json stays as a manual override.
+    var apiBaseUrl = config["services:api:https:0"] ?? config["services:api:http:0"];
 
     return Results.Json(new
     {
