@@ -1442,17 +1442,24 @@ services:
 
 - [ ] **Step 2: Generate the infrastructure**
 
-**Every secure parameter must have a value, and empty-via-`azd env set` does not count.**
-`azd env set AZURE_GEMINI_API_KEY ""` leaves the parameter unset and `azd up` stops with
-"1 required input is missing" (exit code 0, so it looks like success). For a provider you
-have no key for, use the config form, which accepts empty:
+**Set every secure parameter through `azd env config set infra.parameters.<name>`.**
+Two separate traps, both hit during the first deploy:
+
+- `azd env set AZURE_GEMINI_API_KEY ""` leaves the parameter *unset*; provisioning stops
+  with "1 required input is missing" while exiting 0.
+- Provisioning resolves parameters from environment variables, but `azd deploy` resolves
+  them from `infra.parameters` and fails with `parameter anthropicApiKey not found` if only
+  the env var was set.
 
 ```bash
+azd env config set infra.parameters.openAiApiKey "$OPENAI"
+azd env config set infra.parameters.anthropicApiKey "$ANTHROPIC"
+azd env config set infra.parameters.authApiKey "$AUTH"
 azd env config set infra.parameters.geminiApiKey ""
 ```
 
-In CI the GitHub secret must exist for the same reason — an absent secret resolves to an
-empty string and provisioning stops.
+Pass values via shell variables so they never appear literally in a command line. In CI the
+workflow supplies env vars instead, so every GitHub secret must exist.
 
 ```bash
 cd src
@@ -1466,13 +1473,29 @@ Expected: `src/infra/main.bicep` and `src/infra/resources.bicep` appear, contain
 
 Copy `C:\Development\Affaldssortering\.github\workflows\azure-dev.yml` to `.github/workflows/azure-dev.yml` and change: trigger branch `master` → `main`; drop the postgres, dbadmin and rag deploy steps; keep `working-directory: src`; keep the deploy steps **sequential** (`azd deploy api` then `azd deploy app`) with the OOM comment intact; replace the secret list with `AZURE_OPEN_AI_API_KEY`, `AZURE_ANTHROPIC_API_KEY`, `AZURE_GEMINI_API_KEY`, `AZURE_AUTH_API_KEY`.
 
-- [ ] **Step 4: Deploy**
+- [ ] **Step 4: Deploy — provision first, then one service at a time**
 
-```bash
-cd src && azd up
+**Do not use `azd up` here.** It publishes both services concurrently and they collide on
+the container registry push path:
+
+```
+error CONTAINER1013: Failed to push to the output registry: Access to the path is denied.
+ERROR: empty dotnet configuration output
 ```
 
-Expected: provisioning succeeds, two container apps deployed, azd prints the App URL.
+The second error falsely suggests `EnableSdkContainerSupport` is missing; it is a knock-on
+from the collision. This is the same root cause as Affaldssortering's runner OOM — parallel
+`dotnet publish` — with a different symptom.
+
+```bash
+cd src
+azd provision --no-prompt
+azd deploy api --no-prompt
+azd deploy app --no-prompt
+```
+
+**`azd` exits 0 even when a deploy fails.** Check the output text, not just the exit code —
+and in CI, verify the container apps actually exist rather than trusting a green run.
 
 - [ ] **Step 5: Verify the deployment**
 

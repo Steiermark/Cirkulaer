@@ -120,10 +120,19 @@ Behaviour that intentionally differs from `legacy/`. Do not "restore" these.
   `PriceSearchClient.ExtractPrices` (`\d{2,6}` → `\d{1,6}`). Everything else about price
   parsing is unchanged.
 
-**Every azd secure parameter needs a value, and empty via `azd env set` does not count.**
-`azd env set AZURE_GEMINI_API_KEY ""` leaves it unset and `azd up` stops with "1 required
-input is missing" while still exiting 0. Use `azd env config set infra.parameters.<name> ""`
-instead. In CI, the GitHub secret must exist for the same reason.
+**Deploy services one at a time; `azd up` publishes them concurrently and they collide**
+on the registry push path (`CONTAINER1013: Access to the path is denied`, plus a misleading
+`empty dotnet configuration output` for the other service). Use `azd provision` then
+`azd deploy api` then `azd deploy app`. Note `azd` exits 0 even when a deploy fails, so
+check the output text and confirm the container apps exist.
+
+**Set secure parameters via `azd env config set infra.parameters.<name>`, not `azd env set`.**
+Provisioning resolves them from environment variables, but `azd deploy` resolves them from
+`infra.parameters` and fails with `parameter <name> not found` if only the env var is set.
+An empty value also has to go through the config form — `azd env set NAME ""` leaves the
+parameter unset and provisioning stops with "1 required input is missing" while exiting 0.
+In CI the workflow passes env vars, so every GitHub secret must exist and be non-empty
+where the service actually needs it.
 
 ## Rules That Are Not Guessable (continued)
 
