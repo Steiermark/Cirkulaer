@@ -29,8 +29,15 @@ public static class Extensions
 
         builder.Services.ConfigureHttpClientDefaults(http =>
         {
-            // Turn on resilience by default
-            http.AddStandardResilienceHandler();
+            // Vision calls take far longer than the 10s per-attempt default, which cancels
+            // them via Polly and surfaces as an unhandled 500 with an empty body.
+            http.AddStandardResilienceHandler(options =>
+            {
+                options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(90);
+                options.TotalRequestTimeout.Timeout = TimeSpan.FromSeconds(180);
+                options.Retry.MaxRetryAttempts = 1;
+                options.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(180);
+            });
 
             // Turn on service discovery by default
             http.AddServiceDiscovery();

@@ -288,6 +288,23 @@ as a parameter — the search is already a clean seam, and no test crosses it. I
 `IPriceSearchProvider` interface at that point, not before; one implementation does not
 need one.
 
+## Deployment findings
+
+Recorded from the first real deploy (2026-09-10), all of which passed every test:
+
+- **Aspire's standard resilience handler** (10s per attempt, 30s total) cancels vision
+  calls and surfaces as a 500 with an empty body. Raised to 90s/180s, matching the fix
+  already present in Affaldssortering.
+- **`/config` returned an empty `apiBaseUrl`** because service discovery was gated behind
+  `IsDevelopment()`. Aspire does inject `services__api__https__0` into the ACA container,
+  so the gate is unnecessary and broke the deployed frontend.
+- **`azd` exits 0 on deploy failure.** A green CI run is not evidence of a successful
+  deploy; verify the container apps exist and answer.
+- **The price search does not fail from Azure — it succeeds and returns nothing.** The
+  request completes normally and parses to zero comparables, so the estimate silently falls
+  back to the category heuristic (550 kr where a local run got 350 kr from a real
+  comparable). Now logged explicitly, since an exception-only warning could not see it.
+
 ## Deliberate deviations from the Python
 
 - **Danish thousands separator.** `extract_prices`' regex required two leading digits, so

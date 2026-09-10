@@ -120,6 +120,13 @@ Behaviour that intentionally differs from `legacy/`. Do not "restore" these.
   `PriceSearchClient.ExtractPrices` (`\d{2,6}` → `\d{1,6}`). Everything else about price
   parsing is unchanged.
 
+**Aspire's default resilience handler cancels vision calls.** `ServiceDefaults` applies
+`AddStandardResilienceHandler()` to every HttpClient, whose per-attempt timeout is 10s and
+total 30s — far shorter than a vision call on a 1.5 MB photo, and it overrides
+`client.Timeout`. Symptom: HTTP 500 with an **empty body** after ~30s, and a Polly stack
+trace in the container logs. Cirkulaer raises these to 90s/180s in
+`Cirkulaer.ServiceDefaults/Extensions.cs`; do not revert to the template defaults.
+
 **Deploy services one at a time; `azd up` publishes them concurrently and they collide**
 on the registry push path (`CONTAINER1013: Access to the path is denied`, plus a misleading
 `empty dotnet configuration output` for the other service). Use `azd provision` then

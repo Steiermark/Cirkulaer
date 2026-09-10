@@ -54,6 +54,14 @@ public static class ApiEndpoints
                 new { error = "OpenAI-kaldet fejlede.", detail = exception.Message },
                 statusCode: 502);
         }
+        catch (Exception exception) when (exception is TaskCanceledException or OperationCanceledException)
+        {
+            // Polly cancels the attempt before HttpClient's own timeout; without this the
+            // request surfaces as a 500 with an empty body, which app.js cannot render.
+            return Results.Json(
+                new { error = "AI-analysen tog for lang tid. Prøv igen med et mindre billede." },
+                statusCode: 504);
+        }
         catch (InvalidOperationException exception)
         {
             return Error(exception.Message);
