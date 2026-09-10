@@ -172,4 +172,23 @@ public class EndpointContractTests(WebApplicationFactory<Program> factory)
 
         response.EnsureSuccessStatusCode();
     }
+
+    // App and Api are separate origins in Azure, so app.js always sends a preflight.
+    // curl never issues one, so only a test like this catches a broken CORS setup.
+    [Fact]
+    public async Task A_cors_preflight_is_allowed_without_the_api_key()
+    {
+        var client = WithApiKey("secret").CreateClient();
+
+        var request = new HttpRequestMessage(HttpMethod.Options, "/api/analyze");
+        request.Headers.Add("Origin", "https://app.example.azurecontainerapps.io");
+        request.Headers.Add("Access-Control-Request-Method", "POST");
+        request.Headers.Add("Access-Control-Request-Headers", "content-type,x-api-key");
+
+        var response = await client.SendAsync(request);
+
+        Assert.NotEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+        Assert.True(response.Headers.Contains("Access-Control-Allow-Origin"),
+            "preflight response is missing Access-Control-Allow-Origin");
+    }
 }

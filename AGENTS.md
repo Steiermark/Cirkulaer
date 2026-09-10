@@ -125,6 +125,13 @@ Behaviour that intentionally differs from `legacy/`. Do not "restore" these.
   `PriceSearchClient.ExtractPrices` (`\d{2,6}` → `\d{1,6}`). Everything else about price
   parsing is unchanged.
 
+**App and Api are separate origins, so CORS is load-bearing.** Every browser call is
+cross-origin and `X-Api-Key` forces a preflight. `UseCors()` must run before
+`UseApiKeyAuth()`, and the key gate must let `OPTIONS` through — preflights carry no custom
+headers, so gating them yields a 401 that the browser reports only as "Failed to fetch" /
+"Load failed". `curl` never sends a preflight, so this is invisible to command-line testing;
+verify in a real browser or rely on the preflight test in `EndpointContractTests`.
+
 **Aspire's default resilience handler cancels vision calls.** `ServiceDefaults` applies
 `AddStandardResilienceHandler()` to every HttpClient, whose per-attempt timeout is 10s and
 total 30s — far shorter than a vision call on a 1.5 MB photo, and it overrides

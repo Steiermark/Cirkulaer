@@ -40,6 +40,20 @@ builder.Services.AddRateLimiter(options =>
     };
 });
 
+// App and Api are separate container apps, so every browser call is cross-origin and the
+// X-Api-Key header forces a preflight.
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+builder.Services.AddCors(options =>
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyMethod().AllowAnyHeader();
+
+        if (allowedOrigins is null || allowedOrigins.Length == 0 || allowedOrigins.Contains("*"))
+            policy.AllowAnyOrigin();
+        else
+            policy.WithOrigins(allowedOrigins);
+    }));
+
 builder.Services.AddHttpClient<OpenAiVisionProvider>(client => client.Timeout = TimeSpan.FromSeconds(60));
 builder.Services.AddHttpClient<AnthropicVisionProvider>(client => client.Timeout = TimeSpan.FromSeconds(60));
 builder.Services.AddHttpClient<GeminiVisionProvider>(client => client.Timeout = TimeSpan.FromSeconds(60));
@@ -54,6 +68,7 @@ var app = builder.Build();
 
 app.UseForwardedHeaders();
 app.UseRateLimiter();
+app.UseCors();
 app.UseApiKeyAuth();
 
 app.MapDefaultEndpoints();

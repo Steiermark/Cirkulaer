@@ -125,6 +125,14 @@ public static class Extensions
 
         app.Use(async (context, next) =>
         {
+            // CORS preflights never carry custom headers, so gating them returns 401 and the
+            // browser reports a generic "Failed to fetch" with no usable detail.
+            if (HttpMethods.IsOptions(context.Request.Method))
+            {
+                await next(context);
+                return;
+            }
+
             if (context.Request.Headers["X-Api-Key"] == apiKey)
             {
                 await next(context);

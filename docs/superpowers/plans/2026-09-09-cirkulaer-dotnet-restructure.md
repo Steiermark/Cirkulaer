@@ -1521,6 +1521,11 @@ a desktop browser, and confirm each:
 - [ ] All five actions are reachable across a few runs, `Rens/klargør` included
 - [ ] Sale assist returns a price and ad text even when the search is blocked — the note should say no web prices were found rather than erroring
 - [ ] Browser devtools: the three API calls carry `X-Api-Key` and return 200
+- [ ] **Open the app in an actual browser, not just curl.** App and Api are separate
+      origins, so the API calls are cross-origin and preflighted. `curl` sends no preflight
+      and enforces no CORS, so a missing `UseCors()` or a key gate that rejects `OPTIONS`
+      passes every command-line check and then fails in the browser with nothing more
+      useful than "Failed to fetch".
 - [ ] Hitting the Api URL directly without the header returns 401
 - [ ] Rapid repeated requests return 429 with `Retry-After`
 
