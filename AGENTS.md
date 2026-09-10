@@ -14,13 +14,12 @@ Waste is the last resort, never the first answer. The full decision tree is docu
 
 ## Status
 
-Mid-port from Python to .NET. Tasks 1-6 of 17 are done; the plan is
-`docs/superpowers/plans/2026-09-09-cirkulaer-dotnet-restructure.md` and the design it
-implements is `docs/superpowers/specs/2026-09-09-cirkulaer-dotnet-restructure-design.md`.
-Read both before making structural changes.
+Ported from Python to .NET and deployed to Azure Container Apps (2026-09-10). The design
+and plan are in `docs/superpowers/`; read them before making structural changes.
 
-`legacy/` holds the original Python. It is the reference implementation and stays until
-parity is verified; it is deleted in Task 17.
+The original Python is gone from the tree but remains in git history. Its behaviour is
+pinned by 2,216 golden-file cases in `src/Api.Tests/fixtures/`, which were dumped from it
+and are the contract the C# is verified against.
 
 ## Architecture
 
@@ -57,7 +56,10 @@ Frontend is hand-written vanilla JS — no framework, no npm, no bundler, no bui
 | `src/Api/Decision/TextHelpers.cs` | Danish normalisation; see the trap below |
 | `src/Api/Producers/ProducerPrograms.cs` | Producer scheme matching (IKEA Gensalg today) |
 | `src/Api/data/producer-programs.json` | Add a scheme here; no code change needed |
-| `src/App/wwwroot/app.js` | Entire frontend, 1544 lines, unchanged from the prototype |
+| `src/Api/Ai/` | Vision providers (OpenAI, Anthropic, Gemini) + local test fallback |
+| `src/Api/SaleAssist/` | Sale query, price search, price estimation, ad text |
+| `src/Api/Endpoints/ApiEndpoints.cs` | The three POST endpoints and their validation |
+| `src/App/wwwroot/app.js` | Entire frontend, ~1580 lines, essentially the prototype |
 | `src/Api.Tests/fixtures/` | Golden-file parity fixtures — read the rule below |
 
 ## Commands
@@ -88,8 +90,11 @@ dotnet user-secrets set "Parameters:authApiKey" "local-dev-key"
 These are the mistakes most likely to be made here. Each has already cost something.
 
 **Never edit a fixture to make a test pass.** `src/Api.Tests/fixtures/*.json` were dumped
-from the Python implementation. A parity failure means the C# is wrong, not the fixture.
-Regenerate them only via `scripts/dump-legacy-fixtures.py`, never by hand.
+from the original Python implementation, which no longer exists in the tree. They cannot be
+regenerated — they are a frozen record of the behaviour this code must reproduce. A parity
+failure means the C# is wrong. If a behaviour change is genuinely intended, change the
+fixture in the same commit as the code and say why in the message, the way the thousands-
+separator fix did.
 
 **Danish strings are product copy.** Every user-visible string was written deliberately.
 Do not translate, paraphrase, spell-correct, or "improve" them. A test asserting

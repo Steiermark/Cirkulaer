@@ -117,7 +117,7 @@ node tools/static-wwwroot-server.mjs
 dotnet test src/Cirkulaer.slnx
 ```
 
-Testene indeholder golden-file-tests, der sammenligner output med den oprindelige
+Testene indeholder 2.216 golden-file-tests, der sammenligner output med den oprindelige
 Python-implementering. Slår en af dem fejl, er C#-koden forkert — rettelser hører hjemme
 i koden, ikke i testdata under `src/Api.Tests/fixtures/`.
 
