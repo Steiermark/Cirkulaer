@@ -153,15 +153,6 @@ prices and the estimator falls back to a category heuristic with an honest Danis
 That degradation is the design — do not "fix" it. Replacing the search with a real API is
 a documented follow-up, not a bug.
 
-## Deliberate Deviations From The Python
-
-Behaviour that intentionally differs from `legacy/`. Do not "restore" these.
-
-- **Danish thousands separator in prices.** The original regex required two leading digits,
-  so `"1.250 kr."` parsed as `250` and biased every web-derived estimate downward. Fixed in
-  `PriceSearchClient.ExtractPrices` (`\d{2,6}` → `\d{1,6}`). Everything else about price
-  parsing is unchanged.
-
 **App and Api are separate origins, so CORS is load-bearing.** Every browser call is
 cross-origin and `X-Api-Key` forces a preflight. `UseCors()` must run before
 `UseApiKeyAuth()`, and the key gate must let `OPTIONS` through — preflights carry no custom
@@ -190,47 +181,17 @@ parameter unset and provisioning stops with "1 required input is missing" while 
 In CI the workflow passes env vars, so every GitHub secret must exist and be non-empty
 where the service actually needs it.
 
-## Settled Decisions
-
-Do not re-open these without a new reason; they were considered and decided.
-
-- **App and Api stay separate container apps**, mirroring Affaldssortering, even though
-  Cirkulaer has no database or internal service today. The split is what makes `/config`,
-  CORS and the browser-visible `X-Api-Key` necessary, and collapsing them would remove all
-  three — but the roadmap (municipal waste rules, stored images, CO2 data sources) points at
-  a database and more services, and keeping both projects the same shape matters for a
-  single maintainer. Decided 2026-09-10.
-- **Three vision providers are kept** even though only Gemini is used by default. Vendors
-  leapfrog each other quickly and switching is now a config change, not a code change.
-
-## Switching AI provider or model
-
-Both are configuration, not code. Defaults live in `src/Api/appsettings.json`:
-
-```json
-"Ai": {
-  "DefaultProvider": "gemini",
-  "Providers": {
-    "openai":    { "Model": "gpt-5" },
-    "anthropic": { "Model": "claude-sonnet-5" },
-    "gemini":    { "Model": "gemini-2.5-flash" }
-  }
-}
-```
-
-Override per environment with `Ai__DefaultProvider` and
-`Ai__Providers__<provider>__Model`, which the AppHost forwards to the Api. In Azure, editing
-those on the container app restarts the revision in about 30 seconds — no rebuild, no
-redeploy. A provider whose API key is unset is skipped, so an unavailable default falls back
-to one that has a key rather than failing.
-
-A request may also name a provider per call via the `provider` field on `/api/analyze`,
-which is how the same photo can be compared across vendors. `app.js` does not send it today.
-
-## Rules That Are Not Guessable (continued)
-
 **`Content Update`, not `Content Include`.** The Web SDK already auto-includes JSON under
 the project; `Include` fails the build with NETSDK1022.
+
+## Deliberate Deviations From The Python
+
+Behaviour that intentionally differs from `legacy/`. Do not "restore" these.
+
+- **Danish thousands separator in prices.** The original regex required two leading digits,
+  so `"1.250 kr."` parsed as `250` and biased every web-derived estimate downward. Fixed in
+  `PriceSearchClient.ExtractPrices` (`\d{2,6}` → `\d{1,6}`). Everything else about price
+  parsing is unchanged.
 
 ## Deployment
 

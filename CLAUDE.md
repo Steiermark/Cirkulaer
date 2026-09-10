@@ -8,6 +8,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 architectural decisions, and the deliberate deviations from the original Python. Read it
 before changing anything structural. This file is the short operational entry point.
 
+`AGENTS.md` is also read by Codex, which does the UI work here, so it stays the complete
+self-contained source of truth. Do not move content out of it into this file, and record
+new rules there rather than only here.
+
 Design and plan docs live in `docs/superpowers/specs/` and `docs/superpowers/plans/`.
 The decision tree is specified in `Dokumentation/Beslutningstræ.md` and must stay in sync
 with `src/Api/Decision/DecisionTree.cs`.
