@@ -22,6 +22,15 @@ Det fulde beslutningstræ ligger her:
 
 [Dokumentation/Beslutningstræ.md](Dokumentation/Beslutningstræ.md)
 
+## Skift AI-udbyder eller model
+
+Udbyder og model er konfiguration, ikke kode. Standardvaerdier ligger i
+`src/Api/appsettings.json` under `Ai`. De kan overskrives per miljoe med
+`Ai__DefaultProvider` og `Ai__Providers__<udbyder>__Model`.
+
+I Azure aendres de direkte paa container-appen; revisionen genstarter paa ca. 30 sekunder,
+og der skal hverken bygges eller deployes. En udbyder uden API-noegle springes over.
+
 ## Testversion med billede
 
 Appen kan bruges med et uploadet eller taget billede.
@@ -110,6 +119,15 @@ på porten, eller serveren kan startes på en anden port:
 $env:PORT="4180"
 node tools/static-wwwroot-server.mjs
 ```
+
+## Skift AI-udbyder eller model
+
+Udbyder og model er konfiguration, ikke kode. Standardvaerdier ligger i
+`src/Api/appsettings.json` under `Ai`. De kan overskrives per miljoe med
+`Ai__DefaultProvider` og `Ai__Providers__<udbyder>__Model`.
+
+I Azure aendres de direkte paa container-appen; revisionen genstarter paa ca. 30 sekunder,
+og der skal hverken bygges eller deployes. En udbyder uden API-noegle springes over.
 
 ## Test
 

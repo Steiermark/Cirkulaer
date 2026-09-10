@@ -85,6 +85,30 @@ dotnet user-secrets set "Parameters:openAiApiKey" "..."
 dotnet user-secrets set "Parameters:authApiKey" "local-dev-key"
 ```
 
+## Switching AI provider or model
+
+Both are configuration, not code. Defaults live in `src/Api/appsettings.json`:
+
+```json
+"Ai": {
+  "DefaultProvider": "openai",
+  "Providers": {
+    "openai":    { "Model": "gpt-5" },
+    "anthropic": { "Model": "claude-sonnet-5" },
+    "gemini":    { "Model": "gemini-2.5-flash" }
+  }
+}
+```
+
+Override per environment with `Ai__DefaultProvider` and
+`Ai__Providers__<provider>__Model`, which the AppHost forwards to the Api. In Azure, editing
+those on the container app restarts the revision in about 30 seconds — no rebuild, no
+redeploy. A provider whose API key is unset is skipped, so an unavailable default falls back
+to one that has a key rather than failing.
+
+A request may also name a provider per call via the `provider` field on `/api/analyze`,
+which is how the same photo can be compared across vendors. `app.js` does not send it today.
+
 ## Rules That Are Not Guessable
 
 These are the mistakes most likely to be made here. Each has already cost something.
@@ -152,6 +176,30 @@ An empty value also has to go through the config form — `azd env set NAME ""` 
 parameter unset and provisioning stops with "1 required input is missing" while exiting 0.
 In CI the workflow passes env vars, so every GitHub secret must exist and be non-empty
 where the service actually needs it.
+
+## Switching AI provider or model
+
+Both are configuration, not code. Defaults live in `src/Api/appsettings.json`:
+
+```json
+"Ai": {
+  "DefaultProvider": "openai",
+  "Providers": {
+    "openai":    { "Model": "gpt-5" },
+    "anthropic": { "Model": "claude-sonnet-5" },
+    "gemini":    { "Model": "gemini-2.5-flash" }
+  }
+}
+```
+
+Override per environment with `Ai__DefaultProvider` and
+`Ai__Providers__<provider>__Model`, which the AppHost forwards to the Api. In Azure, editing
+those on the container app restarts the revision in about 30 seconds — no rebuild, no
+redeploy. A provider whose API key is unset is skipped, so an unavailable default falls back
+to one that has a key rather than failing.
+
+A request may also name a provider per call via the `provider` field on `/api/analyze`,
+which is how the same photo can be compared across vendors. `app.js` does not send it today.
 
 ## Rules That Are Not Guessable (continued)
 

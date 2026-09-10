@@ -30,7 +30,7 @@ public sealed class AnthropicVisionProvider(HttpClient http, IConfiguration conf
 
         var body = new
         {
-            model = config["Ai:AnthropicModel"] ?? "claude-sonnet-5",
+            model = config["Ai:Providers:anthropic:Model"] ?? "claude-sonnet-5",
             max_tokens = 2000,
             messages = new[] { new { role = "user", content } },
         };

@@ -32,7 +32,7 @@ public sealed class GeminiVisionProvider(HttpClient http, IConfiguration config)
             generationConfig = new { responseMimeType = "application/json" },
         };
 
-        var model = config["Ai:GeminiModel"] ?? "gemini-2.5-flash";
+        var model = config["Ai:Providers:gemini:Model"] ?? "gemini-2.5-flash";
         using var request = new HttpRequestMessage(
             HttpMethod.Post,
             $"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent")

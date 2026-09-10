@@ -10,7 +10,7 @@ public sealed class OpenAiVisionProvider(HttpClient http, IConfiguration config)
 
     public async Task<Assessment> AnalyzeAsync(IReadOnlyList<string> imageDataUrls, CancellationToken ct)
     {
-        var model = config["Ai:Model"] ?? "gpt-5";
+        var model = config["Ai:Providers:openai:Model"] ?? "gpt-5";
 
         var input = new List<object>
         {
