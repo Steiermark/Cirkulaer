@@ -58,7 +58,7 @@ builder.Services.AddHttpClient<OpenAiVisionProvider>(client => client.Timeout = 
 builder.Services.AddHttpClient<AnthropicVisionProvider>(client => client.Timeout = TimeSpan.FromSeconds(60));
 builder.Services.AddHttpClient<GeminiVisionProvider>(client => client.Timeout = TimeSpan.FromSeconds(60));
 builder.Services.AddHttpClient<DbaPriceSearch>(client => client.Timeout = TimeSpan.FromSeconds(15));
-builder.Services.AddHttpClient<LookalikeFilter>(client => client.Timeout = TimeSpan.FromSeconds(30));
+builder.Services.AddHttpClient<LookalikeFilter>(client => client.Timeout = TimeSpan.FromSeconds(60));
 
 builder.Services.AddSingleton<LocalTestProvider>();
 builder.Services.AddSingleton<VisionProviderFactory>();

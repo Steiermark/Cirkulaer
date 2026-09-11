@@ -91,13 +91,13 @@ public class LookalikeFilterTests
     [Fact]
     public async Task Ads_past_the_thumbnail_cap_are_dropped_rather_than_kept_unjudged()
     {
-        var ads = Enumerable.Range(1, 25).Select(id => Ad(id)).ToList();
-        var grades = string.Join(",", Enumerable.Repeat("\"different\"", 19).Append("\"same\""));
+        var ads = Enumerable.Range(1, 15).Select(id => Ad(id)).ToList();
+        var grades = string.Join(",", Enumerable.Repeat("\"different\"", 11).Append("\"same\""));
         var handler = new Handler(GeminiText($$"""{"grades":[{{grades}}]}"""));
 
         var kept = await Filter(handler).KeepLookalikesAsync(Photo, ads, CancellationToken.None);
 
-        Assert.Equal([20], kept.Select(item => item.Price / 100));
+        Assert.Equal([12], kept.Select(item => item.Price / 100));
     }
 
     // A failed grading must not throw the search result away.

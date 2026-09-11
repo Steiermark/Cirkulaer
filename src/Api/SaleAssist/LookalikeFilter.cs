@@ -11,7 +11,7 @@ namespace Api.SaleAssist;
 // dropped, since an unjudged tail would drown the judged rows.
 public sealed class LookalikeFilter(HttpClient http, IConfiguration config, ILogger<LookalikeFilter> logger) : ILookalikeFilter
 {
-    const int MaxThumbnails = 20;
+    const int MaxThumbnails = 12;
 
     static readonly string[] Grades = ["same", "similar", "different"];
 
