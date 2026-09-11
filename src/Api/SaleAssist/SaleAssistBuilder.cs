@@ -43,14 +43,14 @@ public sealed class SaleAssistBuilder(IPriceSearch search, ILookalikeFilter look
         var marketplaceUrl = SaleQueryBuilder.BuildMarketplaceSearchUrl(query);
         var reshopperRelevant = SaleQueryBuilder.IsReshopperRelevant(assessment);
         var signals = await search.SearchAsync(query, reshopperRelevant, ct);
+        var objectName = SaleQueryBuilder.BuildSaleObjectName(assessment, answers);
 
         if (photoDataUrl is not null && signals.Comparables.Count >= GradeFrom)
         {
-            var kept = await lookalike.KeepLookalikesAsync(photoDataUrl, signals.Comparables, ct);
-            signals = PriceSignals.FromComparables(query, signals.Url, reshopperRelevant, kept);
+            var kept = await lookalike.KeepLookalikesAsync(objectName, photoDataUrl, signals.Comparables, ct);
+            signals = PriceSignals.FromComparables(query, signals.Url, reshopperRelevant, kept.Comparables, kept.Match);
         }
         var estimate = PriceEstimator.Estimate(assessment, answers, signals.Prices);
-        var objectName = SaleQueryBuilder.BuildSaleObjectName(assessment, answers);
 
         return new SaleAssistResult
         {

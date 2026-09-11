@@ -51,8 +51,8 @@ public class SaleAssistParityTests
 
     sealed class NoLookalikeFilter : ILookalikeFilter
     {
-        public Task<IReadOnlyList<Comparable>> KeepLookalikesAsync(string photoDataUrl, IReadOnlyList<Comparable> comparables, CancellationToken ct) =>
-            Task.FromResult(comparables);
+        public Task<Lookalikes> KeepLookalikesAsync(string objectName, string photoDataUrl, IReadOnlyList<Comparable> comparables, CancellationToken ct) =>
+            Task.FromResult(new Lookalikes(comparables, "same"));
     }
 
     [Theory]

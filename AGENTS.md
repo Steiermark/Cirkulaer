@@ -239,9 +239,12 @@ The two earlier designs are recorded so they are not retried:
 **A photo narrows the comparables to look-alikes.** `app.js` sends the first photo with
 the sale-assist request; when dba returns three or more rows, `LookalikeFilter` fetches up
 to 12 ad thumbnails from dba's structured data and asks Gemini Flash to grade each as
-`same` / `similar` / `different` against the photo. `same` wins; only if none is `same`
-do `similar` rows count; rows past the thumbnail cap are dropped, not kept unjudged. A
-failed or malformed grading keeps every row, logged. Measured 2026-09-11: a PH 5 photo
+`same` / `similar` / `different` against the photo *and the ad titles* — an FP-30 and an
+FP-30X are visually identical, so model designations in the title outweigh looks. The
+cascade is `same` → `similar` → every row, and the search note names the rung, so a
+price built on look-alikes or on the plain result says so. Rows past the thumbnail cap
+are dropped on the first two rungs, not kept unjudged. A failed or malformed grading
+keeps every row, logged. Measured 2026-09-11: a PH 5 photo
 under the generic query "Pendel Lampe" went from 52 rows at 300 kr to one PH-style
 pendant at 850 kr; under "Louis Poulsen PH 5" all graded `same`. Adds ~10s locally, ~25s from Azure with 20
 thumbnails, hence the cap of 12. The

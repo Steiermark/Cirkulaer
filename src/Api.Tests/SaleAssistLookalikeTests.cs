@@ -24,10 +24,10 @@ public class SaleAssistLookalikeTests
     {
         public int Calls { get; private set; }
 
-        public Task<IReadOnlyList<Comparable>> KeepLookalikesAsync(string photoDataUrl, IReadOnlyList<Comparable> comparables, CancellationToken ct)
+        public Task<Lookalikes> KeepLookalikesAsync(string objectName, string photoDataUrl, IReadOnlyList<Comparable> comparables, CancellationToken ct)
         {
             Calls++;
-            return Task.FromResult<IReadOnlyList<Comparable>>(comparables.Where(item => item.Price % 200 == 0).ToList());
+            return Task.FromResult(new Lookalikes(comparables.Where(item => item.Price % 200 == 0).ToList(), "similar"));
         }
     }
 
@@ -45,7 +45,7 @@ public class SaleAssistLookalikeTests
         Assert.Equal(1, filter.Calls);
         Assert.Equal([200, 400], sale.Comparables.Select(item => item.Price));
         Assert.Equal("lav", sale.PriceConfidence);
-        Assert.Contains("2 prisfund", sale.SearchNote);
+        Assert.Contains("Ingen annoncer med præcis samme model; prisen bygger på 2 lignende annoncer.", sale.SearchNote);
         Assert.Equal("Sæt prisen til 400 kr.", sale.Price);
     }
 

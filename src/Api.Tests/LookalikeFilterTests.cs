@@ -9,6 +9,7 @@ namespace Api.Tests;
 public class LookalikeFilterTests
 {
     const string Photo = "data:image/jpeg;base64,AAAA";
+    const string Name = "Roland FP-30X";
 
     static Comparable Ad(int id, string? image = "https://images.dbastatic.dk/x") => new()
     {
@@ -57,23 +58,42 @@ public class LookalikeFilterTests
     [Fact]
     public void Same_product_wins_over_similar()
     {
-        var kept = LookalikeFilter.Apply([Ad(1), Ad(2), Ad(3)], ["similar", "same", "different"]);
+        var (kept, match) = LookalikeFilter.Apply([Ad(1), Ad(2), Ad(3)], ["similar", "same", "different"]);
 
         Assert.Equal([2], kept.Select(item => item.Price / 100));
+        Assert.Equal("same", match);
     }
 
     [Fact]
     public void Similar_is_used_when_nothing_is_the_same_product()
     {
-        var kept = LookalikeFilter.Apply([Ad(1), Ad(2), Ad(3)], ["similar", "different", "similar"]);
+        var (kept, match) = LookalikeFilter.Apply([Ad(1), Ad(2), Ad(3)], ["similar", "different", "similar"]);
 
         Assert.Equal([1, 3], kept.Select(item => item.Price / 100));
+        Assert.Equal("similar", match);
+    }
+
+    // A broad median beats the category bands, and the note says which it was.
+    [Fact]
+    public void Nothing_alike_falls_back_to_every_row()
+    {
+        var (kept, match) = LookalikeFilter.Apply([Ad(1), Ad(2)], ["different", "different"]);
+
+        Assert.Equal(2, kept.Count);
+        Assert.Equal("all", match);
     }
 
     [Fact]
-    public void Nothing_alike_gives_no_comparables()
+    public async Task Nothing_alike_returns_rows_past_the_cap_too()
     {
-        Assert.Empty(LookalikeFilter.Apply([Ad(1), Ad(2)], ["different", "different"]));
+        var ads = Enumerable.Range(1, 15).Select(id => Ad(id)).ToList();
+        var grades = string.Join(",", Enumerable.Repeat("\"different\"", 12));
+        var handler = new Handler(GeminiText($$"""{"grades":[{{grades}}]}"""));
+
+        var kept = await Filter(handler).KeepLookalikesAsync(Name, Photo, ads, CancellationToken.None);
+
+        Assert.Equal(15, kept.Comparables.Count);
+        Assert.Equal("all", kept.Match);
     }
 
     [Fact]
@@ -81,11 +101,14 @@ public class LookalikeFilterTests
     {
         var handler = new Handler(GeminiText("""{"grades":["different","same"]}"""));
 
-        var kept = await Filter(handler).KeepLookalikesAsync(Photo, [Ad(1), Ad(2), Ad(3, image: null)], CancellationToken.None);
+        var kept = await Filter(handler).KeepLookalikesAsync(Name, Photo, [Ad(1), Ad(2), Ad(3, image: null)], CancellationToken.None);
 
-        Assert.Equal([2, 3], kept.Select(item => item.Price / 100));
+        Assert.Equal([2, 3], kept.Comparables.Select(item => item.Price / 100));
         Assert.Equal(2, handler.Fetched.Count);
         Assert.Contains("AAAA", handler.GeminiRequest);
+        Assert.Contains("Roland FP-30X", handler.GeminiRequest);
+        Assert.Contains("1. Lampe 1", handler.GeminiRequest);
+        Assert.Contains("2. Lampe 2", handler.GeminiRequest);
     }
 
     [Fact]
@@ -95,9 +118,9 @@ public class LookalikeFilterTests
         var grades = string.Join(",", Enumerable.Repeat("\"different\"", 11).Append("\"same\""));
         var handler = new Handler(GeminiText($$"""{"grades":[{{grades}}]}"""));
 
-        var kept = await Filter(handler).KeepLookalikesAsync(Photo, ads, CancellationToken.None);
+        var kept = await Filter(handler).KeepLookalikesAsync(Name, Photo, ads, CancellationToken.None);
 
-        Assert.Equal([12], kept.Select(item => item.Price / 100));
+        Assert.Equal([12], kept.Comparables.Select(item => item.Price / 100));
     }
 
     // A failed grading must not throw the search result away.
@@ -106,9 +129,9 @@ public class LookalikeFilterTests
     {
         var handler = new Handler("", HttpStatusCode.ServiceUnavailable);
 
-        var kept = await Filter(handler).KeepLookalikesAsync(Photo, [Ad(1), Ad(2)], CancellationToken.None);
+        var kept = await Filter(handler).KeepLookalikesAsync(Name, Photo, [Ad(1), Ad(2)], CancellationToken.None);
 
-        Assert.Equal(2, kept.Count);
+        Assert.Equal(2, kept.Comparables.Count);
     }
 
     [Fact]
@@ -116,8 +139,8 @@ public class LookalikeFilterTests
     {
         var handler = new Handler(GeminiText("""{"grades":["same"]}"""));
 
-        var kept = await Filter(handler).KeepLookalikesAsync(Photo, [Ad(1), Ad(2)], CancellationToken.None);
+        var kept = await Filter(handler).KeepLookalikesAsync(Name, Photo, [Ad(1), Ad(2)], CancellationToken.None);
 
-        Assert.Equal(2, kept.Count);
+        Assert.Equal(2, kept.Comparables.Count);
     }
 }
