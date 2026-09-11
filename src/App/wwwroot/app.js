@@ -1070,9 +1070,12 @@ async function openSalePage() {
     state.saleDraft = sale;
     renderSalePage(sale);
 
-    // Grading against the photo takes 15-25s; the plain result is shown meanwhile.
-    if (state.imageFiles[0] && (sale.comparables || []).length >= 3) {
+    // Grading against the photo takes a few seconds; the rows show meanwhile, the
+    // price waits so it does not jump when the graded set replaces them.
+    if (state.imageFiles[0] && (sale.comparables || []).length > 0) {
       renderSaleComparables(sale.comparables, "Sorterer efter lighed med dit foto …", true);
+      document.querySelector("#sale-price").textContent = "Finder pris...";
+      document.querySelector("#sale-price-note").textContent = "Sammenligner annoncerne med dit foto.";
       const photo = await fileToDataUrl(state.imageFiles[0]);
       const graded = await fetchSaleAssist([{ imageDataUrl: photo }]);
       if (request !== state.saleRequest) return;

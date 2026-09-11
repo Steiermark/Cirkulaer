@@ -106,10 +106,12 @@ public sealed class LookalikeFilter(HttpClient http, IConfiguration config, ILog
         foreach (var (mediaType, data) in thumbnails)
             parts.Add(new { inline_data = new { mime_type = mediaType, data } });
 
+        // Flash reasons before answering by default; grading is a lookup, and the
+        // thinking phase was most of the 10-15s.
         var body = new
         {
             contents = new[] { new { role = "user", parts } },
-            generationConfig = new { responseMimeType = "application/json" },
+            generationConfig = new { responseMimeType = "application/json", thinkingConfig = new { thinkingBudget = 0 } },
         };
 
         var model = config["Ai:Providers:gemini:Model"] ?? "gemini-2.5-flash";
