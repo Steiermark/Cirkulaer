@@ -698,7 +698,28 @@ function buildQuestions(assessment) {
     );
   }
 
-  return questions;
+  return questions.map(applyDefaultAnswer);
+}
+
+// Every choice question starts answered so a test run is two taps, not fifteen.
+const defaultAnswers = {
+  reason: "no_need",
+  producer: ["ikea", "detected", "unknown"],
+  works: "yes",
+  safety: "safe",
+  age: "mid",
+  damage: "no",
+  accessories: "irrelevant",
+  cleaning: "no",
+  battery: "none",
+};
+
+function applyDefaultAnswer(question) {
+  if (question.type === "text" || question.options.some((option) => option.selected)) return question;
+  const wanted = [].concat(defaultAnswers[question.id] || "yes");
+  const pick = wanted.map((value) => question.options.find((option) => option.value === value)).find(Boolean)
+    || question.options[0];
+  return { ...question, options: question.options.map((option) => option === pick ? { ...option, selected: true } : option) };
 }
 
 function yesNoUnknownOptions() {
