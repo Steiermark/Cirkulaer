@@ -33,6 +33,42 @@ and are the contract the C# is verified against.
 Dependency chain: `api` → `app` (`WaitFor`). No database — producer programs and settings
 are JSON files in the repo.
 
+```
+Browser (mobile-first, vanilla JS, no framework/npm/build step)
+  GET  /config                       -> { apiBaseUrl, apiKey }   [App]
+  POST {apiBaseUrl}/api/analyze      image(s) -> assessment       [AI, ~10-30s]
+  POST {apiBaseUrl}/api/recommend    assessment+answers -> rec    [pure, instant]
+  POST {apiBaseUrl}/api/sale-assist  -> price + comparables + ad  [web search, ~35-50s]
+```
+
+`/api/recommend` is the only one that is a pure function of its input. The other two reach
+the internet, cost money, and are slow enough that the UI must show progress.
+
+### Where this is going
+
+Direction, not yet built. Useful for judging whether a change fits.
+
+- **A database is expected**, and the App/Api split is kept partly to make room for it.
+  The roadmap that needs it: verified municipal waste rules, short-lived or anonymised
+  image storage behind an explicit privacy design, and CO2 and price estimates sourced
+  from data rather than the fixed prototype values in `PriceEstimator`.
+- **Durable knowledge belongs in data, not code.** Producer schemes already work this way
+  — a new scheme is a JSON object in `producer-programs.json`, no code change. The same
+  shape is intended for waste rules and price bands.
+- **Affaldssortering is the reference implementation.** Same maintainer, same stack, same
+  idioms deliberately. Its `item_lookup` (curated table + accumulated misses + pgvector
+  matching) is the model a price-history store would follow. Discussed 2026-09-11, **not
+  decided** — a price band ages gracefully, but listing links do not, so only the numbers
+  are worth persisting.
+- **The abstraction ceiling stays low.** `IVisionProvider` and `IPriceSearch` are seams
+  because vendors change. Plain endpoint files and a pure decision tree are the rest.
+  Do not add layers the task does not require.
+
+What this means for UI work: `/config` and the three endpoint contracts are the seam. The
+shapes the frontend consumes — `assessment`, `recommendation`, `SaleAssistResult` with its
+`comparables` and `price_confidence` — are stable and worth building against. How the
+backend fills them is not, and is expected to change.
+
 ## Endpoints
 
 | Endpoint | Reaches the internet | Notes |
@@ -84,6 +120,34 @@ cd src/Cirkulaer.AppHost
 dotnet user-secrets set "Parameters:geminiApiKey" "..."
 dotnet user-secrets set "Parameters:authApiKey" "local-dev-key"
 ```
+
+## The Architecture Follows Affaldssortering
+
+Anyone can work anywhere in this repo. The constraint is not who touches which file — it
+is that **the architecture stays the same shape as Affaldssortering**, deliberately, for
+one maintainer's sake. Adopting a pattern from there needs no discussion. Diverging from
+it does, however local the change looks.
+
+What "the same shape" means in practice:
+
+- .NET with Aspire orchestration, deployed to Azure Container Apps by `azd`, with
+  `src/infra/` generated from the AppHost rather than hand-written.
+- App and Api as separate container apps, with `/config`, `X-Api-Key` and CORS as the seam
+  between them.
+- Vendor-facing seams only: `IVisionProvider`, `IPriceSearch`. Plain endpoint files and a
+  pure decision tree everywhere else.
+- Durable knowledge as JSON-seeded data, the way `producer-programs.json` works. When a
+  database arrives it is Postgres, following `item_lookup`'s curated-table-plus-misses
+  pattern.
+
+So the question to ask before a backend change is not "is this mine?" but "does
+Affaldssortering do it this way?" If it does, go ahead. If it doesn't, or if it has no
+equivalent, raise it first.
+
+One file deserves singling out because its name misleads: `src/App/Program.cs` looks like
+frontend and is not. It serves `/config`, which decides the Api URL and scheme for every
+browser call. A one-line change there took production down on 2026-09-11. Read the CORS
+and scheme rules below before touching it.
 
 ## Settled Decisions
 

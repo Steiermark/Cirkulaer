@@ -264,6 +264,12 @@ Roughly 1400 lines of logic, not counting tests.
 
 ## Price search: known limitation and agreed follow-up
 
+> **Superseded 2026-09-11.** The follow-up was taken: `PriceSearchClient` is deleted and
+> `OpenAiPriceSearch` calls OpenAI's `web_search` tool instead. The premise below turned
+> out to be wrong in an instructive way — the scrape fails from a *home* IP too, because
+> DuckDuckGo snippets carry no prices at all. The measurements are in AGENTS.md under
+> "Rules That Are Not Guessable". The rest of this section is kept as written.
+
 `PriceSearchClient` scrapes `https://duckduckgo.com/html/?q=...`. This works from a home
 IP and is expected to fail from Azure's datacenter ranges, which get challenged or
 blocked. It is ported as-is anyway, deliberately:
