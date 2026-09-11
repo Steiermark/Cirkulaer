@@ -7,6 +7,8 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(fileURLToPath(new URL("../src/App/wwwroot", import.meta.url)));
 const port = Number(process.env.PORT || 4173);
 const host = process.env.HOST || "0.0.0.0";
+const apiBaseUrl = process.env.API_BASE_URL || "";
+const apiKey = process.env.API_KEY || "";
 
 const types = new Map([
   [".html", "text/html; charset=utf-8"],
@@ -33,7 +35,29 @@ const server = http.createServer((request, response) => {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "no-store",
     });
-    response.end(JSON.stringify({ apiBaseUrl: "", apiKey: "" }));
+    response.end(JSON.stringify({ apiBaseUrl: "", apiKey }));
+    return;
+  }
+
+  if (pathname.startsWith("/api/")) {
+    if (!apiBaseUrl) {
+      response.writeHead(503, {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "no-store",
+      });
+      response.end(JSON.stringify({
+        error: "API'en kører ikke. Start hele .NET-stakken, eller start denne server med API_BASE_URL.",
+      }));
+      return;
+    }
+
+    proxyApiRequest(request, response, requestUrl).catch((error) => {
+      response.writeHead(502, {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "no-store",
+      });
+      response.end(JSON.stringify({ error: `API'en kunne ikke nås: ${error.message}` }));
+    });
     return;
   }
 
@@ -68,5 +92,29 @@ server.listen(port, host, () => {
   for (const url of lanUrls()) {
     console.log(`  Mobile:  ${url}`);
   }
-  console.log("Frontend only - /api/* calls will fail. Run the AppHost for the full stack.");
+  if (apiBaseUrl) {
+    console.log(`Proxying /api/* to ${apiBaseUrl}`);
+  } else {
+    console.log("Frontend only - /api/* returns a clear error. Run the AppHost for the full stack.");
+  }
 });
+
+async function proxyApiRequest(request, response, requestUrl) {
+  const target = new URL(`${requestUrl.pathname}${requestUrl.search}`, apiBaseUrl);
+  const headers = { ...request.headers };
+  headers.host = target.host;
+  if (apiKey) headers["x-api-key"] = apiKey;
+
+  const proxyResponse = await fetch(target, {
+    method: request.method,
+    headers,
+    body: ["GET", "HEAD"].includes(request.method || "") ? undefined : request,
+    duplex: "half",
+  });
+
+  response.writeHead(proxyResponse.status, {
+    "Content-Type": proxyResponse.headers.get("content-type") || "application/json; charset=utf-8",
+    "Cache-Control": "no-store",
+  });
+  response.end(Buffer.from(await proxyResponse.arrayBuffer()));
+}

@@ -138,12 +138,18 @@ h3 {
   font-weight: 700;
 }
 
-.drop-zone {
+.image-actions {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0;
+}
+
+.drop-zone,
+.upload-choice {
   min-height: 190px;
   display: grid;
   place-items: center;
   gap: 8px;
-  margin: 18px 0;
   padding: 24px;
   border: 2px dashed rgba(31, 122, 77, 0.34);
   border-radius: 8px;
@@ -152,7 +158,19 @@ h3 {
   cursor: pointer;
 }
 
-.drop-zone input {
+.upload-choice {
+  min-height: 62px;
+  grid-template-columns: 1fr;
+  justify-items: start;
+  place-items: initial;
+  padding: 12px 14px;
+  border-style: solid;
+  background: #fff;
+  text-align: left;
+}
+
+.drop-zone input,
+.upload-choice input {
   position: absolute;
   inline-size: 1px;
   block-size: 1px;
@@ -189,6 +207,7 @@ h3 {
 }
 
 .preview-item {
+  position: relative;
   overflow: hidden;
   margin: 0;
   border: 1px solid var(--line);
@@ -209,6 +228,24 @@ h3 {
   background: #fffdf8;
   font-size: 0.82rem;
   font-weight: 800;
+}
+
+.preview-remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(23, 32, 28, 0.78);
+  color: #fff;
+  font-size: 1.35rem;
+  font-weight: 850;
+  line-height: 1;
+  cursor: pointer;
 }
 
 .primary-button,

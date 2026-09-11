@@ -28,23 +28,35 @@ public interface IPriceSearch
 
 public sealed partial class PriceSearchClient(HttpClient http, ILogger<PriceSearchClient> logger) : IPriceSearch
 {
+    const int MaxSearches = 5;
+
     static readonly string[] StopWords =
-        ["brugt", "pris", "danmark", "den", "det", "med", "og", "til", "moebler", "moebel", "indbo", "kategori"];
+    [
+        "brugt", "pris", "priser", "danmark", "den", "det", "med", "og", "til",
+        "moebler", "moebel", "indbo", "kategori", "site", "www", "com", "dk",
+        "facebook", "marketplace",
+    ];
 
     public async Task<PriceSignals> SearchAsync(string query, bool includeReshopper, CancellationToken ct)
     {
         var encoded = WebUtility.UrlEncode(query).Replace("+", "%20");
-        var url = $"https://duckduckgo.com/html/?q={Uri.EscapeDataString(query).Replace("%20", "+")}";
+        var queries = BuildSearchQueries(query, includeReshopper);
+        var url = BuildDuckDuckGoUrl(query);
         var extraPlatforms = includeReshopper ? "Facebook Marketplace og Reshopper" : "Facebook Marketplace";
 
-        string page;
+        List<Comparable> comparables;
         try
         {
-            using var request = new HttpRequestMessage(HttpMethod.Get, url);
-            request.Headers.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 CirkulaerPrototype/1.0");
-            using var response = await http.SendAsync(request, ct);
-            response.EnsureSuccessStatusCode();
-            page = await response.Content.ReadAsStringAsync(ct);
+            var pages = await Task.WhenAll(queries.Select(searchQuery => FetchPageAsync(searchQuery, ct)));
+            var successfulPages = pages.Where(page => page is not null).Select(page => page!.Value).ToList();
+            if (successfulPages.Count == 0)
+                throw new InvalidOperationException("No price searches completed successfully.");
+
+            comparables = successfulPages
+                .SelectMany(page => ExtractComparables(page.Html, query))
+                .OrderByDescending(item => item.Relevance)
+                .ThenBy(item => item.Price)
+                .ToList();
         }
         catch (Exception exception)
         {
@@ -61,25 +73,122 @@ public sealed partial class PriceSearchClient(HttpClient http, ILogger<PriceSear
                 Note: "Net-søgningen kunne ikke gennemføres fra prototypen. Linket åbner en manuel søgning efter lignende genstande.");
         }
 
-        var comparables = ExtractComparables(page, query);
+        comparables = DeduplicateComparables(comparables);
 
         // A 200 that parses to nothing is the datacenter-IP symptom: DuckDuckGo serves a
         // different page rather than blocking, so without this it is indistinguishable
         // from a genuine no-results search.
         if (comparables.Count == 0)
-            logger.LogWarning("Price search returned {Bytes} bytes but no comparables for {Query}", page.Length, query);
+            logger.LogWarning("Price search returned no comparables for {Query}", query);
 
         var signals = comparables.Take(5).Select(item => item.Title).ToList();
-        var prices = comparables.Select(item => item.Price).ToList();
-        var confidence = comparables.Count >= 5 ? "høj" : comparables.Count >= 3 ? "middel" : "lav";
+        var prices = PriceCandidatesForEstimate(comparables);
+        var confidence = EstimateConfidence(comparables, prices.Count, queries.Count);
 
         var note = prices.Count > 0
-            ? $"Prisforslaget er baseret på en web-søgning efter: {query}. Brug også {extraPlatforms} til at sammenligne relevante annoncer. "
-              + $"Der blev fundet {comparables.Count} prisfund med relevant titeltekst. "
+            ? $"Prisforslaget er baseret på {queries.Count} målrettede web-søgninger efter: {query}. Brug også {extraPlatforms} til at sammenligne aktive annoncer. "
+              + $"Der blev fundet {comparables.Count} prisfund, og {prices.Count} mest relevante prisfund indgår i estimatet. "
             : $"Der blev ikke fundet tydelige danske prisangivelser i web-søgningen. Brug web-linket og {extraPlatforms} til manuel priskontrol. ";
 
         return new PriceSignals(url, prices, signals, comparables.Take(8).ToList(), confidence, note);
     }
+
+    async Task<(string Query, string Html)?> FetchPageAsync(string query, CancellationToken ct)
+    {
+        try
+        {
+            var url = BuildDuckDuckGoUrl(query);
+            using var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 CirkulaerPrototype/1.0");
+            using var response = await http.SendAsync(request, ct);
+            response.EnsureSuccessStatusCode();
+            return (query, await response.Content.ReadAsStringAsync(ct));
+        }
+        catch (Exception exception) when (exception is not OperationCanceledException)
+        {
+            logger.LogWarning(exception, "Price search variant failed for {Query}", query);
+            return null;
+        }
+    }
+
+    public static List<string> BuildSearchQueries(string query, bool includeReshopper)
+    {
+        var cleanQuery = SaleQueryBuilder.NormalizeSearchTerms(query ?? "").Trim();
+        var comparableQuery = cleanQuery
+            .Replace(" brugt pris Danmark", "", StringComparison.OrdinalIgnoreCase)
+            .Trim();
+        if (comparableQuery.Length == 0)
+            comparableQuery = cleanQuery;
+
+        var platformQueries = new List<string>
+        {
+            $"{comparableQuery} brugt pris Danmark",
+            $"{comparableQuery} site:dba.dk",
+            $"{comparableQuery} site:guloggratis.dk",
+            $"{comparableQuery} site:facebook.com/marketplace",
+        };
+
+        if (includeReshopper)
+            platformQueries.Add($"{comparableQuery} site:reshopper.com");
+
+        return platformQueries
+            .Where(item => !string.IsNullOrWhiteSpace(item))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .Take(MaxSearches)
+            .ToList();
+    }
+
+    public static List<Comparable> DeduplicateComparables(IReadOnlyList<Comparable> comparables)
+    {
+        var seen = new HashSet<string>();
+        var deduplicated = new List<Comparable>();
+
+        foreach (var item in comparables)
+        {
+            var key = ComparableKey(item);
+            if (seen.Add(key))
+                deduplicated.Add(item);
+        }
+
+        return deduplicated;
+    }
+
+    public static List<int> PriceCandidatesForEstimate(IReadOnlyList<Comparable> comparables)
+    {
+        var highRelevance = comparables
+            .Where(item => item.Relevance >= 0.65)
+            .Select(item => item.Price)
+            .ToList();
+
+        return highRelevance.Count >= 3
+            ? highRelevance
+            : comparables.Select(item => item.Price).ToList();
+    }
+
+    static string EstimateConfidence(IReadOnlyList<Comparable> comparables, int priceCount, int queryCount)
+    {
+        var strongMatches = comparables.Count(item => item.Relevance >= 0.65);
+        if (priceCount >= 6 && strongMatches >= 4 && queryCount >= 3)
+            return "høj";
+        if (priceCount >= 3 && strongMatches >= 2)
+            return "middel";
+        return "lav";
+    }
+
+    static string ComparableKey(Comparable item)
+    {
+        var url = item.Url.Trim().ToLowerInvariant().TrimEnd('/');
+        if (url.Length > 0)
+            return url;
+
+        return $"{NormalizeComparableTitle(item.Title)}:{item.Price}";
+    }
+
+    static string NormalizeComparableTitle(string title) =>
+        Whitespace().Replace(title.ToLowerInvariant(), " ").Trim();
+
+    static string BuildDuckDuckGoUrl(string query) =>
+        $"https://duckduckgo.com/html/?q={Uri.EscapeDataString(query).Replace("%20", "+")}";
 
     public static List<Comparable> ExtractComparables(string page, string query)
     {

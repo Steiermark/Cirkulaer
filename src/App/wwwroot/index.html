@@ -32,17 +32,21 @@
       <section class="panel" id="capture-screen" aria-labelledby="capture-title">
         <div class="step-label">1 af 4</div>
         <h2 id="capture-title">Billeder af genstanden</h2>
-        <p class="muted">
-          Billederne analyseres af AI via et lokalt backend-endpoint. Dine svar bruges
-          derefter af beslutningsmotoren.
-        </p>
 
-        <label class="drop-zone" for="image-input">
-          <input id="image-input" type="file" accept="image/*" capture="environment" multiple />
-          <span class="drop-icon" aria-hidden="true">+</span>
-          <span class="drop-title">Tag eller upload op til 4 billeder</span>
-          <span class="drop-copy">Tag gerne forside, bagside, detaljer og mærkeplade, hvis den findes.</span>
-        </label>
+        <div class="image-actions" aria-label="Tilføj billeder">
+          <label class="drop-zone" for="camera-input">
+            <input id="camera-input" type="file" accept="image/*" capture="environment" />
+            <span class="drop-icon" aria-hidden="true">+</span>
+            <span class="drop-title">Tag foto</span>
+            <span class="drop-copy">Tilføj ét foto ad gangen fra kameraet</span>
+          </label>
+
+          <label class="upload-choice" for="gallery-input">
+            <input id="gallery-input" type="file" accept="image/*" multiple />
+            <span class="drop-title">Upload fra enhed</span>
+            <span class="drop-copy">Vælg op til 4 billeder fra biblioteket</span>
+          </label>
+        </div>
 
         <div class="preview-wrap hidden" id="preview-wrap" aria-label="Valgte billeder"></div>
 

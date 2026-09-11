@@ -25,6 +25,16 @@ function apiHeaders() {
   return headers;
 }
 
+function apiErrorMessage(error) {
+  if (error instanceof TypeError && /fetch/i.test(error.message)) {
+    return [
+      "Kunne ikke få forbindelse til API'en.",
+      "Hvis du bruger mobilen, skal hele .NET-stakken køre, og både App- og Api-porten skal være tilgængelige på samme Wi-Fi.",
+    ].join(" ");
+  }
+  return error.message || "Der opstod en uventet fejl.";
+}
+
 const state = {
   imageFiles: [],
   previewUrls: [],
@@ -176,7 +186,8 @@ const wasteSortingItems = [
   },
 ];
 
-const imageInput = document.querySelector("#image-input");
+const cameraInput = document.querySelector("#camera-input");
+const galleryInput = document.querySelector("#gallery-input");
 const analyzeButton = document.querySelector("#analyze-button");
 const recommendButton = document.querySelector("#recommend-button");
 const restartButton = document.querySelector("#restart-button");
@@ -196,7 +207,8 @@ const closeSitePanelButton = document.querySelector("#close-site-panel-button");
 const closeSortingSearchButton = document.querySelector("#close-sorting-search-button");
 const sortingSearchInput = document.querySelector("#sorting-search-input");
 
-imageInput.addEventListener("change", handleImage);
+cameraInput.addEventListener("change", handleSelectedImages);
+galleryInput.addEventListener("change", handleSelectedImages);
 analyzeButton.addEventListener("click", analyzeImage);
 recommendButton.addEventListener("click", recommend);
 restartButton.addEventListener("click", restart);
@@ -227,21 +239,26 @@ backToResultButton.addEventListener("click", () => {
   document.querySelector("#result-screen").scrollIntoView({ behavior: "smooth" });
 });
 
-function handleImage(event) {
-  const files = Array.from(event.target.files || [])
-    .filter((file) => file.type.startsWith("image/"))
-    .slice(0, 4);
+function handleSelectedImages(event) {
+  const selectedFiles = Array.from(event.target.files || []).filter((file) =>
+    file.type.startsWith("image/"),
+  );
+  const roomLeft = Math.max(0, 4 - state.imageFiles.length);
+  const acceptedFiles = selectedFiles.slice(0, roomLeft);
 
-  clearPreviewUrls();
-  state.imageFiles = files;
-  renderImagePreviews(files);
-  analyzeButton.disabled = files.length === 0;
+  state.imageFiles = state.imageFiles.concat(acceptedFiles);
+  renderImagePreviews(state.imageFiles);
+  updateImageControls();
 
-  if (event.target.files.length > 4) {
+  if (selectedFiles.length > roomLeft) {
     setStatus("Der bruges højst 4 billeder i analysen.");
+  } else if (selectedFiles.length && acceptedFiles.length === 0) {
+    setStatus("Fjern et billede for at tilføje et nyt.");
   } else {
     hideStatus();
   }
+
+  event.target.value = "";
 }
 
 async function analyzeImage() {
@@ -300,7 +317,7 @@ async function analyzeImage() {
     show("#questions-screen");
     document.querySelector("#identify-screen").scrollIntoView({ behavior: "smooth" });
   } catch (error) {
-    setStatus(error.message, true);
+    setStatus(apiErrorMessage(error), true);
   } finally {
     analyzeButton.disabled = false;
   }
@@ -724,7 +741,7 @@ async function recommend() {
     show("#result-screen");
     document.querySelector("#result-screen").scrollIntoView({ behavior: "smooth" });
   } catch (error) {
-    setStatus(error.message, true);
+    setStatus(apiErrorMessage(error), true);
   } finally {
     recommendButton.disabled = false;
     recommendButton.textContent = "Få anbefaling";
@@ -1390,8 +1407,11 @@ function restart() {
   state.recommendation = null;
   state.saleDraft = null;
   state.answers = {};
-  imageInput.value = "";
+  cameraInput.value = "";
+  galleryInput.value = "";
   analyzeButton.disabled = true;
+  cameraInput.disabled = false;
+  galleryInput.disabled = false;
   const previewWrap = document.querySelector("#preview-wrap");
   previewWrap.innerHTML = "";
   previewWrap.classList.add("hidden");
@@ -1403,6 +1423,7 @@ function restart() {
 
 function renderImagePreviews(files) {
   const previewWrap = document.querySelector("#preview-wrap");
+  clearPreviewUrls();
   previewWrap.innerHTML = "";
 
   files.forEach((file, index) => {
@@ -1419,11 +1440,35 @@ function renderImagePreviews(files) {
     const caption = document.createElement("figcaption");
     caption.textContent = index === 0 ? "Hovedbillede" : `Ekstra vinkel ${index + 1}`;
 
-    figure.append(image, caption);
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.className = "preview-remove";
+    removeButton.setAttribute("aria-label", `Fjern billede ${index + 1}`);
+    removeButton.textContent = "×";
+    removeButton.addEventListener("click", () => removeImage(index));
+
+    figure.append(image, removeButton, caption);
     previewWrap.appendChild(figure);
   });
 
   previewWrap.classList.toggle("hidden", files.length === 0);
+}
+
+function removeImage(index) {
+  state.imageFiles.splice(index, 1);
+  renderImagePreviews(state.imageFiles);
+  updateImageControls();
+  if (state.imageFiles.length < 4) {
+    hideStatus();
+  }
+}
+
+function updateImageControls() {
+  const hasImages = state.imageFiles.length > 0;
+  const isFull = state.imageFiles.length >= 4;
+  analyzeButton.disabled = !hasImages;
+  cameraInput.disabled = isFull;
+  galleryInput.disabled = isFull;
 }
 
 function clearPreviewUrls() {

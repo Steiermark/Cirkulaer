@@ -13,6 +13,27 @@ public class PriceSearchClientTests
         => Assert.Equal(["ikea", "billy", "reol"], PriceSearchClient.ComparableQueryTokens(Query));
 
     [Fact]
+    public void Search_queries_target_danish_secondhand_platforms()
+    {
+        var queries = PriceSearchClient.BuildSearchQueries(Query, includeReshopper: true);
+
+        Assert.Equal(5, queries.Count);
+        Assert.Contains("IKEA BILLY reol site:dba.dk", queries);
+        Assert.Contains("IKEA BILLY reol site:guloggratis.dk", queries);
+        Assert.Contains("IKEA BILLY reol site:facebook.com/marketplace", queries);
+        Assert.Contains("IKEA BILLY reol site:reshopper.com", queries);
+    }
+
+    [Fact]
+    public void Search_queries_skip_reshopper_when_it_is_not_relevant()
+    {
+        var queries = PriceSearchClient.BuildSearchQueries(Query, includeReshopper: false);
+
+        Assert.DoesNotContain(queries, query => query.Contains("reshopper", StringComparison.OrdinalIgnoreCase));
+        Assert.Equal(4, queries.Count);
+    }
+
+    [Fact]
     public void Extract_prices_understands_tusind_form()
         => Assert.Contains(2000, PriceSearchClient.ExtractPrices("Sælges for 2 tusind kr."));
 
@@ -59,6 +80,31 @@ public class PriceSearchClientTests
     [Fact]
     public void Irrelevant_titles_are_filtered_out()
         => Assert.Empty(PriceSearchClient.ExtractComparables(Page(), "trampolin havemøbler brugt pris Danmark"));
+
+    [Fact]
+    public void Duplicate_comparables_are_removed_by_url()
+    {
+        var comparables = PriceSearchClient.DeduplicateComparables([
+            new Comparable { Title = "IKEA BILLY reol", Price = 500, Relevance = 1, Url = "https://dba.dk/reol/123" },
+            new Comparable { Title = "IKEA BILLY reol igen", Price = 550, Relevance = 1, Url = "https://dba.dk/reol/123/" },
+            new Comparable { Title = "IKEA BILLY hjørnereol", Price = 650, Relevance = 0.8, Url = "https://dba.dk/reol/456" },
+        ]);
+
+        Assert.Equal(2, comparables.Count);
+    }
+
+    [Fact]
+    public void Estimate_uses_high_relevance_prices_when_enough_exist()
+    {
+        var prices = PriceSearchClient.PriceCandidatesForEstimate([
+            new Comparable { Title = "IKEA BILLY reol", Price = 400, Relevance = 1, Url = "https://dba.dk/1" },
+            new Comparable { Title = "IKEA BILLY reol hvid", Price = 500, Relevance = 0.8, Url = "https://dba.dk/2" },
+            new Comparable { Title = "IKEA BILLY reol eg", Price = 600, Relevance = 0.7, Url = "https://dba.dk/3" },
+            new Comparable { Title = "Anden reol", Price = 2000, Relevance = 0.4, Url = "https://dba.dk/4" },
+        ]);
+
+        Assert.Equal([400, 500, 600], prices);
+    }
 
     [Fact]
     public void Html_text_is_stripped_and_unescaped()

@@ -102,18 +102,46 @@ node tools/static-wwwroot-server.mjs
 ```
 
 Den serverer `src/App/wwwroot/` på port 4173 og lytter på alle netkort, så en telefon på
-samme Wi-Fi kan åbne den. `/api/*` fejler, fordi Api ikke kører — brug den til layout og
-flow, ikke til at teste hele kæden.
+samme Wi-Fi kan åbne den. Uden en API returnerer `/api/*` en tydelig fejl — brug den til
+layout og flow, ikke til at teste hele kæden.
+
+Hvis Api kører separat, kan frontend-serveren proxy'e API-kald:
+
+```powershell
+$env:API_BASE_URL="http://127.0.0.1:5249"
+node tools/static-wwwroot-server.mjs
+```
 
 ## Kør fra mobiltelefon
 
 1. Sørg for at computer og telefon er på samme Wi-Fi.
-2. Start `node tools/static-wwwroot-server.mjs`.
-3. Kig efter linjen `Mobile: http://...:4173` i terminalen.
-4. Åbn den adresse i browseren på telefonen.
+2. Start hele stakken, så både App og Api kører:
+
+```powershell
+dotnet run --project src/Cirkulaer.AppHost
+```
+
+3. Åbn Aspire-dashboardet og find App-servicens HTTP-adresse.
+4. Brug computerens lokale IP-adresse i stedet for `localhost`, fx:
+
+```text
+http://192.168.1.22:5028
+```
+
+Appens `/config` omskriver lokale API-adresser, så mobilen kalder Api på samme
+netværkshost i stedet for `localhost`.
+
+Hvis du kun vil se layoutet på mobilen uden analyse, kan du stadig starte:
+
+```powershell
+node tools/static-wwwroot-server.mjs
+```
+
+Kig efter linjen `Mobile: http://...:4173` i terminalen, og åbn den adresse i
+browseren på telefonen.
 
 Hvis telefonen ikke kan åbne siden, skal Windows Firewall tillade indgående forbindelser
-på porten, eller serveren kan startes på en anden port:
+på App- og Api-portene, eller serveren kan startes på en anden port:
 
 ```powershell
 $env:PORT="4180"
@@ -178,3 +206,8 @@ golden-file-tests. Én bevidst rettelse:
 Web-søgningen efter sammenlignelige priser kan blive blokeret fra Azures IP-adresser. Sker
 det, falder prisestimatet tilbage til kategori- og standbaserede intervaller, og noten
 oplyser, at der ikke blev fundet webpriser. Det er tilsigtet — appen fejler ikke.
+
+Prisestimatet bruger flere målrettede søgninger efter sammenlignelige brugtpriser, blandt
+andet brede webfund og danske markedspladser som DBA, GulogGratis, Facebook Marketplace og
+Reshopper når genstanden passer til platformen. Fund deduplikeres, relevansscores, og de
+mest relevante priser vægtes først i estimatet.

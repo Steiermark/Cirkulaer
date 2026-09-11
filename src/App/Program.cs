@@ -12,15 +12,21 @@ app.UseStaticFiles(new StaticFileOptions
     OnPrepareResponse = context => context.Context.Response.Headers.CacheControl = "no-store",
 });
 
-app.MapGet("/config", async (IConfiguration config, IWebHostEnvironment env, CancellationToken ct) =>
+app.MapGet("/config", async (
+    HttpContext context,
+    IConfiguration config,
+    IWebHostEnvironment env,
+    CancellationToken ct) =>
 {
-    // Aspire injects services__api__https__0 in Azure Container Apps too, not just locally,
-    // so read it in every environment. wwwroot/config.json stays as a manual override.
-    var apiBaseUrl = config["services:api:https:0"] ?? config["services:api:http:0"];
+    // Prefer HTTP locally because phones cannot trust localhost development HTTPS
+    // certificates. Azure can still provide only HTTPS, which is returned unchanged.
+    var apiBaseUrl = config["services:api:http:0"] ?? config["services:api:https:0"];
 
     return Results.Json(new
     {
-        apiBaseUrl = apiBaseUrl ?? await ReadStaticApiBaseUrlAsync(env.WebRootPath, ct),
+        apiBaseUrl = ResolveClientReachableApiBaseUrl(
+            apiBaseUrl ?? await ReadStaticApiBaseUrlAsync(env.WebRootPath, ct),
+            context.Request),
         apiKey = config["Auth:ApiKey"],
     });
 });
@@ -42,3 +48,23 @@ static async Task<string> ReadStaticApiBaseUrlAsync(string? webRootPath, Cancell
     using var document = await JsonDocument.ParseAsync(stream, cancellationToken: ct);
     return document.RootElement.TryGetProperty("apiBaseUrl", out var value) ? value.GetString() ?? "" : "";
 }
+
+static string ResolveClientReachableApiBaseUrl(string apiBaseUrl, HttpRequest request)
+{
+    if (!Uri.TryCreate(apiBaseUrl, UriKind.Absolute, out var uri))
+        return apiBaseUrl;
+
+    if (!IsLoopbackHost(uri.Host) || IsLoopbackHost(request.Host.Host))
+        return apiBaseUrl;
+
+    var builder = new UriBuilder(uri)
+    {
+        Host = request.Host.Host,
+    };
+    return builder.Uri.ToString().TrimEnd('/');
+}
+
+static bool IsLoopbackHost(string? host) =>
+    string.Equals(host, "localhost", StringComparison.OrdinalIgnoreCase)
+    || string.Equals(host, "127.0.0.1", StringComparison.OrdinalIgnoreCase)
+    || string.Equals(host, "::1", StringComparison.OrdinalIgnoreCase);
