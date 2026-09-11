@@ -41,6 +41,7 @@ const state = {
   assessment: null,
   recommendation: null,
   saleDraft: null,
+  saleRequest: 0,
   answers: {},
 };
 
@@ -1038,27 +1039,31 @@ async function openSalePage() {
   document.querySelector("#sale-screen").scrollIntoView({ behavior: "smooth" });
   setSaleLoading();
 
+  const request = ++state.saleRequest;
+  state.saleDraft = null;
+
   try {
     await ensureApiConfig();
-    const photo = state.imageFiles[0] ? await fileToDataUrl(state.imageFiles[0]) : null;
-    const response = await fetch(apiUrl("/api/sale-assist"), {
-      method: "POST",
-      headers: apiHeaders(),
-      body: JSON.stringify({
-        assessment: state.assessment,
-        answers: state.answers,
-        recommendation: state.recommendation,
-        images: photo ? [{ imageDataUrl: photo }] : [],
-      }),
-    });
-    const payload = await parseJsonResponse(response);
-    if (!response.ok) {
-      throw new Error(payload.error || "Salgsforslaget kunne ikke beregnes.");
-    }
+    const sale = await fetchSaleAssist([]);
+    if (request !== state.saleRequest) return;
+    state.saleDraft = sale;
+    renderSalePage(sale);
 
-    state.saleDraft = payload.sale;
-    renderSalePage(payload.sale);
+    // Grading against the photo takes 15-25s; the plain result is shown meanwhile.
+    if (state.imageFiles[0] && (sale.comparables || []).length >= 3) {
+      renderSaleComparables(sale.comparables, "Sorterer efter lighed med dit foto …", true);
+      const photo = await fileToDataUrl(state.imageFiles[0]);
+      const graded = await fetchSaleAssist([{ imageDataUrl: photo }]);
+      if (request !== state.saleRequest) return;
+      state.saleDraft = graded;
+      renderSalePage(graded);
+    }
   } catch (error) {
+    if (request !== state.saleRequest) return;
+    if (state.saleDraft) {
+      renderSalePage(state.saleDraft);
+      return;
+    }
     renderSalePage({
       object_name: state.recommendation.object_name,
       details: "Prisforslaget kunne ikke hentes lige nu.",
@@ -1078,12 +1083,30 @@ async function openSalePage() {
   }
 }
 
+async function fetchSaleAssist(images) {
+  const response = await fetch(apiUrl("/api/sale-assist"), {
+    method: "POST",
+    headers: apiHeaders(),
+    body: JSON.stringify({
+      assessment: state.assessment,
+      answers: state.answers,
+      recommendation: state.recommendation,
+      images,
+    }),
+  });
+  const payload = await parseJsonResponse(response);
+  if (!response.ok) {
+    throw new Error(payload.error || "Salgsforslaget kunne ikke beregnes.");
+  }
+  return payload.sale;
+}
+
 function setSaleLoading() {
   document.querySelector("#sale-object-name").textContent = state.recommendation?.object_name || "Genstand";
   document.querySelector("#sale-object-details").textContent = "Henter søgegrundlag og laver annoncekladde...";
   document.querySelector("#sale-price").textContent = "Finder pris...";
   document.querySelector("#sale-price-note").textContent =
-    "Søger efter aktuelle annoncer på DBA og sammenligner dem med dit foto. Det tager typisk 10-30 sekunder.";
+    "Søger efter aktuelle annoncer på DBA.";
   document.querySelector("#sale-search-note").textContent = "";
   document.querySelector("#sale-search-link").href = "#";
   document.querySelector("#marketplace-search-link").href = "#";
@@ -1110,15 +1133,15 @@ function renderSalePage(sale) {
   renderSaleComparables(sale.comparables || []);
 }
 
-function renderSaleComparables(comparables, pendingText) {
+function renderSaleComparables(comparables, pendingText, keepRows) {
   const container = document.querySelector("#sale-comparables");
   container.innerHTML = "";
-  if (!comparables.length) {
-    const empty = document.createElement("p");
-    empty.className = "muted";
-    empty.textContent = pendingText || "Ingen tilstrækkeligt modelrelevante prisfund blev fundet. Brug søgelinkene til manuel kontrol.";
-    container.appendChild(empty);
-    return;
+  if (!comparables.length || (pendingText && keepRows)) {
+    const note = document.createElement("p");
+    note.className = "muted";
+    note.textContent = pendingText || "Ingen tilstrækkeligt modelrelevante prisfund blev fundet. Brug søgelinkene til manuel kontrol.";
+    container.appendChild(note);
+    if (!comparables.length) return;
   }
 
   comparables.forEach((item) => {
@@ -1414,6 +1437,7 @@ function restart() {
   state.assessment = null;
   state.recommendation = null;
   state.saleDraft = null;
+  state.saleRequest++;
   state.answers = {};
   cameraInput.value = "";
   galleryInput.value = "";

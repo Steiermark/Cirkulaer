@@ -236,8 +236,10 @@ The two earlier designs are recorded so they are not retried:
   IP; the plain query gave one price string in 32 KB, and every `site:` variant answers
   HTTP 202 with zero results. It was never the Azure IP block AGENTS.md once blamed.
 
-**A photo narrows the comparables to look-alikes.** `app.js` sends the first photo with
-the sale-assist request; when dba returns three or more rows, `LookalikeFilter` fetches up
+**A photo narrows the comparables to look-alikes, in a second request.** `app.js` first
+calls sale-assist without images and renders that in ~1s; if there is a photo and three or
+more rows it calls again with the first photo and swaps the result in when it lands. On
+the Api side, when dba returns three or more rows and a photo came along, `LookalikeFilter` fetches up
 to 12 ad thumbnails from dba's structured data and asks Gemini Flash to grade each as
 `same` / `similar` / `different` against the photo *and the ad titles* — an FP-30 and an
 FP-30X are visually identical, so model designations in the title outweigh looks. The
