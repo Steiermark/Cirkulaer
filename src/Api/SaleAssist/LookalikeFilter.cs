@@ -93,8 +93,9 @@ public sealed class LookalikeFilter(HttpClient http, IConfiguration config, ILog
                     + " billeder er annoncer fra en brugtmarkedsplads, i rækkefølge, med disse titler:\n"
                     + titles
                     + "\n\nBedøm for hver annonce ud fra både billede og titel om den viser præcis samme model som brugerens genstand (\"same\"), "
-                    + "en genstand af samme type og stil som en køber ville se som et reelt alternativ - herunder en anden variant af samme serie (\"similar\"), "
-                    + "eller noget andet (\"different\"). Modelbetegnelser i titlen vejer tungere end udseendet. "
+                    + "en anden variant eller generation af samme modelserie, eller en genstand der ligner så meget at en køber ville tage den for samme vare (\"similar\"), "
+                    + "eller noget andet (\"different\") - andre modeller fra samme producent er \"different\". "
+                    + "Modelbetegnelser i titlen vejer tungere end udseendet. "
                     + "Svar udelukkende med JSON: {\"grades\": [...]} med præcis "
                     + thumbnails.Length
                     + " elementer i annoncernes rækkefølge.",
