@@ -1080,7 +1080,8 @@ function setSaleLoading() {
   document.querySelector("#sale-object-name").textContent = state.recommendation?.object_name || "Genstand";
   document.querySelector("#sale-object-details").textContent = "Henter søgegrundlag og laver annoncekladde...";
   document.querySelector("#sale-price").textContent = "Finder pris...";
-  document.querySelector("#sale-price-note").textContent = "";
+  document.querySelector("#sale-price-note").textContent =
+    "Søger efter aktuelle annoncer på DBA og Gul&Gratis. Det tager typisk op mod et minut.";
   document.querySelector("#sale-search-note").textContent = "";
   document.querySelector("#sale-search-link").href = "#";
   document.querySelector("#marketplace-search-link").href = "#";

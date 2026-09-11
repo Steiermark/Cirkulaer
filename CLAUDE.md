@@ -64,7 +64,7 @@ browser call is cross-origin and CORS is load-bearing.
 |---|---|
 | `POST /api/analyze` | yes — OpenAI / Anthropic / Gemini |
 | `POST /api/recommend` | no, pure decision tree |
-| `POST /api/sale-assist` | yes — scrapes DuckDuckGo HTML |
+| `POST /api/sale-assist` | yes — OpenAI `web_search` |
 
 ## Hard rules
 
@@ -75,8 +75,10 @@ browser call is cross-origin and CORS is load-bearing.
 - **Danish strings are product copy.** Do not translate, paraphrase or spell-correct them.
 - **Tri-state answers stay `string?`.** `"yes"` / `"no"` / `"partly"` / `"unknown"` / absent
   are five distinct states; absent is not `"unknown"`. Do not convert to enums.
-- **The DuckDuckGo price scrape is expected to fail in production.** Falling back to the
-  category heuristic with an honest Danish note is the design, not a bug.
+- **Price search is a paid ~51s call to OpenAI `web_search`.** The `Ai:PriceSearch`
+  parameters came from live measurement, not taste — see AGENTS.md before changing them,
+  and don't switch it to Gemini, which cannot return per-listing links. Falling back to the
+  category heuristic when it fails is the design, not a bug.
 - **Infrastructure is generated.** `src/infra/` comes from `azd infra synth` — edit
   `src/Cirkulaer.AppHost/AppHost.cs`, not the bicep.
 - **JSON data files use `Content Update`, not `Content Include`** — the Web SDK already

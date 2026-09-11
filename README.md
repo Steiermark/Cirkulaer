@@ -211,11 +211,10 @@ golden-file-tests. Én bevidst rettelse:
   `"1.250 kr."` blev læst som `250`. Da danske annoncer typisk bruger `.` som
   tusindtalsseparator, trak det systematisk prisestimaterne ned. Rettet i porten.
 
-Web-søgningen efter sammenlignelige priser kan blive blokeret fra Azures IP-adresser. Sker
-det, falder prisestimatet tilbage til kategori- og standbaserede intervaller, og noten
-oplyser, at der ikke blev fundet webpriser. Det er tilsigtet — appen fejler ikke.
+Prissøgningen bruger OpenAI's `web_search` mod dba.dk og guloggratis.dk og finder direkte
+links til de enkelte annoncer. Den tager typisk omkring et minut og koster penge per
+søgning, så den er indstillet via `Ai:PriceSearch` i `src/Api/appsettings.json`.
 
-Prisestimatet bruger flere målrettede søgninger efter sammenlignelige brugtpriser, blandt
-andet brede webfund og danske markedspladser som DBA, GulogGratis, Facebook Marketplace og
-Reshopper når genstanden passer til platformen. Fund deduplikeres, relevansscores, og de
-mest relevante priser vægtes først i estimatet.
+Fejler søgningen — eller mangler API-nøglen — falder prisestimatet tilbage til kategori- og
+standbaserede intervaller, og noten oplyser, at der ikke blev fundet webpriser. Det er
+tilsigtet — appen fejler ikke.

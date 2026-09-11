@@ -39,7 +39,7 @@ are JSON files in the repo.
 |---|---|---|
 | `POST /api/analyze` | yes — OpenAI / Anthropic / Gemini | vision → structured assessment |
 | `POST /api/recommend` | no | pure decision tree |
-| `POST /api/sale-assist` | yes — scrapes DuckDuckGo HTML | price comparables + ad text |
+| `POST /api/sale-assist` | yes — OpenAI `web_search` over dba.dk, guloggratis.dk | price comparables + ad text; ~51s, ~$0.13 |
 
 ## Tech Stack
 
@@ -147,11 +147,43 @@ and lists both spellings itself. Do not merge them. Note `"Cykler"` classifies a
 not `"bicycle"`, because the branch matches the substring `"cykel"` — a real bug in the
 original, preserved deliberately and pinned by a test.
 
-**The price scrape is expected to fail in production.** `PriceSearchClient` scrapes
-DuckDuckGo HTML, which datacenter IPs get blocked from. Its failure path returns empty
-prices and the estimator falls back to a category heuristic with an honest Danish note.
-That degradation is the design — do not "fix" it. Replacing the search with a real API is
-a documented follow-up, not a bug.
+**Price search is a paid, slow call, and those are its design constraints.**
+`OpenAiPriceSearch` calls OpenAI's Responses API with the `web_search` tool, measured at
+~51s and ~$0.13 per search. The parameters in `Ai:PriceSearch` are not arbitrary — they
+were chosen from live probes: unconstrained, the model reopened the same result page nine
+times and took 189s for 7 comparables; capped at 3 tool calls it returned 1. Ten is the
+compromise, and `høj` confidence (5 comparables, ~17 calls, ~90s) is not reachable inside
+Polly's per-attempt timeout. `middel` is the realistic ceiling. Change these in config, not
+code, and re-measure before believing an improvement.
+
+**Do not "tighten" the price search prompt.** `PriceSearchPrompt` looks loose and slow on
+purpose. Adding "åbn de enkelte annoncer" and "gentag ikke den samme side" — an obvious fix
+for the repeated page opens — made the model satisfy the format instead of doing the work:
+it stopped fetching and invented plausible `dba.dk/recommerce/forsale/item/<id>` links that
+all 404. It looked like an improvement (8 comparables and `høj` in 44s, against 3 and
+`middel` in 34s for the honest prompt), which is exactly what makes it dangerous. Measured
+2026-09-11. **Any change to this prompt must be validated by resolving the returned URLs,
+not by counting rows.** Real current DBA ids are 8 digits starting `18`; the fabricated
+ones were `10xxxxxx`.
+
+**Do not replace the price search with Gemini**, however tempting the price. Its grounding
+cannot open individual ads — it returns redirect URLs to search pages and said so itself
+when pushed — and `url_context` fetches the pages but then suppresses the answer with
+`finishReason: RECITATION`. Measured 2026-09-10. Gemini gives more prices, cheaper, with no
+verifiable source for any of them, which is the failure this search was built to end.
+
+**Do not scrape the marketplaces directly.** GulogGratis sits behind Cloudflare and blocks
+even `robots.txt` from a plain client; DBA's robots.txt permits crawling but its terms are
+a separate question. OpenAI's crawler reaches both. This is also why the old DuckDuckGo
+scrape could never work: its result snippets carry no prices, on any IP.
+
+**`site:` queries against DuckDuckGo's HTML endpoint return nothing.** The obvious repair
+for the scrape — fan out to `site:dba.dk`, `site:guloggratis.dk`,
+`site:facebook.com/marketplace` in parallel and merge the hits — was tried in `f809ec5`
+and measured on 2026-09-11: every `site:` variant answers **HTTP 202 with zero results**,
+DuckDuckGo's anti-bot response. Only the plain query returns a page, and that page has one
+price string in 32 KB. Five requests, four of them dead, landing where one request started.
+This is why `PriceSearchClient` was deleted rather than improved.
 
 **App and Api are separate origins, so CORS is load-bearing.** Every browser call is
 cross-origin and `X-Api-Key` forces a preflight. `UseCors()` must run before
@@ -190,8 +222,10 @@ Behaviour that intentionally differs from `legacy/`. Do not "restore" these.
 
 - **Danish thousands separator in prices.** The original regex required two leading digits,
   so `"1.250 kr."` parsed as `250` and biased every web-derived estimate downward. Fixed in
-  `PriceSearchClient.ExtractPrices` (`\d{2,6}` → `\d{1,6}`). Everything else about price
-  parsing is unchanged.
+  `PriceSearchClient.ExtractPrices` (`\d{2,6}` → `\d{1,6}`). That client was deleted on
+  2026-09-10 along with the scrape, so the regex is gone — but the fix is still why the sale
+  fixtures differ from the Python. Don't read a price-related fixture diff as a regression
+  without checking this first.
 
 ## Deployment
 

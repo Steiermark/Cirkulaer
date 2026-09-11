@@ -1,0 +1,45 @@
+{
+  "id": "resp_04d8ddf864ba8b16006aa2ba37bf7487d2961213312aa2e6ce",
+  "object": "response",
+  "status": "completed",
+  "model": "gpt-5-2025-08-07",
+  "output": [
+    {
+      "id": "rs_04d8ddf864ba8b16006aa2ba38f3b087d28a5cf46f77cac849",
+      "type": "reasoning",
+      "content": [],
+      "encrypted_content": "<trimmed>",
+      "summary": []
+    },
+    {
+      "id": "ws_04d8ddf864ba8b16006aa2ba3bdbb887d286b240b6635534c4",
+      "type": "web_search_call",
+      "status": "completed",
+      "action": {
+        "type": "search",
+        "queries": [
+          "IKEA BILLY reol brugt pris Danmark"
+        ],
+        "query": "IKEA BILLY reol brugt pris Danmark"
+      }
+    },
+    {
+      "id": "msg_04d8ddf864ba8b16006aa2ba674d6c87d2b5f0bc46cfc19dd5",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"comparables\":[{\"title\":\"Billy reol (Vadum)\",\"price\":150,\"url\":\"https://www.guloggratis.dk/annonce/90adc851-b2fe-4f15-8424-63c31d95be39/billy-reol\"},{\"title\":\"IKEA BILLY / OTTEBOL reol med låger (Kolding)\",\"price\":500,\"url\":\"https://www.guloggratis.dk/annonce/bb381a49-f107-421c-ad60-f8e705c4bdcf/ikea-billy-ottebol-reol-med-laager\"},{\"title\":\"Ikea Billy - sort (København S)\",\"price\":350,\"url\":\"https://www.guloggratis.dk/annonce/a9dc5aec-e703-464c-8174-1443371e31bf/ikea-billy-sort\"}]}"
+        }
+      ],
+      "role": "assistant"
+    }
+  ],
+  "usage": {
+    "input_tokens": 18350,
+    "output_tokens": 1931
+  }
+}
