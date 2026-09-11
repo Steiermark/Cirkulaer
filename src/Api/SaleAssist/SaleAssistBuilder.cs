@@ -38,11 +38,19 @@ public sealed class SaleAssistBuilder(IPriceSearch search, ILookalikeFilter look
         CancellationToken ct)
     {
         var query = SaleQueryBuilder.BuildSaleQuery(assessment, answers);
-        var priceQuery = SaleQueryBuilder.BuildPriceQuery(assessment, answers);
         var marketplaceUrl = SaleQueryBuilder.BuildMarketplaceSearchUrl(query);
         var reshopperRelevant = SaleQueryBuilder.IsReshopperRelevant(assessment);
-        var signals = await search.SearchAsync(priceQuery, reshopperRelevant, ct);
         var objectName = SaleQueryBuilder.BuildSaleObjectName(assessment, answers);
+
+        PriceSignals signals = null!;
+        var priceQuery = query;
+        foreach (var candidate in SaleQueryBuilder.BuildPriceQueries(assessment, answers))
+        {
+            priceQuery = candidate;
+            signals = await search.SearchAsync(candidate, reshopperRelevant, ct);
+            if (signals.Comparables.Count > 0)
+                break;
+        }
 
         if (photoDataUrl is not null && signals.Comparables.Count > 0)
         {

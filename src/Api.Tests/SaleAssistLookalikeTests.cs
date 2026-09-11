@@ -75,7 +75,7 @@ public class SaleAssistLookalikeTests
     [Fact]
     public async Task A_known_model_is_searched_without_the_object_name()
     {
-        var search = new RecordingSearch();
+        var search = new RecordingSearch("Roland FP-30X");
         var piano = new Assessment { ObjectName = "Digitalpiano med stativ", Category = "Elektronik", Brand = "Roland", Model = "FP-30X" };
 
         var sale = await new SaleAssistBuilder(search, new KeepEven())
@@ -88,34 +88,50 @@ public class SaleAssistLookalikeTests
     [Fact]
     public async Task Without_a_model_the_first_search_term_is_used()
     {
-        var search = new RecordingSearch();
+        var search = new RecordingSearch("PH-lampe kobber");
         var lamp = new Assessment { ObjectName = "Pendellampe", Category = "Møbler", Subcategory = "Lampe", SearchTerms = ["PH-lampe kobber", "pendel lagdelt"] };
 
         await new SaleAssistBuilder(search, new KeepEven())
             .BuildAsync(lamp, Answers, DecisionEngine.BuildRecommendation(lamp, Answers), null, CancellationToken.None);
 
-        Assert.Equal("PH-lampe kobber", search.Query);
+        Assert.Equal(["PH-lampe kobber"], search.Queries);
     }
 
     [Fact]
     public async Task Without_a_model_or_search_terms_the_sale_query_is_used()
     {
-        var search = new RecordingSearch();
+        var search = new RecordingSearch("Lampe brugt pris Danmark");
 
         await new SaleAssistBuilder(search, new KeepEven())
             .BuildAsync(Lamp, Answers, DecisionEngine.BuildRecommendation(Lamp, Answers), null, CancellationToken.None);
 
-        Assert.Equal("Lampe brugt pris Danmark", search.Query);
+        Assert.Equal(["Lampe brugt pris Danmark"], search.Queries);
     }
 
-    sealed class RecordingSearch : IPriceSearch
+    // Answers every query with nothing until one in `hits`, so the ladder can be watched.
+    sealed class RecordingSearch(params string[] hits) : IPriceSearch
     {
-        public string? Query { get; private set; }
+        public List<string> Queries { get; } = [];
+        public string? Query => Queries.LastOrDefault();
 
         public Task<PriceSignals> SearchAsync(string query, bool includeReshopper, CancellationToken ct)
         {
-            Query = query;
-            return Task.FromResult(PriceSignals.FromComparables(query, "https://www.google.com/search?q=stub", includeReshopper, []));
+            Queries.Add(query);
+            var rows = hits.Contains(query) ? new[] { Ad(1) } : [];
+            return Task.FromResult(PriceSignals.FromComparables(query, "https://www.google.com/search?q=stub", includeReshopper, rows));
         }
+    }
+
+    [Fact]
+    public async Task Queries_are_tried_most_specific_first_until_one_returns_rows()
+    {
+        var search = new RecordingSearch("Lampe");
+        var lamp = new Assessment { ObjectName = "Pendellampe", Category = "Møbler", Subcategory = "Lampe", SearchTerms = ["PH-lampe kobber", "pendel lagdelt"] };
+
+        var sale = await new SaleAssistBuilder(search, new KeepEven())
+            .BuildAsync(lamp, Answers, DecisionEngine.BuildRecommendation(lamp, Answers), null, CancellationToken.None);
+
+        Assert.Equal(["PH-lampe kobber", "pendel lagdelt", "Pendellampe Lampe brugt pris Danmark", "Lampe"], search.Queries);
+        Assert.Single(sale.Comparables);
     }
 }
