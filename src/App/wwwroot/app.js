@@ -1129,6 +1129,11 @@ function renderSaleComparables(comparables) {
     }
     const title = document.createElement("span");
     title.textContent = item.title;
+    if (item.url) {
+      const source = document.createElement("small");
+      source.textContent = `Åbn annonce på ${new URL(item.url).hostname.replace(/^www\./, "")} ↗`;
+      title.append(document.createElement("br"), source);
+    }
     const price = document.createElement("strong");
     price.textContent = `${Number(item.price).toLocaleString("da-DK")} kr.`;
     row.append(title, price);

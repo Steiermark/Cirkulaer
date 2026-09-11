@@ -789,8 +789,17 @@ h3 {
 }
 
 .sale-comparable span {
-  color: var(--muted);
+  color: var(--ink);
   line-height: 1.35;
+}
+
+.sale-comparable small {
+  color: var(--blue);
+  text-decoration: underline;
+}
+
+a.sale-comparable:hover {
+  border-color: var(--blue);
 }
 
 .sorting-result {
