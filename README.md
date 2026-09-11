@@ -131,6 +131,14 @@ http://192.168.1.22:5028
 Appens `/config` omskriver lokale API-adresser, så mobilen kalder Api på samme
 netværkshost i stedet for `localhost`.
 
+Brug **HTTP-adressen** (`:5028`) på telefonen, ikke HTTPS-adressen (`:7119`). Telefonen
+stoler ikke på udviklingscertifikatet, og selv hvis du klikker advarslen væk, afvises
+Api'ens certifikat bagefter. Det fejler som "Kunne ikke få forbindelse til API'en".
+
+`/config` vælger Api-adressen efter den protokol siden selv blev hentet med: HTTP-side
+giver HTTP-Api, HTTPS-side giver HTTPS-Api. Derfor virker både desktop over HTTPS og
+telefon over HTTP — og derfor må præferencen ikke låses til den ene.
+
 Hvis du kun vil se layoutet på mobilen uden analyse, kan du stadig starte:
 
 ```powershell

@@ -1,9 +1,22 @@
 using System.Text.Json;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
+
+// /config picks the Api scheme from the incoming request, and ACA terminates TLS at the
+// ingress — without this the container sees plain HTTP and hands an https page an http Api.
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    // ACA ingress IP is not known ahead of time; the container is only reachable through ingress.
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
+});
+
 var app = builder.Build();
 
+app.UseForwardedHeaders();
 app.UseDefaultFiles();
 app.UseStaticFiles(new StaticFileOptions
 {
@@ -18,9 +31,14 @@ app.MapGet("/config", async (
     IWebHostEnvironment env,
     CancellationToken ct) =>
 {
-    // Prefer HTTP locally because phones cannot trust localhost development HTTPS
-    // certificates. Azure can still provide only HTTPS, which is returned unchanged.
-    var apiBaseUrl = config["services:api:http:0"] ?? config["services:api:https:0"];
+    // Match the scheme the page itself was served over. Phones cannot trust localhost
+    // development certificates, so an http page must get an http Api — but an https page
+    // must get an https Api, or the browser blocks the call as mixed content and the
+    // preflight dies on Azure's http→https 301. Aspire injects both keys in every
+    // environment, including Azure Container Apps.
+    var apiHttps = config["services:api:https:0"];
+    var apiHttp = config["services:api:http:0"];
+    var apiBaseUrl = context.Request.IsHttps ? apiHttps ?? apiHttp : apiHttp ?? apiHttps;
 
     return Results.Json(new
     {
