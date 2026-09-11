@@ -230,6 +230,13 @@ all 404. It looked like an improvement (8 comparables and `høj` in 44s, against
 not by counting rows.** Real current DBA ids are 8 digits starting `18`; the fabricated
 ones were `10xxxxxx`.
 
+`KeepLiveLinksAsync` now HEADs every comparable and drops only 404/410, so fabrication is
+caught rather than trusted. Its cover is uneven and that is deliberate: dba.dk answers
+HEAD honestly, guloggratis.dk returns 403 to us whatever the ad's state, so GulogGratis
+rows are kept unverified. Do not "fix" that by sending a browser user-agent. Do not widen
+the condition to any non-success either — a Cloudflare challenge is not a missing ad, and
+widening it empties the list, which a test pins.
+
 **Do not replace the price search with Gemini**, however tempting the price. Its grounding
 cannot open individual ads — it returns redirect URLs to search pages and said so itself
 when pushed — and `url_context` fetches the pages but then suppresses the answer with

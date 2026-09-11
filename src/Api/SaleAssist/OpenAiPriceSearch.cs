@@ -52,6 +52,8 @@ public sealed partial class OpenAiPriceSearch(
                 Note: "Net-søgningen kunne ikke gennemføres fra prototypen. Linket åbner en manuel søgning efter lignende genstande.");
         }
 
+        comparables = await KeepLiveLinksAsync(comparables, ct);
+
         var prices = comparables.Select(item => item.Price).ToList();
         var confidence = comparables.Count >= 5 ? "høj" : comparables.Count >= 3 ? "middel" : "lav";
 
@@ -72,6 +74,49 @@ public sealed partial class OpenAiPriceSearch(
             cache.Set(key, signals, DedupeWindow);
 
         return signals;
+    }
+
+    // The prompt forbids inventing urls; this is what enforces it. Only an explicit "gone"
+    // drops a row — a block, a timeout or a 5xx keeps it, because GulogGratis sits behind
+    // Cloudflare and answers datacenter IPs with a challenge. Treating that as proof of a
+    // dead link would silently discard the source we most rely on.
+    //
+    // The cover is therefore uneven, by choice: dba.dk answers HEAD honestly (200 for a
+    // real ad, 404 for an invented id, measured 2026-09-11), so fabrication there is
+    // caught. guloggratis.dk returns 403 to us either way, so its rows pass unverified.
+    // Spoofing a browser agent would even that up and is not worth doing to get around
+    // someone's deliberate block.
+    async Task<List<Comparable>> KeepLiveLinksAsync(List<Comparable> comparables, CancellationToken ct)
+    {
+        if (comparables.Count == 0)
+            return comparables;
+
+        var checks = await Task.WhenAll(comparables.Select(item => IsGoneAsync(item.Url, ct)));
+        var live = comparables.Where((_, index) => !checks[index]).ToList();
+
+        if (live.Count != comparables.Count)
+            logger.LogWarning("Dropped {Count} price comparables whose link was gone", comparables.Count - live.Count);
+
+        return live;
+    }
+
+    async Task<bool> IsGoneAsync(string url, CancellationToken ct)
+    {
+        try
+        {
+            using var timeout = CancellationTokenSource.CreateLinkedTokenSource(ct);
+            timeout.CancelAfter(TimeSpan.FromSeconds(10));
+
+            using var request = new HttpRequestMessage(HttpMethod.Head, url);
+            using var response = await http.SendAsync(request, timeout.Token);
+
+            return response.StatusCode is HttpStatusCode.NotFound or HttpStatusCode.Gone;
+        }
+        catch (Exception exception) when (exception is not OperationCanceledException || !ct.IsCancellationRequested)
+        {
+            logger.LogDebug(exception, "Could not verify comparable link {Url}; keeping it", url);
+            return false;
+        }
     }
 
     HttpRequestMessage BuildRequest(string query)

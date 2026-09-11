@@ -13,16 +13,37 @@ public class OpenAiPriceSearchTests
 
     sealed class StubHandler(string body, HttpStatusCode status = HttpStatusCode.OK) : HttpMessageHandler
     {
-        public int Calls { get; private set; }
+        // Only the OpenAI call costs money; link verification also goes through this handler.
+        public int SearchCalls { get; private set; }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
         {
-            Calls++;
+            if (request.RequestUri!.ToString().Contains("api.openai.com"))
+                SearchCalls++;
+
             return Task.FromResult(new HttpResponseMessage(status) { Content = new StringContent(body) });
         }
     }
 
-    static OpenAiPriceSearch Search(StubHandler handler) =>
+    // Answers the OpenAI call with a fixed body and each comparable's url with whatever
+    // status the test names, so link verification can be exercised without the network.
+    sealed class RoutingHandler(string searchBody, Dictionary<string, HttpStatusCode> urlStatus) : HttpMessageHandler
+    {
+        public List<string> Verified { get; } = [];
+
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
+        {
+            var url = request.RequestUri!.ToString();
+
+            if (url.Contains("api.openai.com"))
+                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(searchBody) });
+
+            Verified.Add(url);
+            return Task.FromResult(new HttpResponseMessage(urlStatus.TryGetValue(url, out var status) ? status : HttpStatusCode.OK));
+        }
+    }
+
+    static OpenAiPriceSearch Search(HttpMessageHandler handler) =>
         new(new HttpClient(handler),
             new ConfigurationBuilder()
                 .AddInMemoryCollection(new Dictionary<string, string?> { ["Ai:OpenAiApiKey"] = "test-key" })
@@ -72,6 +93,51 @@ public class OpenAiPriceSearchTests
         Assert.Equal("middel", signals.Confidence);
     }
 
+    const string TwoAds = """
+        {"comparables":[
+          {"title":"IKEA BILLY reol hvid","price":300,"url":"https://www.dba.dk/recommerce/forsale/item/1"},
+          {"title":"IKEA BILLY reol sort","price":400,"url":"https://www.dba.dk/recommerce/forsale/item/2"}]}
+        """;
+
+    static string SearchBody(string comparablesJson) =>
+        JsonSerializer.Serialize(new
+        {
+            output = new[]
+            {
+                new { type = "message", content = new[] { new { type = "output_text", text = comparablesJson } } },
+            },
+        });
+
+    // The model has invented plausible dba.dk ids before. They 404; real ones do not.
+    [Fact]
+    public async Task Comparables_whose_link_is_gone_are_dropped()
+    {
+        var handler = new RoutingHandler(SearchBody(TwoAds), new()
+        {
+            ["https://www.dba.dk/recommerce/forsale/item/1"] = HttpStatusCode.NotFound,
+        });
+
+        var signals = await Search(handler).SearchAsync(Query, includeReshopper: false, CancellationToken.None);
+
+        Assert.Equal([400], signals.Prices);
+    }
+
+    // GulogGratis answers datacenter IPs with a Cloudflare challenge. Reading that as a
+    // dead link would silently discard the source that produces most comparables.
+    [Fact]
+    public async Task A_blocked_link_is_kept_because_a_block_is_not_a_missing_ad()
+    {
+        var handler = new RoutingHandler(SearchBody(TwoAds), new()
+        {
+            ["https://www.dba.dk/recommerce/forsale/item/1"] = HttpStatusCode.Forbidden,
+            ["https://www.dba.dk/recommerce/forsale/item/2"] = HttpStatusCode.ServiceUnavailable,
+        });
+
+        var signals = await Search(handler).SearchAsync(Query, includeReshopper: false, CancellationToken.None);
+
+        Assert.Equal([300, 400], signals.Prices);
+    }
+
     [Fact]
     public async Task A_failed_call_degrades_instead_of_throwing()
     {
@@ -93,7 +159,7 @@ public class OpenAiPriceSearchTests
         await search.SearchAsync(Query, includeReshopper: false, CancellationToken.None);
         await search.SearchAsync(Query, includeReshopper: false, CancellationToken.None);
 
-        Assert.Equal(1, handler.Calls);
+        Assert.Equal(1, handler.SearchCalls);
     }
 
     // A refusal or a plain-prose answer must degrade to the heuristic, never 500 the endpoint.
