@@ -211,10 +211,9 @@ golden-file-tests. Én bevidst rettelse:
   `"1.250 kr."` blev læst som `250`. Da danske annoncer typisk bruger `.` som
   tusindtalsseparator, trak det systematisk prisestimaterne ned. Rettet i porten.
 
-Prissøgningen bruger OpenAI's `web_search` mod dba.dk og guloggratis.dk og finder direkte
-links til de enkelte annoncer. Den tager typisk omkring et minut og koster penge per
-søgning, så den er indstillet via `Ai:PriceSearch` i `src/Api/appsettings.json`.
+Prissøgningen læser dba.dk's egen søgeside og henter titel, pris og direkte link til hver
+annonce fra sidens strukturerede data. Den tager omkring et sekund og kræver ingen nøgle.
 
-Fejler søgningen — eller mangler API-nøglen — falder prisestimatet tilbage til kategori- og
-standbaserede intervaller, og noten oplyser, at der ikke blev fundet webpriser. Det er
+Fejler søgningen — eller finder den ingen annoncer — falder prisestimatet tilbage til
+kategori- og standbaserede intervaller, og noten oplyser, at der ikke blev fundet webpriser. Det er
 tilsigtet — appen fejler ikke.

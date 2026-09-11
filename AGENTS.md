@@ -38,7 +38,7 @@ Browser (mobile-first, vanilla JS, no framework/npm/build step)
   GET  /config                       -> { apiBaseUrl, apiKey }   [App]
   POST {apiBaseUrl}/api/analyze      image(s) -> assessment       [AI, ~10-30s]
   POST {apiBaseUrl}/api/recommend    assessment+answers -> rec    [pure, instant]
-  POST {apiBaseUrl}/api/sale-assist  -> price + comparables + ad  [web search, ~35-50s]
+  POST {apiBaseUrl}/api/sale-assist  -> price + comparables + ad  [dba.dk search page, ~1s]
 ```
 
 `/api/recommend` is the only one that is a pure function of its input. The other two reach
@@ -75,7 +75,7 @@ backend fills them is not, and is expected to change.
 |---|---|---|
 | `POST /api/analyze` | yes — OpenAI / Anthropic / Gemini | vision → structured assessment |
 | `POST /api/recommend` | no | pure decision tree |
-| `POST /api/sale-assist` | yes — OpenAI `web_search` over dba.dk, guloggratis.dk | price comparables + ad text; ~51s, ~$0.13 |
+| `POST /api/sale-assist` | yes — dba.dk search page | price comparables + ad text; ~1s, free |
 
 ## Tech Stack
 
@@ -211,50 +211,33 @@ and lists both spellings itself. Do not merge them. Note `"Cykler"` classifies a
 not `"bicycle"`, because the branch matches the substring `"cykel"` — a real bug in the
 original, preserved deliberately and pinned by a test.
 
-**Price search is a paid, slow call, and those are its design constraints.**
-`OpenAiPriceSearch` calls OpenAI's Responses API with the `web_search` tool, measured at
-~51s and ~$0.13 per search. The parameters in `Ai:PriceSearch` are not arbitrary — they
-were chosen from live probes: unconstrained, the model reopened the same result page nine
-times and took 189s for 7 comparables; capped at 3 tool calls it returned 1. Ten is the
-compromise, and `høj` confidence (5 comparables, ~17 calls, ~90s) is not reachable inside
-Polly's per-attempt timeout. `middel` is the realistic ceiling. Change these in config, not
-code, and re-measure before believing an improvement.
+**Price search reads dba.dk's own search page, and that is the third attempt.**
+`DbaPriceSearch` GETs `dba.dk/recommerce/forsale/search?q=<query>` and parses the
+schema.org `ItemList` that dba server-renders in a `<script type="application/ld+json"
+id="seoStructuredData">` block: title, price in DKK, and the `/recommerce/forsale/item/<id>`
+url of every ad on the page. ~1s, no key, no model, and the links are dba's own. Any user
+agent is served; dba's `robots.txt` allows the search path. Measured 2026-09-11. If dba
+changes the markup the parser returns zero rows and the heuristic estimate takes over —
+that is the intended failure, not a crash.
 
-**Do not "tighten" the price search prompt.** `PriceSearchPrompt` looks loose and slow on
-purpose. Adding "åbn de enkelte annoncer" and "gentag ikke den samme side" — an obvious fix
-for the repeated page opens — made the model satisfy the format instead of doing the work:
-it stopped fetching and invented plausible `dba.dk/recommerce/forsale/item/<id>` links that
-all 404. It looked like an improvement (8 comparables and `høj` in 44s, against 3 and
-`middel` in 34s for the honest prompt), which is exactly what makes it dangerous. Measured
-2026-09-11. **Any change to this prompt must be validated by resolving the returned URLs,
-not by counting rows.** Real current DBA ids are 8 digits starting `18`; the fabricated
-ones were `10xxxxxx`.
+The two earlier designs are recorded so they are not retried:
 
-`KeepLiveLinksAsync` now HEADs every comparable and drops only 404/410, so fabrication is
-caught rather than trusted. Its cover is uneven and that is deliberate: dba.dk answers
-HEAD honestly, guloggratis.dk returns 403 to us whatever the ad's state, so GulogGratis
-rows are kept unverified. Do not "fix" that by sending a browser user-agent. Do not widen
-the condition to any non-success either — a Cloudflare challenge is not a missing ad, and
-widening it empties the list, which a test pins.
+- **OpenAI `web_search` (Responses API, `allowed_domains` dba.dk + guloggratis.dk),
+  2026-09-11.** Worked once, for an IKEA BILLY, and that was luck. Its index holds dba
+  *search* pages only — every source it cited was `/recommerce/forsale/search?q=…` — and no
+  item pages, and `open_page` serves from OpenAI's crawl cache rather than fetching live: told
+  the exact search url for a Roland FP-30X it answered "cache miss" while the page carried
+  three ads. Niche items therefore returned `{"comparables": []}` after ~20s and ~$0.13, and
+  the model was never given a way to do better. Prompt tightening made it worse: demanding
+  direct links made it fabricate plausible `dba.dk` ids that all 404 while looking like an
+  improvement (8 rows, `høj`, 44s). Gemini grounding was also rejected: it cannot open
+  individual ads, and `url_context` suppresses the answer with `finishReason: RECITATION`.
+- **DuckDuckGo HTML scrape, deleted 2026-09-10.** Result snippets carry no prices on any
+  IP; the plain query gave one price string in 32 KB, and every `site:` variant answers
+  HTTP 202 with zero results. It was never the Azure IP block AGENTS.md once blamed.
 
-**Do not replace the price search with Gemini**, however tempting the price. Its grounding
-cannot open individual ads — it returns redirect URLs to search pages and said so itself
-when pushed — and `url_context` fetches the pages but then suppresses the answer with
-`finishReason: RECITATION`. Measured 2026-09-10. Gemini gives more prices, cheaper, with no
-verifiable source for any of them, which is the failure this search was built to end.
-
-**Do not scrape the marketplaces directly.** GulogGratis sits behind Cloudflare and blocks
-even `robots.txt` from a plain client; DBA's robots.txt permits crawling but its terms are
-a separate question. OpenAI's crawler reaches both. This is also why the old DuckDuckGo
-scrape could never work: its result snippets carry no prices, on any IP.
-
-**`site:` queries against DuckDuckGo's HTML endpoint return nothing.** The obvious repair
-for the scrape — fan out to `site:dba.dk`, `site:guloggratis.dk`,
-`site:facebook.com/marketplace` in parallel and merge the hits — was tried in `f809ec5`
-and measured on 2026-09-11: every `site:` variant answers **HTTP 202 with zero results**,
-DuckDuckGo's anti-bot response. Only the plain query returns a page, and that page has one
-price string in 32 KB. Five requests, four of them dead, landing where one request started.
-This is why `PriceSearchClient` was deleted rather than improved.
+**GulogGratis is not searched.** It sits behind Cloudflare and answers datacenter IPs with
+a challenge, even for `robots.txt`. Do not add it by spoofing a browser user agent.
 
 **App and Api are separate origins, so CORS is load-bearing.** Every browser call is
 cross-origin and `X-Api-Key` forces a preflight. `UseCors()` must run before

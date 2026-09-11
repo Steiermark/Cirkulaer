@@ -57,12 +57,12 @@ builder.Services.AddCors(options =>
 builder.Services.AddHttpClient<OpenAiVisionProvider>(client => client.Timeout = TimeSpan.FromSeconds(60));
 builder.Services.AddHttpClient<AnthropicVisionProvider>(client => client.Timeout = TimeSpan.FromSeconds(60));
 builder.Services.AddHttpClient<GeminiVisionProvider>(client => client.Timeout = TimeSpan.FromSeconds(60));
-builder.Services.AddHttpClient<OpenAiPriceSearch>(client => client.Timeout = TimeSpan.FromSeconds(90));
+builder.Services.AddHttpClient<DbaPriceSearch>(client => client.Timeout = TimeSpan.FromSeconds(15));
 
 builder.Services.AddSingleton<LocalTestProvider>();
 builder.Services.AddSingleton<VisionProviderFactory>();
 builder.Services.AddMemoryCache();
-builder.Services.AddScoped<IPriceSearch>(services => services.GetRequiredService<OpenAiPriceSearch>());
+builder.Services.AddScoped<IPriceSearch>(services => services.GetRequiredService<DbaPriceSearch>());
 builder.Services.AddScoped<SaleAssistBuilder>();
 
 var app = builder.Build();
