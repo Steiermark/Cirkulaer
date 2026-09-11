@@ -4,6 +4,14 @@ on:
     branches:
       - main
 
+# Two runs deploying at once lose the race with Azure: the second gets
+# 409 ContainerAppOperationInProgress and the workflow goes red while the site is
+# actually fine. Queue deploys instead of cancelling — killing one mid-flight can
+# leave app and api on different revisions, which is worse than waiting.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
 # Secretless deploy via Azure federated credentials (OIDC)
 permissions:
   id-token: write
