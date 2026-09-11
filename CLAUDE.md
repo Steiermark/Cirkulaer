@@ -75,10 +75,11 @@ browser call is cross-origin and CORS is load-bearing.
 - **Danish strings are product copy.** Do not translate, paraphrase or spell-correct them.
 - **Tri-state answers stay `string?`.** `"yes"` / `"no"` / `"partly"` / `"unknown"` / absent
   are five distinct states; absent is not `"unknown"`. Do not convert to enums.
-- **Price search parses dba.dk's own search page.** One GET, ~1s, no model. OpenAI
+- **Price search parses dba.dk's own search page.** One GET, ~1s, no model. With a
+  photo, Gemini then grades dba's thumbnails against it and keeps look-alikes. OpenAI
   `web_search` and a DuckDuckGo scrape were both tried and measured dead — see AGENTS.md
-  before reaching for an LLM here again. Falling back to the category heuristic when dba
-  yields nothing is the design, not a bug.
+  before reaching for an LLM *search* here again. Falling back to the category heuristic
+  when dba yields nothing is the design, not a bug.
 - **Infrastructure is generated.** `src/infra/` comes from `azd infra synth` — edit
   `src/Cirkulaer.AppHost/AppHost.cs`, not the bicep.
 - **JSON data files use `Content Update`, not `Content Include`** — the Web SDK already

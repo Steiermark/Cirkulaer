@@ -22,8 +22,11 @@ public sealed record SaleAssistResult
     [JsonPropertyName("price_confidence")] public required string PriceConfidence { get; init; }
 }
 
-public sealed class SaleAssistBuilder(IPriceSearch search)
+public sealed class SaleAssistBuilder(IPriceSearch search, ILookalikeFilter lookalike)
 {
+    // Below this, grading costs a model call and cannot narrow anything worth narrowing.
+    const int GradeFrom = 3;
+
     const string MarketplaceNote =
         "Direkte oprettelse på Facebook Marketplace kræver officiel adgang. "
         + "Facebook Marketplace bruges her som manuel priskontrol via søgelink. "
@@ -33,12 +36,19 @@ public sealed class SaleAssistBuilder(IPriceSearch search)
         Assessment assessment,
         IReadOnlyDictionary<string, string?> answers,
         Recommendation recommendation,
+        string? photoDataUrl,
         CancellationToken ct)
     {
         var query = SaleQueryBuilder.BuildSaleQuery(assessment, answers);
         var marketplaceUrl = SaleQueryBuilder.BuildMarketplaceSearchUrl(query);
         var reshopperRelevant = SaleQueryBuilder.IsReshopperRelevant(assessment);
         var signals = await search.SearchAsync(query, reshopperRelevant, ct);
+
+        if (photoDataUrl is not null && signals.Comparables.Count >= GradeFrom)
+        {
+            var kept = await lookalike.KeepLookalikesAsync(photoDataUrl, signals.Comparables, ct);
+            signals = PriceSignals.FromComparables(query, signals.Url, reshopperRelevant, kept);
+        }
         var estimate = PriceEstimator.Estimate(assessment, answers, signals.Prices);
         var objectName = SaleQueryBuilder.BuildSaleObjectName(assessment, answers);
 
@@ -57,7 +67,7 @@ public sealed class SaleAssistBuilder(IPriceSearch search)
             AdText = AdTextBuilder.BuildAdText(objectName, assessment, answers, estimate),
             MarketplaceNote = MarketplaceNote,
             Signals = signals.Signals,
-            Comparables = signals.Comparables,
+            Comparables = signals.Comparables.Take(8).ToList(),
             PriceConfidence = signals.Confidence,
         };
     }

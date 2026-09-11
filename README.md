@@ -213,6 +213,8 @@ golden-file-tests. Én bevidst rettelse:
 
 Prissøgningen læser dba.dk's egen søgeside og henter titel, pris og direkte link til hver
 annonce fra sidens strukturerede data. Den tager omkring et sekund og kræver ingen nøgle.
+Sendes der et foto med, sammenligner Gemini annoncernes billeder med fotoet og beholder kun
+dem, der ligner — så en "Pendel" ikke prissættes ud fra alle pendler på DBA.
 
 Fejler søgningen — eller finder den ingen annoncer — falder prisestimatet tilbage til
 kategori- og standbaserede intervaller, og noten oplyser, at der ikke blev fundet webpriser. Det er

@@ -38,7 +38,7 @@ Browser (mobile-first, vanilla JS, no framework/npm/build step)
   GET  /config                       -> { apiBaseUrl, apiKey }   [App]
   POST {apiBaseUrl}/api/analyze      image(s) -> assessment       [AI, ~10-30s]
   POST {apiBaseUrl}/api/recommend    assessment+answers -> rec    [pure, instant]
-  POST {apiBaseUrl}/api/sale-assist  -> price + comparables + ad  [dba.dk search page, ~1s]
+  POST {apiBaseUrl}/api/sale-assist  -> price + comparables + ad  [dba.dk search page ~1s, +~10s lookalike grading with photo]
 ```
 
 `/api/recommend` is the only one that is a pure function of its input. The other two reach
@@ -75,7 +75,7 @@ backend fills them is not, and is expected to change.
 |---|---|---|
 | `POST /api/analyze` | yes — OpenAI / Anthropic / Gemini | vision → structured assessment |
 | `POST /api/recommend` | no | pure decision tree |
-| `POST /api/sale-assist` | yes — dba.dk search page | price comparables + ad text; ~1s, free |
+| `POST /api/sale-assist` | yes — dba.dk search page, Gemini when a photo is sent | price comparables + ad text; ~1s, +~10s with photo |
 
 ## Tech Stack
 
@@ -235,6 +235,16 @@ The two earlier designs are recorded so they are not retried:
 - **DuckDuckGo HTML scrape, deleted 2026-09-10.** Result snippets carry no prices on any
   IP; the plain query gave one price string in 32 KB, and every `site:` variant answers
   HTTP 202 with zero results. It was never the Azure IP block AGENTS.md once blamed.
+
+**A photo narrows the comparables to look-alikes.** `app.js` sends the first photo with
+the sale-assist request; when dba returns three or more rows, `LookalikeFilter` fetches up
+to 20 ad thumbnails from dba's structured data and asks Gemini Flash to grade each as
+`same` / `similar` / `different` against the photo. `same` wins; only if none is `same`
+do `similar` rows count; rows past the thumbnail cap are dropped, not kept unjudged. A
+failed or malformed grading keeps every row, logged. Measured 2026-09-11: a PH 5 photo
+under the generic query "Pendel Lampe" went from 52 rows at 300 kr to one PH-style
+pendant at 850 kr; under "Louis Poulsen PH 5" all 20 graded `same`. Adds ~10s. The
+photo passes through and is not stored.
 
 **GulogGratis is not searched.** It sits behind Cloudflare and answers datacenter IPs with
 a challenge, even for `robots.txt`. Do not add it by spoofing a browser user agent.

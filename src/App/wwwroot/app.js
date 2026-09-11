@@ -1040,6 +1040,7 @@ async function openSalePage() {
 
   try {
     await ensureApiConfig();
+    const photo = state.imageFiles[0] ? await fileToDataUrl(state.imageFiles[0]) : null;
     const response = await fetch(apiUrl("/api/sale-assist"), {
       method: "POST",
       headers: apiHeaders(),
@@ -1047,6 +1048,7 @@ async function openSalePage() {
         assessment: state.assessment,
         answers: state.answers,
         recommendation: state.recommendation,
+        images: photo ? [{ imageDataUrl: photo }] : [],
       }),
     });
     const payload = await parseJsonResponse(response);

@@ -111,7 +111,9 @@ public static class ApiEndpoints
         var answers = ReadAnswers(payload);
         var recommendation = DecisionEngine.BuildRecommendation(assessment, answers);
 
-        var sale = await builder.BuildAsync(assessment, answers, recommendation, ct);
+        var photo = ReadImages(payload).DataUrls.FirstOrDefault(url => url.StartsWith("data:image/"));
+
+        var sale = await builder.BuildAsync(assessment, answers, recommendation, photo, ct);
         return Results.Json(new { sale });
     }
 

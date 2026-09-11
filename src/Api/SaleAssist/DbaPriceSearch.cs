@@ -17,7 +17,6 @@ public sealed partial class DbaPriceSearch(HttpClient http, ILogger<DbaPriceSear
     public async Task<PriceSignals> SearchAsync(string query, bool includeReshopper, CancellationToken ct)
     {
         var manualSearchUrl = $"https://www.google.com/search?q={WebUtility.UrlEncode(query).Replace("+", "%20")}";
-        var extraPlatforms = includeReshopper ? "Facebook Marketplace og Reshopper" : "Facebook Marketplace";
 
         List<Comparable> comparables;
         try
@@ -40,23 +39,9 @@ public sealed partial class DbaPriceSearch(HttpClient http, ILogger<DbaPriceSear
                 Note: "Net-søgningen kunne ikke gennemføres fra prototypen. Linket åbner en manuel søgning efter lignende genstande.");
         }
 
-        var prices = comparables.Select(item => item.Price).ToList();
-        var confidence = comparables.Count >= 5 ? "høj" : comparables.Count >= 3 ? "middel" : "lav";
-
-        logger.LogInformation("Price search for {Query} returned {Count} comparables at {Confidence}", query, comparables.Count, confidence);
-
-        var note = prices.Count > 0
-            ? $"Prisforslaget er baseret på en web-søgning efter: {query}. Brug også {extraPlatforms} til at sammenligne relevante annoncer. "
-              + $"Der blev fundet {comparables.Count} prisfund med relevant titeltekst. "
-            : $"Der blev ikke fundet tydelige danske prisangivelser i web-søgningen. Brug web-linket og {extraPlatforms} til manuel priskontrol. ";
-
-        return new PriceSignals(
-            manualSearchUrl,
-            prices,
-            comparables.Take(5).Select(item => item.Title).ToList(),
-            comparables.Take(8).ToList(),
-            confidence,
-            note);
+        var signals = PriceSignals.FromComparables(query, manualSearchUrl, includeReshopper, comparables);
+        logger.LogInformation("Price search for {Query} returned {Count} comparables at {Confidence}", query, comparables.Count, signals.Confidence);
+        return signals;
     }
 
     public static string SearchUrl(string query) =>
@@ -85,6 +70,9 @@ public sealed partial class DbaPriceSearch(HttpClient http, ILogger<DbaPriceSear
             {
                 var title = product.TryGetProperty("name", out var name) ? name.GetString() ?? "" : "";
                 var url = product.TryGetProperty("url", out var link) ? link.GetString() ?? "" : "";
+                var image = product.TryGetProperty("image", out var thumbnail) && thumbnail.ValueKind == JsonValueKind.String
+                    ? thumbnail.GetString()
+                    : null;
                 var relevance = Relevance(title, queryTokens);
 
                 if (!product.TryGetProperty("offers", out var offers)
@@ -101,6 +89,7 @@ public sealed partial class DbaPriceSearch(HttpClient http, ILogger<DbaPriceSear
                     Price = price,
                     Relevance = Math.Round(relevance, 2),
                     Url = url,
+                    Image = image,
                 });
             }
         }

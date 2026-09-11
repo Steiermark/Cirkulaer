@@ -34,6 +34,7 @@ public class DbaPriceSearchTests
         Assert.Equal("Roland FP-30X digitalpiano sort", only.Title);
         Assert.Equal(4500, only.Price);
         Assert.Equal("https://www.dba.dk/recommerce/forsale/item/24791070", only.Url);
+        Assert.Equal("https://images.dbastatic.dk/dynamic/default/item/24791070/c497b5cf-ff6b-4fcb-b45f-4a31c1239e9e", only.Image);
     }
 
     [Fact]

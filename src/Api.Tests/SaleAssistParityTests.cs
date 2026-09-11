@@ -49,6 +49,12 @@ public class SaleAssistParityTests
                 Prices: [], Signals: [], Comparables: [], Confidence: "lav", Note: "stub"));
     }
 
+    sealed class NoLookalikeFilter : ILookalikeFilter
+    {
+        public Task<IReadOnlyList<Comparable>> KeepLookalikesAsync(string photoDataUrl, IReadOnlyList<Comparable> comparables, CancellationToken ct) =>
+            Task.FromResult(comparables);
+    }
+
     [Theory]
     [MemberData(nameof(CaseNames))]
     public async Task Csharp_output_matches_python(string name)
@@ -56,8 +62,8 @@ public class SaleAssistParityTests
         var (assessment, testCase) = ByName.Value[name];
         var recommendation = DecisionEngine.BuildRecommendation(assessment, testCase.Answers);
 
-        var actual = await new SaleAssistBuilder(new EmptyPriceSearch())
-            .BuildAsync(assessment, testCase.Answers, recommendation, CancellationToken.None);
+        var actual = await new SaleAssistBuilder(new EmptyPriceSearch(), new NoLookalikeFilter())
+            .BuildAsync(assessment, testCase.Answers, recommendation, null, CancellationToken.None);
 
         var expectedNode = JsonNode.Parse(testCase.Expected.GetRawText())!.AsObject();
         var actualNode = JsonNode.Parse(JsonSerializer.Serialize(actual, Options))!.AsObject();
