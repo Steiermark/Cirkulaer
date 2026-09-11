@@ -1083,14 +1083,14 @@ function setSaleLoading() {
   document.querySelector("#sale-object-details").textContent = "Henter søgegrundlag og laver annoncekladde...";
   document.querySelector("#sale-price").textContent = "Finder pris...";
   document.querySelector("#sale-price-note").textContent =
-    "Søger efter aktuelle annoncer på DBA og Gul&Gratis. Det tager typisk op mod et minut.";
+    "Søger efter aktuelle annoncer på DBA og sammenligner dem med dit foto. Det tager typisk 10-30 sekunder.";
   document.querySelector("#sale-search-note").textContent = "";
   document.querySelector("#sale-search-link").href = "#";
   document.querySelector("#marketplace-search-link").href = "#";
   setReshopperVisibility(isReshopperRelevant(state.assessment), buildReshopperUrl(), reshopperNote(state.assessment));
   document.querySelector("#sale-ad-text").value = "";
   document.querySelector("#marketplace-note").textContent = marketplaceApiNote();
-  renderSaleComparables([]);
+  renderSaleComparables([], "Søger efter sammenlignelige annoncer …");
 }
 
 function renderSalePage(sale) {
@@ -1110,13 +1110,13 @@ function renderSalePage(sale) {
   renderSaleComparables(sale.comparables || []);
 }
 
-function renderSaleComparables(comparables) {
+function renderSaleComparables(comparables, pendingText) {
   const container = document.querySelector("#sale-comparables");
   container.innerHTML = "";
   if (!comparables.length) {
     const empty = document.createElement("p");
     empty.className = "muted";
-    empty.textContent = "Ingen tilstrækkeligt modelrelevante prisfund blev fundet. Brug søgelinkene til manuel kontrol.";
+    empty.textContent = pendingText || "Ingen tilstrækkeligt modelrelevante prisfund blev fundet. Brug søgelinkene til manuel kontrol.";
     container.appendChild(empty);
     return;
   }
