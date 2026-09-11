@@ -24,8 +24,6 @@ public sealed record SaleAssistResult
 
 public sealed class SaleAssistBuilder(IPriceSearch search, ILookalikeFilter lookalike)
 {
-    // Below this, grading costs a model call and cannot narrow anything worth narrowing.
-    const int GradeFrom = 3;
 
     const string MarketplaceNote =
         "Direkte oprettelse på Facebook Marketplace kræver officiel adgang. "
@@ -40,15 +38,16 @@ public sealed class SaleAssistBuilder(IPriceSearch search, ILookalikeFilter look
         CancellationToken ct)
     {
         var query = SaleQueryBuilder.BuildSaleQuery(assessment, answers);
+        var priceQuery = SaleQueryBuilder.BuildPriceQuery(assessment, answers);
         var marketplaceUrl = SaleQueryBuilder.BuildMarketplaceSearchUrl(query);
         var reshopperRelevant = SaleQueryBuilder.IsReshopperRelevant(assessment);
-        var signals = await search.SearchAsync(query, reshopperRelevant, ct);
+        var signals = await search.SearchAsync(priceQuery, reshopperRelevant, ct);
         var objectName = SaleQueryBuilder.BuildSaleObjectName(assessment, answers);
 
-        if (photoDataUrl is not null && signals.Comparables.Count >= GradeFrom)
+        if (photoDataUrl is not null && signals.Comparables.Count > 0)
         {
             var kept = await lookalike.KeepLookalikesAsync(objectName, photoDataUrl, signals.Comparables, ct);
-            signals = PriceSignals.FromComparables(query, signals.Url, reshopperRelevant, kept.Comparables, kept.Match);
+            signals = PriceSignals.FromComparables(priceQuery, signals.Url, reshopperRelevant, kept.Comparables, kept.Match);
         }
         var estimate = PriceEstimator.Estimate(assessment, answers, signals.Prices);
 

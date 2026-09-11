@@ -39,6 +39,19 @@ public static class SaleQueryBuilder
         return $"{string.Join(" ", parts)} brugt pris Danmark".Trim();
     }
 
+    // dba's search narrows hard on every descriptive word and loosens on the "brugt pris
+    // Danmark" suffix (measured 2026-09-11: "Roland FP-30X" 6 rows, with suffix 50+ of
+    // any Roland, with "Digitalpiano med stativ" 2). A known model is searched bare. The
+    // full query stays on the manual links, where breadth does no harm.
+    public static string BuildPriceQuery(Assessment assessment, IReadOnlyDictionary<string, string?> answers)
+    {
+        var model = Get(answers, "model_name") ?? assessment.Model;
+        if (string.IsNullOrWhiteSpace(model))
+            return BuildSaleQuery(assessment, answers);
+
+        return string.Join(" ", Compact([ProducerSearchName(answers), assessment.Brand, model]));
+    }
+
     public static string BuildSaleObjectName(Assessment assessment, IReadOnlyDictionary<string, string?> answers)
     {
         var parts = Compact(

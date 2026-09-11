@@ -61,15 +61,38 @@ public class SaleAssistLookalikeTests
         Assert.Equal(3, sale.Comparables.Count);
     }
 
-    // One or two rows are not "too many"; grading them costs a call and gains nothing.
     [Fact]
-    public async Task Fewer_than_three_comparables_are_not_graded()
+    public async Task No_comparables_means_nothing_to_grade()
     {
         var filter = new KeepEven();
-        var builder = new SaleAssistBuilder(new FixedSearch(Ad(1), Ad(2)), filter);
+        var builder = new SaleAssistBuilder(new FixedSearch(), filter);
 
         await builder.BuildAsync(Lamp, Answers, DecisionEngine.BuildRecommendation(Lamp, Answers), "data:image/jpeg;base64,AAAA", CancellationToken.None);
 
         Assert.Equal(0, filter.Calls);
+    }
+
+    [Fact]
+    public async Task A_known_model_is_searched_without_the_object_name()
+    {
+        var search = new RecordingSearch();
+        var piano = new Assessment { ObjectName = "Digitalpiano med stativ", Category = "Elektronik", Brand = "Roland", Model = "FP-30X" };
+
+        var sale = await new SaleAssistBuilder(search, new KeepEven())
+            .BuildAsync(piano, Answers, DecisionEngine.BuildRecommendation(piano, Answers), null, CancellationToken.None);
+
+        Assert.Equal("Roland FP-30X", search.Query);
+        Assert.Contains("Roland%20FP-30X%20Digitalpiano%20med%20stativ", sale.MarketplaceSearchUrl);
+    }
+
+    sealed class RecordingSearch : IPriceSearch
+    {
+        public string? Query { get; private set; }
+
+        public Task<PriceSignals> SearchAsync(string query, bool includeReshopper, CancellationToken ct)
+        {
+            Query = query;
+            return Task.FromResult(PriceSignals.FromComparables(query, "https://www.google.com/search?q=stub", includeReshopper, []));
+        }
     }
 }
