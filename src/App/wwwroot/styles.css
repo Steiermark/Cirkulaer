@@ -793,7 +793,7 @@ h3 {
   line-height: 1.35;
 }
 
-.sale-comparable small {
+a.sale-comparable span {
   color: var(--blue);
   text-decoration: underline;
 }
