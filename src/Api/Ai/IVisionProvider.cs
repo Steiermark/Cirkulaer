@@ -23,5 +23,7 @@ public static class VisionPrompt
         + "Kommunale affaldsregler må ikke opfindes. Brug kun en generel dansk "
         + "affaldsfraktion, og skriv usikkerheder eksplicit. "
         + "Vælg category_id fra den faste liste i skemaet. "
+        + "I search_terms: angiv 1-3 korte søgeord (2-4 ord hver) som en dansk sælger ville skrive i en annonce for netop denne genstand, "
+        + "mest specifikke først - fx producent og model hvis kendt, ellers type, form, farve og materiale. "
         + "Skriv alle tekstfelter på dansk.";
 }

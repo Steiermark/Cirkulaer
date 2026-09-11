@@ -85,6 +85,29 @@ public class SaleAssistLookalikeTests
         Assert.Contains("Roland%20FP-30X%20Digitalpiano%20med%20stativ", sale.MarketplaceSearchUrl);
     }
 
+    [Fact]
+    public async Task Without_a_model_the_first_search_term_is_used()
+    {
+        var search = new RecordingSearch();
+        var lamp = new Assessment { ObjectName = "Pendellampe", Category = "Møbler", Subcategory = "Lampe", SearchTerms = ["PH-lampe kobber", "pendel lagdelt"] };
+
+        await new SaleAssistBuilder(search, new KeepEven())
+            .BuildAsync(lamp, Answers, DecisionEngine.BuildRecommendation(lamp, Answers), null, CancellationToken.None);
+
+        Assert.Equal("PH-lampe kobber", search.Query);
+    }
+
+    [Fact]
+    public async Task Without_a_model_or_search_terms_the_sale_query_is_used()
+    {
+        var search = new RecordingSearch();
+
+        await new SaleAssistBuilder(search, new KeepEven())
+            .BuildAsync(Lamp, Answers, DecisionEngine.BuildRecommendation(Lamp, Answers), null, CancellationToken.None);
+
+        Assert.Equal("Lampe brugt pris Danmark", search.Query);
+    }
+
     sealed class RecordingSearch : IPriceSearch
     {
         public string? Query { get; private set; }

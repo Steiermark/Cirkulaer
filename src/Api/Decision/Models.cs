@@ -17,6 +17,7 @@ public sealed record Assessment
     [JsonPropertyName("confidence")] public double? Confidence { get; init; }
     [JsonPropertyName("waste_category")] public string? WasteCategory { get; init; }
     [JsonPropertyName("uncertainty_notes")] public IReadOnlyList<string> UncertaintyNotes { get; init; } = [];
+    [JsonPropertyName("search_terms")] public IReadOnlyList<string> SearchTerms { get; init; } = [];
 
     // Only set for local test analyses; omitted for real ones, as in the Python.
     [JsonPropertyName("analysis_mode")]

@@ -4,9 +4,9 @@ namespace Api.Ai;
 
 public static class AssessmentSchema
 {
-    // Copied verbatim from legacy/server.py:22-59. Sent to OpenAI as text.format.schema
-    // with strict:true, so every property must stay in required and additionalProperties
-    // must stay false.
+    // Copied verbatim from legacy/server.py:22-59, plus search_terms (2026-09-11). Sent to
+    // OpenAI as text.format.schema with strict:true, so every property must stay in
+    // required and additionalProperties must stay false.
     public const string Json =
         """
         {
@@ -83,6 +83,12 @@ public static class AssessmentSchema
                                 "items": {
                                         "type": "string"
                                 }
+                        },
+                        "search_terms": {
+                                "type": "array",
+                                "items": {
+                                        "type": "string"
+                                }
                         }
                 },
                 "required": [
@@ -97,7 +103,8 @@ public static class AssessmentSchema
                         "condition_estimate",
                         "confidence",
                         "waste_category",
-                        "uncertainty_notes"
+                        "uncertainty_notes",
+                        "search_terms"
                 ]
         }
         """;

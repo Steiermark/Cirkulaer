@@ -1608,6 +1608,7 @@ function normalizeAssessment(assessment) {
       assessment.uncertainty_notes.length
         ? assessment.uncertainty_notes
         : ["AI kunne ikke angive væsentlige usikkerheder."],
+    search_terms: Array.isArray(assessment?.search_terms) ? assessment.search_terms : [],
     producer_program_candidates: Array.isArray(assessment?.producer_program_candidates)
       ? assessment.producer_program_candidates
       : [],

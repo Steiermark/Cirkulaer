@@ -43,13 +43,16 @@ public static class SaleQueryBuilder
     // Danmark" suffix (measured 2026-09-11: "Roland FP-30X" 6 rows, with suffix 50+ of
     // any Roland, with "Digitalpiano med stativ" 2). A known model is searched bare. The
     // full query stays on the manual links, where breadth does no harm.
+    // Without a model, the vision step's first search term - how a seller would title the
+    // ad - beats the object name: "PH-lampe kobber" finds look-alikes, "Pendellampe" does not.
     public static string BuildPriceQuery(Assessment assessment, IReadOnlyDictionary<string, string?> answers)
     {
         var model = Get(answers, "model_name") ?? assessment.Model;
-        if (string.IsNullOrWhiteSpace(model))
-            return BuildSaleQuery(assessment, answers);
+        if (!string.IsNullOrWhiteSpace(model))
+            return string.Join(" ", Compact([ProducerSearchName(answers), assessment.Brand, model]));
 
-        return string.Join(" ", Compact([ProducerSearchName(answers), assessment.Brand, model]));
+        var term = assessment.SearchTerms.FirstOrDefault(item => !string.IsNullOrWhiteSpace(item))?.Trim();
+        return term is { Length: > 0 } ? term : BuildSaleQuery(assessment, answers);
     }
 
     public static string BuildSaleObjectName(Assessment assessment, IReadOnlyDictionary<string, string?> answers)

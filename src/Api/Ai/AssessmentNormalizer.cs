@@ -40,6 +40,7 @@ public static class AssessmentNormalizer
                 ? waste
                 : "Ukendt fraktion",
             UncertaintyNotes = notes.Count > 0 ? notes : [DefaultUncertaintyNote],
+            SearchTerms = StringList(data, "search_terms"),
         };
 
         return assessment with { ProducerProgramCandidates = ProducerPrograms.FindCandidates(assessment) };

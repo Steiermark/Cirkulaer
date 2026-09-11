@@ -236,11 +236,15 @@ The two earlier designs are recorded so they are not retried:
   IP; the plain query gave one price string in 32 KB, and every `site:` variant answers
   HTTP 202 with zero results. It was never the Azure IP block AGENTS.md once blamed.
 
-**A known model is searched bare.** `BuildPriceQuery` sends dba "Roland FP-30X", not the
-sale query "Roland FP-30X Digitalpiano med stativ brugt pris Danmark": dba narrows on every
-descriptive word and loosens on the suffix (2 rows vs 50+ of any Roland vs 6 exact,
-measured 2026-09-11). The sale query still feeds the marketplace and manual links, which
-the parity fixture pins.
+**A known model is searched bare; an unknown one by the vision step's search term.**
+`BuildPriceQuery` sends dba "Roland FP-30X", not the sale query "Roland FP-30X Digitalpiano
+med stativ brugt pris Danmark": dba narrows on every descriptive word and loosens on the
+suffix (2 rows vs 50+ of any Roland vs 6 exact, measured 2026-09-11). Without a model it
+sends the first of `assessment.search_terms`, which the vision prompt asks for as "what a
+Danish seller would title the ad" — "PH 5 pendel sort hvid" finds look-alikes where the
+object name "Pendellampe" found seven strangers. The sale query still feeds the
+marketplace and manual links, which the parity fixture pins. `search_terms` is the one
+addition to the legacy assessment schema.
 
 **A photo narrows the comparables to look-alikes, in a second request.** `app.js` first
 calls sale-assist without images and renders that in ~1s; if there is a photo and three or
