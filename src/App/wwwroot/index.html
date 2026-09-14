@@ -11,42 +11,96 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <div class="splash-screen" id="splash-screen" aria-label="Cirkulær starter">
+      <div class="splash-content">
+        <p class="hero-note hero-note-left">Sammen for en mere cirkulær fremtid</p>
+        <p class="hero-note hero-note-right">Små valg gør en stor forskel</p>
+        <img class="hero-logo" src="./assets/cirkulaer-logo.png" alt="Cirkulær" />
+        <h1>Kan dine ting få nyt liv?</h1>
+        <p class="lede">
+          Tag et billede af din ting. Svar på få spørgsmål, og få hjælp til at finde
+          den bedste vej videre.
+        </p>
+        <div class="front-path" aria-label="Mulige veje videre">
+          <div class="front-path-item">
+            <span class="front-path-icon">🔧</span>
+            <strong>Reparér</strong>
+            <span>Få den til at virke igen</span>
+          </div>
+          <div class="front-path-item">
+            <span class="front-path-icon front-path-icon-blue">↔</span>
+            <strong>Sælg</strong>
+            <span>Lad en anden få glæde af den</span>
+          </div>
+          <div class="front-path-item">
+            <span class="front-path-icon front-path-icon-red">♥</span>
+            <strong>Giv videre</strong>
+            <span>Donér til nogen der har brug for den</span>
+          </div>
+          <div class="front-path-item">
+            <span class="front-path-icon">♻</span>
+            <strong>Genanvend</strong>
+            <span>Når intet andet er muligt</span>
+          </div>
+        </div>
+        <p class="front-helper">Vi hjælper dig med at finde den løsning, der bevarer mest værdi.</p>
+      </div>
+    </div>
+
     <main class="app-shell">
       <section class="hero" aria-labelledby="page-title">
+        <p class="hero-note hero-note-left">Sammen for en mere cirkulær fremtid</p>
+        <p class="hero-note hero-note-right">Små valg gør en stor forskel</p>
         <div>
-          <p class="eyebrow">Cirkulær assistent</p>
-          <h1 id="page-title">Kan genstanden stadig skabe værdi?</h1>
+          <img class="hero-logo" src="./assets/cirkulaer-logo.png" alt="Cirkulær" />
+          <h1 id="page-title">Kan dine ting få nyt liv?</h1>
           <p class="lede">
-            Tag eller upload op til 4 billeder, svar på få spørgsmål, og få en enkel anbefaling:
-            reparér, rens/klargør, sælg, bortgiv eller sorter.
+            Tag et billede af din ting. Svar på få spørgsmål, og få hjælp til at finde
+            den bedste vej videre.
           </p>
         </div>
-        <div class="principle" aria-label="Prioriteret beslutningsflow">
-          <span>Reparér</span>
-          <span>Sælg</span>
-          <span>Bortgiv</span>
-          <span>Affald</span>
+        <div class="front-path" aria-label="Mulige veje videre">
+          <div class="front-path-item">
+            <span class="front-path-icon">🔧</span>
+            <strong>Reparér</strong>
+            <span>Få den til at virke igen</span>
+          </div>
+          <div class="front-path-item">
+            <span class="front-path-icon front-path-icon-blue">↔</span>
+            <strong>Sælg</strong>
+            <span>Lad en anden få glæde af den</span>
+          </div>
+          <div class="front-path-item">
+            <span class="front-path-icon front-path-icon-red">♥</span>
+            <strong>Giv videre</strong>
+            <span>Donér til nogen der har brug for den</span>
+          </div>
+          <div class="front-path-item">
+            <span class="front-path-icon">♻</span>
+            <strong>Genanvend</strong>
+            <span>Når intet andet er muligt</span>
+          </div>
         </div>
+        <p class="front-helper">Vi hjælper dig med at finde den løsning, der bevarer mest værdi.</p>
       </section>
 
-      <section class="panel" id="capture-screen" aria-labelledby="capture-title">
-        <div class="step-label">1 af 4</div>
-        <h2 id="capture-title">Billeder af genstanden</h2>
+      <section class="front-capture" id="capture-screen" aria-labelledby="capture-title">
+        <h2 class="visually-hidden" id="capture-title">Billeder af genstanden</h2>
 
         <div class="image-actions" aria-label="Tilføj billeder">
           <label class="drop-zone" for="camera-input">
             <input id="camera-input" type="file" accept="image/*" capture="environment" />
-            <span class="drop-icon" aria-hidden="true">+</span>
-            <span class="drop-title">Tag foto</span>
-            <span class="drop-copy">Tilføj ét foto ad gangen fra kameraet</span>
+            <span class="drop-icon" aria-hidden="true">📷</span>
+            <span class="drop-title">Tag billede</span>
           </label>
 
           <label class="upload-choice" for="gallery-input">
             <input id="gallery-input" type="file" accept="image/*" multiple />
-            <span class="drop-title">Upload fra enhed</span>
-            <span class="drop-copy">Vælg op til 4 billeder fra biblioteket</span>
+            <span class="drop-icon" aria-hidden="true">↥</span>
+            <span class="drop-title">Upload billeder</span>
           </label>
         </div>
+        <p class="upload-hint">Du kan uploade op til 4 billeder.</p>
 
         <div class="preview-wrap hidden" id="preview-wrap" aria-label="Valgte billeder"></div>
 

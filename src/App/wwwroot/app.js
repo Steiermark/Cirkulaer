@@ -207,6 +207,14 @@ const backFromActionButton = document.querySelector("#back-from-action-button");
 const closeSitePanelButton = document.querySelector("#close-site-panel-button");
 const closeSortingSearchButton = document.querySelector("#close-sorting-search-button");
 const sortingSearchInput = document.querySelector("#sorting-search-input");
+const splashScreen = document.querySelector("#splash-screen");
+
+if (splashScreen) {
+  window.setTimeout(() => {
+    splashScreen.classList.add("is-hidden");
+    window.setTimeout(() => splashScreen.remove(), 400);
+  }, 1000);
+}
 
 cameraInput.addEventListener("change", handleSelectedImages);
 galleryInput.addEventListener("change", handleSelectedImages);
