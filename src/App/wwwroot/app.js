@@ -208,6 +208,11 @@ const closeSitePanelButton = document.querySelector("#close-site-panel-button");
 const closeSortingSearchButton = document.querySelector("#close-sorting-search-button");
 const sortingSearchInput = document.querySelector("#sorting-search-input");
 const splashScreen = document.querySelector("#splash-screen");
+const externalViewer = document.querySelector("#external-viewer");
+const externalViewerFrame = document.querySelector("#external-viewer-frame");
+const externalViewerTitle = document.querySelector("#external-viewer-title");
+const externalViewerOpen = document.querySelector("#external-viewer-open");
+const externalViewerClose = document.querySelector("#external-viewer-close");
 
 if (splashScreen) {
   window.setTimeout(() => {
@@ -238,6 +243,19 @@ backFromActionButton.addEventListener("click", () => {
 closeSitePanelButton.addEventListener("click", () => toggleSortingPanel("site", false));
 closeSortingSearchButton.addEventListener("click", () => toggleSortingPanel("search", false));
 sortingSearchInput.addEventListener("input", () => renderSortingSuggestions(sortingSearchInput.value));
+externalViewerClose.addEventListener("click", closeExternalViewer);
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !externalViewer.classList.contains("hidden")) closeExternalViewer();
+});
+document.addEventListener("click", (event) => {
+  if (!(event.target instanceof Element)) return;
+  const link = event.target.closest("[data-open-in-app='true']");
+  if (!link) return;
+  const href = link.getAttribute("href");
+  if (!href || href === "#") return;
+  event.preventDefault();
+  openExternalViewer(href, link.textContent.trim() || "Ekstern side");
+});
 recommendationPanel.addEventListener("click", () => {
   if (state.recommendation?.recommended_action === "sell") {
     openSalePage();
@@ -247,6 +265,21 @@ backToResultButton.addEventListener("click", () => {
   document.querySelector("#sale-screen").classList.add("hidden");
   document.querySelector("#result-screen").scrollIntoView({ behavior: "smooth" });
 });
+
+function openExternalViewer(url, title) {
+  externalViewerTitle.textContent = title;
+  externalViewerOpen.href = url;
+  externalViewerFrame.src = url;
+  externalViewer.classList.remove("hidden");
+  document.body.classList.add("viewer-open");
+  externalViewerClose.focus();
+}
+
+function closeExternalViewer() {
+  externalViewer.classList.add("hidden");
+  externalViewerFrame.src = "about:blank";
+  document.body.classList.remove("viewer-open");
+}
 
 function handleSelectedImages(event) {
   const selectedFiles = Array.from(event.target.files || []).filter((file) =>
@@ -903,7 +936,7 @@ function renderActionFlow(action) {
       ],
       primary: "Find genbrugsbutik på kort",
       secondary: "Kan ikke bortgives – gå til affaldssortering",
-      onPrimary: () => window.open("https://www.google.com/maps/search/genbrugsbutik", "_blank", "noopener"),
+      onPrimary: () => openExternalViewer("https://www.google.com/maps/search/genbrugsbutik", "Find genbrugsbutik"),
       onSecondary: () => openWasteSortingPage(),
     },
   };
@@ -1183,6 +1216,7 @@ function renderSaleComparables(comparables, pendingText, keepRows) {
       row.href = item.url;
       row.target = "_blank";
       row.rel = "noopener";
+      row.dataset.openInApp = "true";
     }
     const title = document.createElement("span");
     title.textContent = item.url ? `${item.title} ↗` : item.title;
