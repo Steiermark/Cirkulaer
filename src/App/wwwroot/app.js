@@ -338,10 +338,10 @@ async function analyzeImage() {
       assessment.uncertainty_notes.unshift(payload.message);
     }
 
-    document.querySelector("#object-name").textContent = assessment.object_name;
+    document.querySelector("#object-name").textContent = displayObjectName(assessment);
     document.querySelector("#object-category").textContent = assessment.category;
-    document.querySelector("#object-brand").textContent = assessment.brand || "Ikke fundet";
-    document.querySelector("#object-model").textContent = assessment.model || "Ikke fundet";
+    setOptionalField("#object-brand", assessment.brand);
+    setOptionalField("#object-model", assessment.model);
     document.querySelector("#object-findings").textContent = assessment.visible_damage.length
       ? assessment.visible_damage.join(", ")
       : assessment.condition_estimate && assessment.condition_estimate !== "unknown"
@@ -559,6 +559,25 @@ function syncWorksOptions() {
       state.answers.works = "no";
     }
   }
+}
+
+function setOptionalField(selector, value) {
+  const field = document.querySelector(selector);
+  field.textContent = value || "";
+  field.parentElement.classList.toggle("hidden", !value);
+}
+
+// Headline shows what we know, not what we missed: "Dyson støvsuger" beats
+// "Støvsuger / Dyson / Ikke fundet" when the model is unknown.
+function displayObjectName(assessment) {
+  const brand = String(assessment?.brand || "").trim();
+  const model = String(assessment?.model || "").trim();
+  const name = String(assessment?.object_name || "").trim();
+  if (brand && model) return `${brand} ${model}`;
+  if (!brand) return name || "Ukendt genstand";
+  if (!name || /^ukendt/i.test(name)) return brand;
+  if (name.toLowerCase().includes(brand.toLowerCase())) return name;
+  return `${brand} ${name.charAt(0).toLowerCase()}${name.slice(1)}`;
 }
 
 function questionObjectLabel(assessment) {
@@ -1130,7 +1149,7 @@ async function openSalePage() {
       return;
     }
     renderSalePage({
-      object_name: state.recommendation.object_name,
+      object_name: displayObjectName(state.assessment),
       details: "Prisforslaget kunne ikke hentes lige nu.",
       price: "Ukendt pris",
       price_note: error.message,
@@ -1167,7 +1186,7 @@ async function fetchSaleAssist(images) {
 }
 
 function setSaleLoading() {
-  document.querySelector("#sale-object-name").textContent = state.recommendation?.object_name || "Genstand";
+  document.querySelector("#sale-object-name").textContent = displayObjectName(state.assessment);
   document.querySelector("#sale-object-details").textContent = "Henter søgegrundlag og laver annoncekladde...";
   document.querySelector("#sale-price").textContent = "Finder pris...";
   document.querySelector("#sale-price-note").textContent =

@@ -161,6 +161,15 @@ Do not re-open these without a new reason; they were considered and decided.
   single maintainer. Decided 2026-09-10.
 - **Three vision providers are kept** even though only Gemini is used by default. Vendors
   leapfrog each other quickly and switching is now a config change, not a code change.
+- **`gemini-2.5-flash` is the vision default on merit, not just speed.** Measured
+  2026-09-15 with the prod prompt on 73 photos: best brand/model recall of gemini-2.5-flash,
+  gemini-3.8-flash, gemini-pro-latest, gpt-5 and claude-sonnet-5. gpt-5 was 4x slower and
+  weaker; sonnet-5 hedges inside strings ("Poäng (formodet)"), which would pollute dba
+  queries; 3.8-flash is 2x faster but named a PH 5 "PH Kontrast" on every run and assumes
+  replicas. Also measured dead: Cloud Vision `webDetection` (missed PH5, Nespresso, HP —
+  won nothing), Gemini `google_search` grounding (text queries, not reverse image search,
+  +2-3s), and `thinkingBudget: 0` on this step (3x faster but hallucinates models, e.g.
+  Dyson → "DC29"). Re-open only with a new, resale-relevant photo set.
 
 ## Switching AI provider or model
 
