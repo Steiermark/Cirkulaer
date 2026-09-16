@@ -236,6 +236,23 @@ h3 {
   color: #aa414b;
 }
 
+.front-path-icon-sale {
+  position: relative;
+  overflow: hidden;
+  background: #c9e9fc;
+  box-shadow: none;
+}
+
+/* Show only the circular symbol from the supplied artwork. */
+.front-path-icon-sale img {
+  position: absolute;
+  width: 191.16%;
+  max-width: none;
+  height: auto;
+  left: -45.58%;
+  top: -19.66%;
+}
+
 .front-path-item strong {
   font-size: clamp(0.86rem, 1.9vw, 1.15rem);
   line-height: 1.05;
@@ -310,7 +327,7 @@ h3 {
   display: none;
 }
 
-.front-capture > input[type="file"] {
+.front-capture input[type="file"] {
   position: absolute;
   inline-size: 1px;
   block-size: 1px;
@@ -398,31 +415,59 @@ h3 {
 }
 
 .camera-panel {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100vh;
+  height: 100dvh;
+  max-height: none;
   display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   gap: 12px;
-  margin: 16px 0;
-  padding: 12px;
-  border: 1px solid rgba(20, 92, 58, 0.18);
-  border-radius: 8px;
-  background: rgba(255, 253, 248, 0.9);
+  margin: 0;
+  padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  border: 0;
+  overflow: hidden;
+  background: #102219;
+  color: #fff;
 }
 
-.camera-panel.hidden {
+.camera-panel:not([open]) {
   display: none;
+}
+
+body.camera-open {
+  overflow: hidden;
+}
+
+.camera-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.camera-toolbar .secondary-button {
+  width: auto;
+  margin: 0;
 }
 
 .camera-panel video {
   width: 100%;
-  aspect-ratio: 3 / 4;
+  height: 100%;
+  min-height: 0;
   display: block;
-  border-radius: 8px;
   background: #102219;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .camera-actions {
   display: grid;
   gap: 8px;
+  width: min(420px, 100%);
+  justify-self: center;
 }
 
 .camera-actions .primary-button,
@@ -432,7 +477,8 @@ h3 {
 
 .camera-hint {
   margin: 0;
-  color: var(--muted);
+  min-height: 1.35em;
+  color: #fff;
   font-size: 0.9rem;
   line-height: 1.35;
   text-align: center;

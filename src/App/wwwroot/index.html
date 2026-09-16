@@ -28,7 +28,7 @@
             <span>Få den til at virke igen</span>
           </div>
           <div class="front-path-item">
-            <span class="front-path-icon front-path-icon-blue">↔</span>
+            <span class="front-path-icon front-path-icon-sale" aria-hidden="true"><img src="./assets/sale-symbol.png" alt="" /></span>
             <strong>Sælg</strong>
             <span>Lad en anden få glæde af den</span>
           </div>
@@ -66,7 +66,7 @@
             <span>Få den til at virke igen</span>
           </div>
           <div class="front-path-item">
-            <span class="front-path-icon front-path-icon-blue">↔</span>
+            <span class="front-path-icon front-path-icon-sale" aria-hidden="true"><img src="./assets/sale-symbol.png" alt="" /></span>
             <strong>Sælg</strong>
             <span>Lad en anden få glæde af den</span>
           </div>
@@ -92,7 +92,7 @@
             <span class="drop-icon" aria-hidden="true">📷</span>
             <span class="drop-title">Tag billede</span>
           </button>
-          <input id="camera-input" type="file" accept="image/*" capture="environment" />
+          <input id="camera-input" type="file" accept="image/*" capture="environment" hidden />
 
           <label class="upload-choice" for="gallery-input">
             <input id="gallery-input" type="file" accept="image/*" multiple />
@@ -101,16 +101,6 @@
           </label>
         </div>
         <p class="upload-hint">Du kan uploade op til 4 billeder.</p>
-
-        <div class="camera-panel hidden" id="camera-panel" aria-label="Kamera">
-          <video id="camera-preview" autoplay playsinline muted></video>
-          <canvas id="camera-canvas" class="hidden"></canvas>
-          <div class="camera-actions">
-            <button class="primary-button" id="capture-photo-button" type="button">Tag billede</button>
-            <button class="secondary-button" id="close-camera-button" type="button">Luk kamera</button>
-          </div>
-          <p class="camera-hint">Billedet tilføjes automatisk, og kameraet bliver åbent til næste billede.</p>
-        </div>
 
         <div class="preview-wrap hidden" id="preview-wrap" aria-label="Valgte billeder"></div>
 
@@ -331,6 +321,20 @@
         </div>
       </section>
     </main>
+
+    <dialog class="camera-panel" id="camera-panel" aria-label="Kamera">
+      <div class="camera-toolbar">
+        <strong>Kamera</strong>
+        <span id="camera-count" role="status">0 af 4 billeder</span>
+        <button class="secondary-button" id="close-camera-button" type="button" autofocus>Luk kamera</button>
+      </div>
+      <video id="camera-preview" autoplay playsinline muted></video>
+      <canvas id="camera-canvas" class="hidden"></canvas>
+      <div class="camera-actions">
+        <p class="camera-hint" id="camera-status" role="status"></p>
+        <button class="primary-button" id="capture-photo-button" type="button" disabled>Tag billede</button>
+      </div>
+    </dialog>
 
     <div class="external-viewer hidden" id="external-viewer" role="dialog" aria-modal="true" aria-labelledby="external-viewer-title">
       <div class="external-viewer-bar">

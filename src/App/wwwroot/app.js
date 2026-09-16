@@ -196,6 +196,10 @@ const cameraPreview = document.querySelector("#camera-preview");
 const cameraCanvas = document.querySelector("#camera-canvas");
 const capturePhotoButton = document.querySelector("#capture-photo-button");
 const closeCameraButton = document.querySelector("#close-camera-button");
+const cameraCount = document.querySelector("#camera-count");
+const cameraStatus = document.querySelector("#camera-status");
+let cameraRequest = 0;
+let cameraCapturing = false;
 const analyzeButton = document.querySelector("#analyze-button");
 const recommendButton = document.querySelector("#recommend-button");
 const restartButton = document.querySelector("#restart-button");
@@ -232,7 +236,13 @@ openCameraButton.addEventListener("click", openCamera);
 cameraInput.addEventListener("change", handleSelectedImages);
 galleryInput.addEventListener("change", handleSelectedImages);
 capturePhotoButton.addEventListener("click", capturePhotoFromCamera);
-closeCameraButton.addEventListener("click", stopCamera);
+closeCameraButton.addEventListener("click", () => stopCamera());
+cameraPanel.addEventListener("cancel", (event) => {
+  event.preventDefault();
+  stopCamera();
+});
+cameraPreview.addEventListener("loadeddata", updateImageControls);
+window.addEventListener("pagehide", () => stopCamera(false));
 analyzeButton.addEventListener("click", analyzeImage);
 recommendButton.addEventListener("click", recommend);
 restartButton.addEventListener("click", restart);
@@ -302,8 +312,13 @@ async function openCamera() {
     return;
   }
 
+  stopCamera(false);
+  const request = ++cameraRequest;
+  cameraStatus.textContent = "Starter kamera...";
+  cameraPanel.showModal();
+  document.body.classList.add("camera-open");
+  updateImageControls();
   try {
-    await stopCamera();
     const stream = await navigator.mediaDevices.getUserMedia({
       video: {
         facingMode: { ideal: "environment" },
@@ -312,50 +327,67 @@ async function openCamera() {
       },
       audio: false,
     });
+    // Permission can resolve after the user has already closed the camera.
+    if (request !== cameraRequest) {
+      stream.getTracks().forEach((track) => track.stop());
+      return;
+    }
     state.cameraStream = stream;
     cameraPreview.srcObject = stream;
-    cameraPanel.classList.remove("hidden");
+    await cameraPreview.play();
+    if (request !== cameraRequest) return;
+    cameraStatus.textContent = "";
+    updateImageControls();
     hideStatus();
   } catch {
+    if (request !== cameraRequest) return;
+    stopCamera();
     cameraInput.click();
   }
 }
 
-async function stopCamera() {
+function stopCamera(returnToCapture = true) {
+  const wasOpen = cameraPanel.open;
+  cameraRequest++;
+  cameraCapturing = false;
   if (state.cameraStream) {
     state.cameraStream.getTracks().forEach((track) => track.stop());
     state.cameraStream = null;
   }
   cameraPreview.srcObject = null;
-  cameraPanel.classList.add("hidden");
+  cameraPanel.close();
+  document.body.classList.remove("camera-open");
+  if (wasOpen && returnToCapture) {
+    const target = state.imageFiles.length ? analyzeButton : openCameraButton;
+    target.focus({ preventScroll: true });
+    target.scrollIntoView({ block: "center", behavior: "instant" });
+  }
 }
 
 async function capturePhotoFromCamera() {
-  if (!state.cameraStream || state.imageFiles.length >= 4) {
-    updateImageControls();
-    return;
-  }
-
-  const videoWidth = cameraPreview.videoWidth || 1200;
-  const videoHeight = cameraPreview.videoHeight || 1600;
-  cameraCanvas.width = videoWidth;
-  cameraCanvas.height = videoHeight;
-  const context = cameraCanvas.getContext("2d");
-  context.drawImage(cameraPreview, 0, 0, videoWidth, videoHeight);
-
-  const blob = await new Promise((resolve) => cameraCanvas.toBlob(resolve, "image/jpeg", 0.86));
-  if (!blob) {
-    setStatus("Billedet kunne ikke gemmes fra kameraet.", true);
-    return;
-  }
-
-  const file = new File([blob], `kamera-${Date.now()}.jpg`, { type: "image/jpeg" });
-  addImageFiles([file]);
-  if (state.imageFiles.length >= 4) {
-    await stopCamera();
-    setStatus("Der bruges højst 4 billeder i analysen.");
-  } else {
-    hideStatus();
+  if (cameraCapturing || !state.cameraStream || cameraPreview.readyState < 2 || state.imageFiles.length >= 4) return;
+  const request = cameraRequest;
+  cameraCapturing = true;
+  updateImageControls();
+  try {
+    cameraCanvas.width = cameraPreview.videoWidth;
+    cameraCanvas.height = cameraPreview.videoHeight;
+    const context = cameraCanvas.getContext("2d");
+    context.drawImage(cameraPreview, 0, 0, cameraCanvas.width, cameraCanvas.height);
+    const blob = await new Promise((resolve) => cameraCanvas.toBlob(resolve, "image/jpeg", 0.86));
+    if (request !== cameraRequest) return;
+    if (!blob) throw new Error("Camera capture failed");
+    const file = new File([blob], `kamera-${Date.now()}.jpg`, { type: "image/jpeg" });
+    addImageFiles([file]);
+    cameraStatus.textContent = "";
+    if (state.imageFiles.length >= 4) stopCamera();
+  } catch {
+    if (request === cameraRequest) cameraStatus.textContent = "Billedet kunne ikke gemmes fra kameraet.";
+  } finally {
+    if (request === cameraRequest) {
+      cameraCapturing = false;
+      updateImageControls();
+    }
   }
 }
 
@@ -365,6 +397,9 @@ function handleSelectedImages(event) {
   );
   addImageFiles(selectedFiles);
   event.target.value = "";
+  if (selectedFiles.length && state.imageFiles.length) {
+    analyzeButton.scrollIntoView({ block: "center", behavior: "instant" });
+  }
 }
 
 function addImageFiles(selectedFiles) {
@@ -1667,7 +1702,8 @@ function updateImageControls() {
   cameraInput.disabled = isFull;
   galleryInput.disabled = isFull;
   openCameraButton.disabled = isFull;
-  capturePhotoButton.disabled = isFull;
+  capturePhotoButton.disabled = isFull || cameraCapturing || !state.cameraStream || cameraPreview.readyState < 2;
+  cameraCount.textContent = `${state.imageFiles.length} af 4 billeder`;
 }
 
 function clearPreviewUrls() {
