@@ -42,6 +42,7 @@ const state = {
   recommendation: null,
   saleDraft: null,
   saleRequest: 0,
+  cameraStream: null,
   answers: {},
 };
 
@@ -189,6 +190,12 @@ const wasteSortingItems = [
 
 const cameraInput = document.querySelector("#camera-input");
 const galleryInput = document.querySelector("#gallery-input");
+const openCameraButton = document.querySelector("#open-camera-button");
+const cameraPanel = document.querySelector("#camera-panel");
+const cameraPreview = document.querySelector("#camera-preview");
+const cameraCanvas = document.querySelector("#camera-canvas");
+const capturePhotoButton = document.querySelector("#capture-photo-button");
+const closeCameraButton = document.querySelector("#close-camera-button");
 const analyzeButton = document.querySelector("#analyze-button");
 const recommendButton = document.querySelector("#recommend-button");
 const restartButton = document.querySelector("#restart-button");
@@ -221,8 +228,11 @@ if (splashScreen) {
   }, 1000);
 }
 
+openCameraButton.addEventListener("click", openCamera);
 cameraInput.addEventListener("change", handleSelectedImages);
 galleryInput.addEventListener("change", handleSelectedImages);
+capturePhotoButton.addEventListener("click", capturePhotoFromCamera);
+closeCameraButton.addEventListener("click", stopCamera);
 analyzeButton.addEventListener("click", analyzeImage);
 recommendButton.addEventListener("click", recommend);
 restartButton.addEventListener("click", restart);
@@ -281,10 +291,83 @@ function closeExternalViewer() {
   document.body.classList.remove("viewer-open");
 }
 
+async function openCamera() {
+  if (state.imageFiles.length >= 4) {
+    setStatus("Fjern et billede for at tilføje et nyt.");
+    return;
+  }
+
+  if (!navigator.mediaDevices?.getUserMedia) {
+    cameraInput.click();
+    return;
+  }
+
+  try {
+    await stopCamera();
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: { ideal: "environment" },
+        width: { ideal: 1600 },
+        height: { ideal: 1200 },
+      },
+      audio: false,
+    });
+    state.cameraStream = stream;
+    cameraPreview.srcObject = stream;
+    cameraPanel.classList.remove("hidden");
+    hideStatus();
+  } catch {
+    cameraInput.click();
+  }
+}
+
+async function stopCamera() {
+  if (state.cameraStream) {
+    state.cameraStream.getTracks().forEach((track) => track.stop());
+    state.cameraStream = null;
+  }
+  cameraPreview.srcObject = null;
+  cameraPanel.classList.add("hidden");
+}
+
+async function capturePhotoFromCamera() {
+  if (!state.cameraStream || state.imageFiles.length >= 4) {
+    updateImageControls();
+    return;
+  }
+
+  const videoWidth = cameraPreview.videoWidth || 1200;
+  const videoHeight = cameraPreview.videoHeight || 1600;
+  cameraCanvas.width = videoWidth;
+  cameraCanvas.height = videoHeight;
+  const context = cameraCanvas.getContext("2d");
+  context.drawImage(cameraPreview, 0, 0, videoWidth, videoHeight);
+
+  const blob = await new Promise((resolve) => cameraCanvas.toBlob(resolve, "image/jpeg", 0.86));
+  if (!blob) {
+    setStatus("Billedet kunne ikke gemmes fra kameraet.", true);
+    return;
+  }
+
+  const file = new File([blob], `kamera-${Date.now()}.jpg`, { type: "image/jpeg" });
+  addImageFiles([file]);
+  if (state.imageFiles.length >= 4) {
+    await stopCamera();
+    setStatus("Der bruges højst 4 billeder i analysen.");
+  } else {
+    hideStatus();
+  }
+}
+
 function handleSelectedImages(event) {
   const selectedFiles = Array.from(event.target.files || []).filter((file) =>
     file.type.startsWith("image/"),
   );
+  addImageFiles(selectedFiles);
+  event.target.value = "";
+}
+
+function addImageFiles(selectedFiles) {
   const roomLeft = Math.max(0, 4 - state.imageFiles.length);
   const acceptedFiles = selectedFiles.slice(0, roomLeft);
 
@@ -299,13 +382,12 @@ function handleSelectedImages(event) {
   } else {
     hideStatus();
   }
-
-  event.target.value = "";
 }
 
 async function analyzeImage() {
   if (!state.imageFiles.length) return;
 
+  stopCamera();
   setStatus(`Analyserer ${state.imageFiles.length} billede${state.imageFiles.length === 1 ? "" : "r"}...`);
   analyzeButton.disabled = true;
 
@@ -1512,6 +1594,7 @@ function show(selector) {
 }
 
 function restart() {
+  stopCamera();
   clearPreviewUrls();
   state.imageFiles = [];
   state.assessment = null;
@@ -1524,6 +1607,8 @@ function restart() {
   analyzeButton.disabled = true;
   cameraInput.disabled = false;
   galleryInput.disabled = false;
+  openCameraButton.disabled = false;
+  capturePhotoButton.disabled = false;
   const previewWrap = document.querySelector("#preview-wrap");
   previewWrap.innerHTML = "";
   previewWrap.classList.add("hidden");
@@ -1581,6 +1666,8 @@ function updateImageControls() {
   analyzeButton.disabled = !hasImages;
   cameraInput.disabled = isFull;
   galleryInput.disabled = isFull;
+  openCameraButton.disabled = isFull;
+  capturePhotoButton.disabled = isFull;
 }
 
 function clearPreviewUrls() {

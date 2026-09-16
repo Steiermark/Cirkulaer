@@ -88,11 +88,11 @@
         <h2 class="visually-hidden" id="capture-title">Billeder af genstanden</h2>
 
         <div class="image-actions" aria-label="Tilføj billeder">
-          <label class="drop-zone" for="camera-input">
-            <input id="camera-input" type="file" accept="image/*" capture="environment" />
+          <button class="drop-zone" id="open-camera-button" type="button">
             <span class="drop-icon" aria-hidden="true">📷</span>
             <span class="drop-title">Tag billede</span>
-          </label>
+          </button>
+          <input id="camera-input" type="file" accept="image/*" capture="environment" />
 
           <label class="upload-choice" for="gallery-input">
             <input id="gallery-input" type="file" accept="image/*" multiple />
@@ -101,6 +101,16 @@
           </label>
         </div>
         <p class="upload-hint">Du kan uploade op til 4 billeder.</p>
+
+        <div class="camera-panel hidden" id="camera-panel" aria-label="Kamera">
+          <video id="camera-preview" autoplay playsinline muted></video>
+          <canvas id="camera-canvas" class="hidden"></canvas>
+          <div class="camera-actions">
+            <button class="primary-button" id="capture-photo-button" type="button">Tag billede</button>
+            <button class="secondary-button" id="close-camera-button" type="button">Luk kamera</button>
+          </div>
+          <p class="camera-hint">Billedet tilføjes automatisk, og kameraet bliver åbent til næste billede.</p>
+        </div>
 
         <div class="preview-wrap hidden" id="preview-wrap" aria-label="Valgte billeder"></div>
 

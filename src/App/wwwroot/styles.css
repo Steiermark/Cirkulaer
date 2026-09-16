@@ -310,6 +310,13 @@ h3 {
   display: none;
 }
 
+.front-capture > input[type="file"] {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  opacity: 0;
+}
+
 .front-capture::after {
   content: "";
   position: fixed;
@@ -343,6 +350,12 @@ h3 {
   box-shadow: 0 16px 34px rgba(20, 92, 58, 0.22);
 }
 
+.drop-zone:disabled {
+  background: #a8b2ad;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
 .upload-choice {
   min-height: 56px;
   display: grid;
@@ -359,7 +372,6 @@ h3 {
   cursor: pointer;
 }
 
-.drop-zone input,
 .upload-choice input {
   position: absolute;
   inline-size: 1px;
@@ -383,6 +395,47 @@ h3 {
 
 .upload-choice .drop-title {
   font-size: 1.04rem;
+}
+
+.camera-panel {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0;
+  padding: 12px;
+  border: 1px solid rgba(20, 92, 58, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, 0.9);
+}
+
+.camera-panel.hidden {
+  display: none;
+}
+
+.camera-panel video {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  display: block;
+  border-radius: 8px;
+  background: #102219;
+  object-fit: cover;
+}
+
+.camera-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.camera-actions .primary-button,
+.camera-actions .secondary-button {
+  margin-top: 0;
+}
+
+.camera-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.35;
+  text-align: center;
 }
 
 .preview-wrap {
