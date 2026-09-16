@@ -207,6 +207,7 @@ const openSaleButton = document.querySelector("#open-sale-button");
 const openActionButton = document.querySelector("#open-action-button");
 const openWasteButton = document.querySelector("#open-waste-button");
 const copyAdButton = document.querySelector("#copy-ad-button");
+const shareSalePhotosButton = document.querySelector("#share-sale-photos-button");
 const backToResultButton = document.querySelector("#back-to-result-button");
 const recommendationPanel = document.querySelector(".recommendation");
 const openSitePanelButton = document.querySelector("#open-site-panel-button");
@@ -236,7 +237,8 @@ openCameraButton.addEventListener("click", openCamera);
 cameraInput.addEventListener("change", handleSelectedImages);
 galleryInput.addEventListener("change", handleSelectedImages);
 capturePhotoButton.addEventListener("click", capturePhotoFromCamera);
-closeCameraButton.addEventListener("click", () => stopCamera());
+closeCameraButton.addEventListener("click", analyzeImage);
+document.querySelector("#cancel-camera-button").addEventListener("click", () => stopCamera());
 cameraPanel.addEventListener("cancel", (event) => {
   event.preventDefault();
   stopCamera();
@@ -250,6 +252,7 @@ openSaleButton.addEventListener("click", openSalePage);
 openActionButton.addEventListener("click", openRecommendedAction);
 openWasteButton.addEventListener("click", openWasteSortingPage);
 copyAdButton.addEventListener("click", copyAdText);
+shareSalePhotosButton.addEventListener("click", shareSalePhotos);
 openSitePanelButton.addEventListener("click", () => toggleSortingPanel("site", true));
 openSortingSearchButton.addEventListener("click", () => toggleSortingPanel("search", true));
 backFromWasteButton.addEventListener("click", () => {
@@ -420,7 +423,7 @@ function addImageFiles(selectedFiles) {
 }
 
 async function analyzeImage() {
-  if (!state.imageFiles.length) return;
+  if (!state.imageFiles.length || cameraCapturing) return;
 
   stopCamera();
   setStatus(`Analyserer ${state.imageFiles.length} billede${state.imageFiles.length === 1 ? "" : "r"}...`);
@@ -1236,6 +1239,7 @@ async function openSalePage() {
   show("#sale-screen");
   document.querySelector("#sale-screen").scrollIntoView({ behavior: "smooth" });
   setSaleLoading();
+  renderSalePhotos();
 
   const request = ++state.saleRequest;
   state.saleDraft = null;
@@ -1312,7 +1316,8 @@ function setSaleLoading() {
   document.querySelector("#sale-search-link").href = "#";
   document.querySelector("#marketplace-search-link").href = "#";
   setReshopperVisibility(isReshopperRelevant(state.assessment), buildReshopperUrl(), reshopperNote(state.assessment));
-  document.querySelector("#sale-ad-text").value = "";
+  document.querySelector("#sale-ad-text").value = "Skriver salgsannonce...";
+  copyAdButton.disabled = true;
   document.querySelector("#marketplace-note").textContent = marketplaceApiNote();
   renderSaleComparables([], "Søger efter sammenlignelige annoncer …");
 }
@@ -1330,6 +1335,7 @@ function renderSalePage(sale) {
   document.querySelector("#marketplace-search-link").href = sale.marketplace_search_url || buildMarketplaceSearchUrl(state.assessment, state.answers);
   setReshopperVisibility(Boolean(sale.reshopper_relevant), sale.reshopper_url || buildReshopperUrl(), sale.reshopper_note || reshopperNote(state.assessment));
   document.querySelector("#sale-ad-text").value = sale.ad_text || buildFallbackAdText(state.assessment, state.answers);
+  copyAdButton.disabled = false;
   document.querySelector("#marketplace-note").textContent = sale.marketplace_note || marketplaceApiNote();
   renderSaleComparables(sale.comparables || []);
 }
@@ -1361,6 +1367,48 @@ function renderSaleComparables(comparables, pendingText, keepRows) {
     row.append(title, price);
     container.appendChild(row);
   });
+}
+
+function renderSalePhotos() {
+  const container = document.querySelector("#sale-photo-list");
+  container.replaceChildren();
+  document.querySelector("#sale-photos").classList.toggle("hidden", !state.imageFiles.length);
+  document.querySelector("#sale-photo-status").classList.add("hidden");
+  state.imageFiles.forEach((file, index) => {
+    const figure = document.createElement("figure");
+    figure.className = "preview-item";
+    const image = document.createElement("img");
+    image.src = state.previewUrls[index];
+    image.alt = `Billede ${index + 1} til annoncen`;
+    const caption = document.createElement("figcaption");
+    const download = document.createElement("a");
+    download.className = "program-link";
+    download.href = state.previewUrls[index];
+    download.download = file.name;
+    download.textContent = `Gem billede ${index + 1}`;
+    caption.appendChild(download);
+    figure.append(image, caption);
+    container.appendChild(figure);
+  });
+  const canShare = state.imageFiles.length > 0 && navigator.share && navigator.canShare?.({ files: state.imageFiles });
+  shareSalePhotosButton.classList.toggle("hidden", !canShare);
+}
+
+async function shareSalePhotos() {
+  if (!state.imageFiles.length) return;
+  const status = document.querySelector("#sale-photo-status");
+  status.classList.add("hidden");
+  shareSalePhotosButton.disabled = true;
+  try {
+    await navigator.share({ files: [...state.imageFiles] });
+  } catch (error) {
+    if (error.name !== "AbortError") {
+      status.textContent = "Billederne kunne ikke deles. Gem dem enkeltvis i stedet.";
+      status.classList.remove("hidden");
+    }
+  } finally {
+    shareSalePhotosButton.disabled = false;
+  }
 }
 
 async function copyAdText() {
@@ -1451,7 +1499,7 @@ function buildFallbackAdText(assessment, answers) {
   const lines = [
     `${name} sælges`,
     "",
-    "Sælges på baggrund af billeder og oplysninger om stand, funktion, producent og model.",
+    `Jeg sælger ${name}. Måske er det lige den, du leder efter?`,
     "",
     "Oplysninger:",
     `- Genstand: ${assessment?.object_name || "ikke angivet"}`,
@@ -1460,14 +1508,19 @@ function buildFallbackAdText(assessment, answers) {
   if (producerSearchName(answers)) lines.push(`- Producent/mærke: ${producerSearchName(answers)}`);
   if (answers?.model_name || assessment?.model) lines.push(`- Model/serie: ${answers?.model_name || assessment?.model}`);
   if (assessment?.category) lines.push(`- Kategori: ${assessment.category}`);
-  if (answers?.works) lines.push(`- Funktion: ${answers.works === "yes" ? "virker" : answers.works === "partly" ? "virker delvist" : "skal kontrolleres"}`);
-  if (answers?.damage) lines.push(`- Stand/skader: ${answers.damage}`);
+  const works = { yes: "Fungerer som den skal.", partly: "Fungerer kun delvist.", no: "Virker ikke og sælges til reparation eller reservedele." }[answers?.works];
+  const damage = { no: "Ingen kendte skader.", minor: "Har mindre brugsspor eller slitage.", major: "Har større fejl eller skader." }[answers?.damage];
+  const accessories = { complete: "Alt tilbehør medfølger.", partial: "Noget tilbehør medfølger.", missing: "Der mangler tilbehør." }[answers?.accessories];
+  if (works) lines.push(`- ${works}`);
+  if (damage) lines.push(`- ${damage}`);
+  if (accessories) lines.push(`- ${accessories}`);
+  if (answers?.damage !== "no") {
+    (assessment?.visible_damage || []).forEach(detail => lines.push(`- ${detail}`));
+  }
 
   lines.push(
     "",
-    "Pris bør fastsættes efter lignende annoncer, aktuel stand, alder, dokumentation og efterspørgsel.",
-    "",
-    "Kan afhentes efter aftale. Skriv gerne ved spørgsmål eller hvis du vil se flere billeder.",
+    "Interesseret? Skriv gerne for at høre mere eller aftale en handel.",
   );
   return lines.join("\n");
 }
@@ -1632,6 +1685,7 @@ function restart() {
   stopCamera();
   clearPreviewUrls();
   state.imageFiles = [];
+  renderSalePhotos();
   state.assessment = null;
   state.recommendation = null;
   state.saleDraft = null;
@@ -1684,6 +1738,7 @@ function renderImagePreviews(files) {
   });
 
   previewWrap.classList.toggle("hidden", files.length === 0);
+  renderSalePhotos();
 }
 
 function removeImage(index) {
@@ -1699,6 +1754,7 @@ function updateImageControls() {
   const hasImages = state.imageFiles.length > 0;
   const isFull = state.imageFiles.length >= 4;
   analyzeButton.disabled = !hasImages;
+  closeCameraButton.disabled = !hasImages || cameraCapturing;
   cameraInput.disabled = isFull;
   galleryInput.disabled = isFull;
   openCameraButton.disabled = isFull;

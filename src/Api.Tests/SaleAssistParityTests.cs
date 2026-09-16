@@ -8,9 +8,11 @@ namespace Api.Tests;
 public class SaleAssistParityTests
 {
     // The live search is stubbed, so these keys carry stub values and are excluded.
-    // Everything else — including price and price_note — is deterministic.
+    // Ad copy deliberately changed to buyer-facing copy in September 2026;
+    // AdTextBuilderTests covers its new contract. The historical fixtures stay intact.
+    // Everything else — including price and price_note — keeps its original contract.
     static readonly string[] SearchDerived =
-        ["search_note", "search_url", "signals", "comparables", "price_confidence"];
+        ["search_note", "search_url", "signals", "comparables", "price_confidence", "ad_text"];
 
     static readonly JsonSerializerOptions Options = new() { WriteIndented = false };
 

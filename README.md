@@ -47,6 +47,20 @@ Hvis ingen AI-nøgle er sat:
 - billedet bliver stadig vist og brugt i flowet
 - analysen markeres tydeligt som testversion
 
+## Salgsannoncer
+
+Salgsbeskrivelsen skrives med OpenAI via den eksisterende `Ai:OpenAiApiKey` og
+`Ai:Providers:openai:Model`, uanset hvilken udbyder der bruges til billedanalysen.
+Kun genstandens navn, kategori, egenskaber og stand sendes til tekstgenerering;
+prisgrundlag og billeder sendes ikke med. Svaret anmodes med `store: false`.
+Beskrivelsen genbruges i hukommelsen i 10 minutter, så en opdateret pris ikke udløser
+en ny beskrivelse. Kendte fejl, tilbehør og den aktuelle pris tilføjes separat i annoncen.
+Uden OpenAI-nøgle eller ved fejl bruges en lokal, køberrettet annoncetekst.
+
+Annonceteksten afviger bevidst fra de gamle Python-fixtures: interne vurderinger og
+råd til sælgeren er fjernet. De historiske fixtures er bevaret; den nye tekst testes
+i `AdTextBuilderTests` og `OpenAiAdWriterTests`.
+
 ## Producentordninger
 
 Producentordninger er samlet i:

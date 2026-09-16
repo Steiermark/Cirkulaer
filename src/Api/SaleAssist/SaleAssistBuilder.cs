@@ -22,7 +22,7 @@ public sealed record SaleAssistResult
     [JsonPropertyName("price_confidence")] public required string PriceConfidence { get; init; }
 }
 
-public sealed class SaleAssistBuilder(IPriceSearch search, ILookalikeFilter lookalike)
+public sealed class SaleAssistBuilder(IPriceSearch search, ILookalikeFilter lookalike, OpenAiAdWriter? adWriter = null)
 {
 
     const string MarketplaceNote =
@@ -58,6 +58,8 @@ public sealed class SaleAssistBuilder(IPriceSearch search, ILookalikeFilter look
             signals = PriceSignals.FromComparables(priceQuery, signals.Url, reshopperRelevant, kept.Comparables, kept.Match);
         }
         var estimate = PriceEstimator.Estimate(assessment, answers, signals.Prices);
+        var introduction = adWriter is null ? null
+            : await adWriter.WriteIntroductionAsync(objectName, assessment, answers, ct);
 
         return new SaleAssistResult
         {
@@ -71,7 +73,7 @@ public sealed class SaleAssistBuilder(IPriceSearch search, ILookalikeFilter look
             ReshopperRelevant = reshopperRelevant,
             ReshopperUrl = SaleQueryBuilder.BuildReshopperUrl(),
             ReshopperNote = SaleQueryBuilder.BuildReshopperNote(assessment),
-            AdText = AdTextBuilder.BuildAdText(objectName, assessment, answers, estimate),
+            AdText = AdTextBuilder.BuildAdText(objectName, assessment, answers, estimate, introduction),
             MarketplaceNote = MarketplaceNote,
             Signals = signals.Signals,
             Comparables = signals.Comparables.Take(8).ToList(),

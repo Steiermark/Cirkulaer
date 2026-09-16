@@ -23,14 +23,14 @@
         </p>
         <div class="front-path" aria-label="Mulige veje videre">
           <div class="front-path-item">
-            <span class="front-path-icon">🔧</span>
-            <strong>Reparér</strong>
-            <span>Få den til at virke igen</span>
-          </div>
-          <div class="front-path-item">
             <span class="front-path-icon front-path-icon-sale" aria-hidden="true"><img src="./assets/sale-symbol.png" alt="" /></span>
             <strong>Sælg</strong>
             <span>Lad en anden få glæde af den</span>
+          </div>
+          <div class="front-path-item">
+            <span class="front-path-icon">🔧</span>
+            <strong>Reparér</strong>
+            <span>Få den til at virke igen</span>
           </div>
           <div class="front-path-item">
             <span class="front-path-icon front-path-icon-red">♥</span>
@@ -61,14 +61,14 @@
         </div>
         <div class="front-path" aria-label="Mulige veje videre">
           <div class="front-path-item">
-            <span class="front-path-icon">🔧</span>
-            <strong>Reparér</strong>
-            <span>Få den til at virke igen</span>
-          </div>
-          <div class="front-path-item">
             <span class="front-path-icon front-path-icon-sale" aria-hidden="true"><img src="./assets/sale-symbol.png" alt="" /></span>
             <strong>Sælg</strong>
             <span>Lad en anden få glæde af den</span>
+          </div>
+          <div class="front-path-item">
+            <span class="front-path-icon">🔧</span>
+            <strong>Reparér</strong>
+            <span>Få den til at virke igen</span>
           </div>
           <div class="front-path-item">
             <span class="front-path-icon front-path-icon-red">♥</span>
@@ -229,6 +229,13 @@
           </div>
         </div>
 
+        <section class="sale-photos hidden" id="sale-photos" aria-labelledby="sale-photos-title">
+          <h3 id="sale-photos-title">Billeder til annoncen</h3>
+          <div class="preview-wrap" id="sale-photo-list"></div>
+          <button class="secondary-button hidden" id="share-sale-photos-button" type="button">Del billeder</button>
+          <p class="status-message hidden" id="sale-photo-status" role="status"></p>
+        </section>
+
         <div class="sale-card">
           <span class="field-label">Forslag til annoncetekst</span>
           <textarea id="sale-ad-text" rows="8" readonly></textarea>
@@ -324,9 +331,10 @@
 
     <dialog class="camera-panel" id="camera-panel" aria-label="Kamera">
       <div class="camera-toolbar">
+        <button class="secondary-button camera-back" id="cancel-camera-button" type="button" aria-label="Tilbage til forsiden" title="Tilbage til forsiden">←</button>
         <strong>Kamera</strong>
         <span id="camera-count" role="status">0 af 4 billeder</span>
-        <button class="secondary-button" id="close-camera-button" type="button" autofocus>Luk kamera</button>
+        <button class="secondary-button" id="close-camera-button" type="button" disabled>Analysér</button>
       </div>
       <video id="camera-preview" autoplay playsinline muted></video>
       <canvas id="camera-canvas" class="hidden"></canvas>
